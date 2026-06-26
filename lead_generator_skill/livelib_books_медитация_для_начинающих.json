@@ -1,0 +1,49 @@
+{
+  "source": "livelib.ru",
+  "query": "медитация для начинающих",
+  "min_rating": null,
+  "collected_at": "2026-06-13T13:48:20.041332+00:00",
+  "count": 5,
+  "books": [
+    {
+      "title": "Медитация и&nbsp;аффирмации для начинающих. Здоровье и&nbsp;успех",
+      "book_id": "1015707454",
+      "url": "https://www.livelib.ru/book/1015707454-meditatsiya-iaffirmatsii-dlya-nachinayuschih-zdorove-iuspeh-inga-bergman",
+      "author": "Инга Бергман",
+      "author_id": "2919022",
+      "author_url": "https://www.livelib.ru/author/2919022"
+    },
+    {
+      "title": "Медитация для начинающих",
+      "book_id": "1000010653",
+      "url": "https://www.livelib.ru/book/1000010653-meditatsiya-dlya-nachinayuschih-naomi-ozanets",
+      "author": "Наоми Озанец",
+      "author_id": "9337",
+      "author_url": "https://www.livelib.ru/author/9337"
+    },
+    {
+      "title": "Випассана. Иллюстрированное руководство по буддийской медитации для начинающих",
+      "book_id": "1000969467",
+      "url": "https://www.livelib.ru/book/1000969467-vipassana-illyustrirovannoe-rukovodstvo-po-buddijskoj-meditatsii-dlya-nachinayuschih-pramote-pamodzho",
+      "author": "Прамоте Памоджо",
+      "author_id": "513300",
+      "author_url": "https://www.livelib.ru/author/513300"
+    },
+    {
+      "title": "Практический курс медитации для начинающих. 60 мандал для рисования и раскрашивания",
+      "book_id": "1000773868",
+      "url": "https://www.livelib.ru/book/1000773868-prakticheskij-kurs-meditatsii-dlya-nachinayuschih-60-mandal-dlya-risovaniya-i-raskrashivaniya-shia-grin",
+      "author": "Шиа Грин",
+      "author_id": "447286",
+      "author_url": "https://www.livelib.ru/author/447286"
+    },
+    {
+      "title": "Медитация для начинающих",
+      "book_id": "1010195714",
+      "url": "https://www.livelib.ru/book/1010195714-meditatsiya-dlya-nachinayuschih-aleksej-sabadyr",
+      "author": "Алексей Сабадырь",
+      "author_id": "1174814",
+      "author_url": "https://www.livelib.ru/author/1174814"
+    }
+  ]
+}

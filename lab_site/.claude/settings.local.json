@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/kfigh/.claude/tasks/7a46770d-de22-4d06-b4ce-8ccfae2a986f//**)",
+      "Read(//c/Users/kfigh/.claude/tasks/9cf7ddfe-b77a-4472-9a70-eb8f29f97ec5//**)",
+      "Bash(npx tsc *)",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(npx --no-install tsc --noEmit)",
+      "Bash(npx wrangler *)",
+      "Bash(./node_modules/.bin/tsc --noEmit)",
+      "Bash(./node_modules/.bin/astro check *)",
+      "Bash(curl -sS --max-time 30 \"https://api.cloudflare.com/client/v4/accounts/80ba4de511365824283fec3678626c75/workers/scripts/lab-site-api\" -H \"Authorization: Bearer CF_API_TOKEN_REDACTED\" -H \"Accept: application/json\")",
+      "Bash(python -c ' *)",
+      "WebFetch(domain:api.pulab.online)",
+      "Bash(curl -sS -k -m 10 https://api.pulab.online/checkout/)",
+      "Bash(curl -sS -k -m 10 https://api.pulab.online/api)"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "source": "otzovik",
+  "book": "Алхимик",
+  "author": "Пауло Коэльо",
+  "url": "https://otzovik.com/reviews/paulo_coelho_alchemist_book/",
+  "fetched_at": "2026-06-21T01:30:00",
+  "fetch_method": "websearch_summary",
+  "total_reviews": 466,
+  "average_rating": 4.6,
+  "recommend_ratio": 0.91,
+  "verified_ratio": 0.85,
+  "errors": ["WebFetch заблокирован"]
+}

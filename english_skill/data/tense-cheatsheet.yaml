@@ -1,0 +1,171 @@
+# Сводная таблица 12 ключевых времён английского
+# Источник: Oxford English Grammar + Cambridge Grammar of English
+# Уровень: B1 → B2
+# Для English Skill v1.0
+
+meta:
+  total_tenses: 12
+  level: "B1-B2"
+  focus: "Workplace / IT English"
+  last_updated: "2026-06-25"
+
+# Структура: tense, form (affirmative), example, when_to_use, signal_words
+
+tenses:
+  - id: present-simple
+    name: "Present Simple"
+    form_affirmative: "I/You/We/They work. He/She/It works."
+    form_negative: "I don't work. He doesn't work."
+    form_question: "Do you work? Does he work?"
+    example: "I work on the auth service."
+    when_to_use: "Факты, регулярные действия, расписания, что делает система/код."
+    signal_words: ["always", "usually", "often", "sometimes", "never", "every day/week"]
+    it_examples:
+      - "The service runs every night."
+      - "Our API handles 1000 requests per second."
+      - "He reports to the CTO."
+
+  - id: past-simple
+    name: "Past Simple"
+    form_affirmative: "I/He/She worked. (regular: +ed; irregular: see references/irregular-verbs.md)"
+    form_negative: "I didn't work."
+    form_question: "Did you work?"
+    example: "I shipped the release on Monday."
+    when_to_use: "Завершённые действия в прошлом с конкретным временем (yesterday, last week, in 2020)."
+    signal_words: ["yesterday", "last week/month/year", "ago", "in 2020", "when I was…"]
+    it_examples:
+      - "We shipped the release on Monday."
+      - "I finished the migration script yesterday."
+      - "The bug was fixed in v2.1."
+
+  - id: present-continuous
+    name: "Present Continuous"
+    form_affirmative: "I am working. He/She/It is working."
+    form_negative: "I'm not working."
+    form_question: "Are you working?"
+    example: "We're debugging the issue right now."
+    when_to_use: "Действие происходит прямо сейчас, временные ситуации, тренды."
+    signal_words: ["now", "right now", "currently", "at the moment", "today/this week (temporary)"]
+    it_examples:
+      - "We're debugging the issue right now."
+      - "I'm reviewing Maria's PR."
+      - "The team is migrating to v3."
+
+  - id: future-will
+    name: "Future: will"
+    form_affirmative: "I/You/He will work. (сокращение: I'll work)"
+    form_negative: "I won't work."
+    form_question: "Will you work?"
+    example: "We'll deploy tomorrow."
+    when_to_use: "Спонтанные решения, предсказания, обещания, что-то решённое в момент речи."
+    signal_words: ["tomorrow", "next week", "soon", "I think", "probably", "I promise"]
+    it_examples:
+      - "I'll cut a release tomorrow."
+      - "We'll deploy the hotfix in an hour."
+      - "I think this will fix the issue."
+
+  - id: future-going-to
+    name: "Future: going to"
+    form_affirmative: "I am going to work. (сокращение: I'm gonna work — informal)"
+    form_negative: "I'm not going to work."
+    form_question: "Are you going to work?"
+    example: "I'm going to review the PR this afternoon."
+    when_to_use: "Планы, решения, принятые ДО момента речи. Также предсказания на основе очевидных признаков."
+    signal_words: ["this afternoon/evening", "next Monday", "tomorrow", "this weekend", "soon (planned)"]
+    it_examples:
+      - "I'm going to review the PR this afternoon."
+      - "We're going to ship v3 next Monday."
+      - "Look at those errors — the build is going to fail."
+
+  - id: present-perfect
+    name: "Present Perfect"
+    form_affirmative: "I/You/We/They have worked. He/She/It has worked."
+    form_negative: "I haven't worked."
+    form_question: "Have you worked?"
+    example: "I've finished the migration."
+    when_to_use: "Жизненный опыт, недавние события с результатом в настоящем, действия, начавшиеся в прошлом и продолжающиеся."
+    signal_words: ["ever", "never", "already", "yet", "just", "so far", "recently", "since 2018", "for 3 years"]
+    it_examples:
+      - "I've worked here since 2018."
+      - "I've just deployed the hotfix."
+      - "We have shipped three releases this month."
+
+  - id: present-perfect-vs-past-simple
+    name: "Present Perfect vs Past Simple"
+    form_affirmative: "PP: I've been to London. PS: I went to London in 2020."
+    example: "I've been to London three times. / I went to London in 2020."
+    when_to_use: "ГЛАВНАЯ ПРОБЛЕМА B1! PP = опыт/результат сейчас важен (без даты). PS = конкретное время в прошлом (с датой)."
+    signal_words:
+      pp: ["ever", "never", "three times", "since", "for", "recently", "just"]
+      ps: ["yesterday", "last week", "in 2020", "when I was 5", "ago"]
+    it_examples:
+      - "I've shipped three hotfixes this week. (PP — результат сейчас актуален)"
+      - "I shipped the hotfix on Monday. (PS — конкретный день)"
+      - "Have you ever debugged a memory leak? (PP — опыт)"
+      - "Did you debug the memory leak yesterday? (PS — конкретное время)"
+
+  - id: past-continuous
+    name: "Past Continuous"
+    form_affirmative: "I/He/She/It was working. You/We/They were working."
+    form_negative: "I wasn't working."
+    form_question: "Were you working?"
+    example: "I was reviewing the PR when you called."
+    when_to_use: "Действие в процессе в определённый момент в прошлом. Часто с Past Simple для 'фона'."
+    signal_words: ["while", "when", "at 3pm yesterday", "all day yesterday", "the whole morning"]
+    it_examples:
+      - "I was reviewing the PR when the build failed."
+      - "We were migrating the database all day yesterday."
+      - "While you were debugging, I shipped the release."
+
+  - id: past-perfect
+    name: "Past Perfect"
+    form_affirmative: "I/You/He/She/It/We/They had worked. (сокращение: I'd worked)"
+    form_negative: "I hadn't worked."
+    form_question: "Had you worked?"
+    example: "I had already merged before the build failed."
+    when_to_use: "Действие, завершившееся ДО другого действия в прошлом. «Прошлое в прошлом»."
+    signal_words: ["before", "after", "already", "by the time", "when", "by yesterday", "by 5pm"]
+    it_examples:
+      - "I had already merged the PR before the build failed."
+      - "She had finished the migration by the time we started."
+      - "By yesterday evening, we had shipped three releases."
+
+  - id: conditional-1st
+    name: "1st Conditional (real/likely)"
+    form_affirmative: "If I work hard, I will ship on time."
+    when_to_use: "Реальные/вероятные условия в будущем. Если А случится, В произойдёт."
+    signal_words: ["if", "when", "unless"]
+    it_examples:
+      - "If we ship now, we'll have a bug in production."
+      - "If the tests pass, I'll merge the PR."
+      - "Unless we fix the memory leak, the service will crash."
+
+  - id: conditional-2nd
+    name: "2nd Conditional (unreal/hypothetical)"
+    form_affirmative: "If I worked harder, I would ship on time."
+    when_to_use: "Нереальные/маловероятные условия в настоящем или будущем. Мечты, советы, воображаемые ситуации."
+    signal_words: ["if I were…", "if I had…", "imagine", "suppose", "what if"]
+    it_examples:
+      - "If I had more time, I would refactor this code."
+      - "If we were using TypeScript, this bug wouldn't happen."
+      - "What would you do if the build failed right now?"
+
+  - id: passive-voice
+    name: "Passive Voice"
+    form_affirmative: "The code was written by Maria. / The bug has been fixed."
+    when_to_use: "Когда исполнитель не важен или неизвестен. Часто в IT/документации."
+    signal_words: ["by", "was/were + V3", "has been + V3", "is being + V3"]
+    it_examples:
+      - "The hotfix was deployed at 14:00."
+      - "This bug has been fixed in v2.1."
+      - "The code was reviewed by two senior engineers."
+
+  - id: reported-speech
+    name: "Reported Speech"
+    form_affirmative: "He said (that) he was working. / She told me (that) she had shipped."
+    when_to_use: "Передача чужих слов. Сдвиг времён: PS → PS, PP → PP, will → would."
+    signal_words: ["said", "told me", "asked", "mentioned", "reported"]
+    it_examples:
+      - "He said he was debugging the issue."
+      - "She told me the release had been shipped."
+      - "They mentioned that the tests had failed."

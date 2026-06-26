@@ -1,0 +1,531 @@
+---
+import Base from '../layouts/Base.astro';
+import { breadcrumbLd } from '../lib/seo';
+
+const pageUrl = 'https://app.pulab.ru/book-club/';
+const pageTitle = 'Книжный клуб Лаборатории желаний';
+const pageDescription =
+  'Читаем «К себе нежно» Ольги Примаченко вместе: 4 недели, главы в своём темпе, практики и встречи по желанию участниц. Бесплатный вход.';
+
+const breadcrumb = breadcrumbLd([
+  { name: 'Главная', url: '/' },
+  { name: 'Книжный клуб', url: '/book-club/' },
+]);
+---
+
+<Base
+  title={pageTitle}
+  description={pageDescription}
+  ogImage="/og/book-club.png"
+  pageUrl={pageUrl}
+  extraJsonLd={[
+    JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Event',
+      name: 'Книжный клуб Лаборатории желаний — «К себе нежно»',
+      description: pageDescription,
+      eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+      eventStatus: 'https://schema.org/EventScheduled',
+      location: {
+        '@type': 'VirtualLocation',
+        url: pageUrl,
+      },
+      organizer: {
+        '@type': 'Organization',
+        name: 'ЛАБОРАТОРИЯ ЖЕЛАНИЙ',
+        url: 'https://app.pulab.ru',
+      },
+      isAccessibleForFree: true,
+    }),
+    breadcrumb,
+  ]}
+>
+  <!-- HERO -->
+  <section class="section book-club-hero">
+    <div class="container book-club-hero__inner">
+      <p class="section__eyebrow reveal">Книжный клуб · «К&nbsp;себе нежно»</p>
+      <h1 class="section__title reveal">
+        Читаем вместе.<br />
+        Встречаемся, когда готовы.
+      </h1>
+      <p class="book-club-hero__lead reveal">
+        Первая книга клуба&nbsp;— «К&nbsp;себе нежно» Ольги Примаченко. Читаем в&nbsp;своём темпе, делаем практики, встречаемся, когда группа соберётся и&nbsp;выберет удобное время.
+      </p>
+
+      <div class="book-club-hero__meta reveal">
+        <div class="book-club-hero__meta-item">
+          <span class="book-club-hero__meta-label">Первая книга</span>
+          <span class="book-club-hero__meta-value">«К&nbsp;себе нежно»</span>
+        </div>
+        <div class="book-club-hero__meta-item">
+          <span class="book-club-hero__meta-label">Автор</span>
+          <span class="book-club-hero__meta-value">Ольга Примаченко</span>
+        </div>
+        <div class="book-club-hero__meta-item">
+          <span class="book-club-hero__meta-label">Старт</span>
+          <span class="book-club-hero__meta-value">Когда соберёмся</span>
+        </div>
+        <div class="book-club-hero__meta-item">
+          <span class="book-club-hero__meta-label">Вход</span>
+          <span class="book-club-hero__meta-value">Бесплатно</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- РЕГИСТРАЦИЯ -->
+  <section class="section section--alt book-club-signup" id="signup">
+    <div class="container container--narrow">
+      <p class="section__eyebrow reveal">Зарегистрироваться</p>
+      <h2 class="section__title reveal" style="font-size: 28px; line-height: 1.2;">
+        Оставьте email&nbsp;— пришлём план чтения
+      </h2>
+      <p class="footer__about reveal" style="text-align: center; max-width: 56ch; margin: 0 auto 24px;">
+        Сейчас придёт письмо-подтверждение от&nbsp;UniSender&nbsp;— кликните на&nbsp;ссылку, и&nbsp;вы&nbsp;в&nbsp;списке. Когда нас&nbsp;наберётся достаточно, откроем чат и&nbsp;вместе выберем время встречи.
+      </p>
+
+      <form id="book-club-form" class="book-club-form reveal" novalidate>
+        <label class="book-club-form__label" for="bc-email">Email</label>
+        <input
+          class="book-club-form__input"
+          id="bc-email"
+          name="email"
+          type="email"
+          inputmode="email"
+          autocomplete="email"
+          placeholder="you@example.com"
+          required
+        />
+        <label class="book-club-form__consent">
+          <input type="checkbox" id="bc-consent" required />
+          <span>Согласна получать письма о&nbsp;книжном клубе Лаборатории желаний</span>
+        </label>
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" style="position: absolute; left: -9999px;" aria-hidden="true" />
+        <button class="btn btn--primary btn--block" type="submit" id="bc-submit">
+          Хочу в клуб
+        </button>
+        <p class="book-club-form__error" data-role="error" hidden></p>
+      </form>
+
+      <div class="book-club-form__success" id="book-club-success" hidden>
+        <div class="book-club-form__icon">✓</div>
+        <h2>Почти готово!</h2>
+        <p>Проверьте почту&nbsp;— UniSender прислал письмо-подтверждение. Кликните на&nbsp;ссылку в&nbsp;нём, и&nbsp;вы&nbsp;в&nbsp;списке.</p>
+        <p class="book-club-form__sub">
+          А&nbsp;пока можно <a href="/detector/">пройти мини-детектор желаний</a> или <a href="/library/">почитать конспекты книг</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- КАК ЭТО РАБОТАЕТ -->
+  <section class="section book-club-how">
+    <div class="container">
+      <p class="section__eyebrow reveal">Как это работает</p>
+      <h2 class="section__title reveal">Четыре недели&nbsp;— четыре шага</h2>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 0 auto 32px;">
+        Читаем в&nbsp;своём темпе, делаем практики, встречаемся, когда готовы.
+      </p>
+
+      <ol class="book-club-steps reveal">
+        <li class="book-club-step">
+          <div class="book-club-step__num">1</div>
+          <h3 class="book-club-step__title">Регистрируетесь</h3>
+          <p class="book-club-step__text">Оставляете email&nbsp;— получаете план чтения на&nbsp;4&nbsp;недели.</p>
+        </li>
+        <li class="book-club-step">
+          <div class="book-club-step__num">2</div>
+          <h3 class="book-club-step__title">Читаете главу в&nbsp;неделю</h3>
+          <p class="book-club-step__text">10-15&nbsp;минут в&nbsp;день, в&nbsp;своём темпе. Без дедлайнов.</p>
+        </li>
+        <li class="book-club-step">
+          <div class="book-club-step__num">3</div>
+          <h3 class="book-club-step__title">Получаете разбор</h3>
+          <p class="book-club-step__text">Раз в&nbsp;неделю&nbsp;— пост-разбор и&nbsp;1&nbsp;практика из&nbsp;книги.</p>
+        </li>
+        <li class="book-club-step">
+          <div class="book-club-step__num">4</div>
+          <h3 class="book-club-step__title">Встречаемся вместе</h3>
+          <p class="book-club-step__text">Когда группа соберётся&nbsp;— вместе выберем время и&nbsp;формат встречи.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ЧТО БУДЕТ НА ВСТРЕЧЕ -->
+  <section class="section section--alt book-club-first">
+    <div class="container">
+      <p class="section__eyebrow reveal">Что может быть на&nbsp;встрече</p>
+      <h2 class="section__title reveal">«К&nbsp;себе нежно»&nbsp;— вместе</h2>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 0 auto 32px;">
+        Книга, которую можно открыть на&nbsp;любой странице и&nbsp;узнать себя. Тёплый, иногда строгий разговор о&nbsp;том, как перестать себя ломать.
+      </p>
+
+      <div class="book-club-first__grid reveal">
+        <div class="book-club-first__card">
+          <h3>Разберём 3&nbsp;главы</h3>
+          <ul>
+            <li>«Возвращение к&nbsp;себе»</li>
+            <li>«Мир, который меня растит»</li>
+            <li>«Свои люди»</li>
+          </ul>
+        </div>
+        <div class="book-club-first__card">
+          <h3>Сделаем практику</h3>
+          <p>«Письмо себе из&nbsp;детства»&nbsp;— одна из&nbsp;самых сильных практик в&nbsp;книге. 20&nbsp;минут тишины и&nbsp;бумаги.</p>
+        </div>
+        <div class="book-club-first__card">
+          <h3>Чат останется</h3>
+          <p>Закрытая группа в&nbsp;Telegram для участниц клуба. Можно вернуться, перечитать, поддержать друг друга.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- КТО ВЕДЁТ -->
+  <section class="section book-club-host">
+    <div class="container container--narrow" style="text-align: center;">
+      <p class="section__eyebrow reveal">Кто ведёт</p>
+      <h2 class="section__title reveal">Лаборатория желаний</h2>
+      <p class="footer__about reveal" style="margin: 0 auto; max-width: 56ch;">
+        Сообщество осознанных желаний. Мы&nbsp;читаем книги в&nbsp;своём темпе, делаем практики и&nbsp;обсуждаем то, что откликнулось. «К&nbsp;себе нежно»&nbsp;— первая книга, к&nbsp;которой мы&nbsp;идём вместе.
+      </p>
+      <p class="footer__about reveal" style="margin: 16px auto 0; max-width: 56ch; font-size: 14px; color: var(--ink-soft, #6b3a4a);">
+        Встречи организуем по&nbsp;желанию участниц&nbsp;— когда соберётся группа и&nbsp;выберет удобное время.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section--alt book-club-faq">
+    <div class="container container--narrow">
+      <p class="section__eyebrow reveal">Остались вопросы</p>
+      <h2 class="section__title reveal" style="font-size: 28px;">Часто спрашивают</h2>
+
+      <details class="book-club-faq__item reveal">
+        <summary>А&nbsp;если я&nbsp;не&nbsp;успеваю читать в&nbsp;темпе клуба?</summary>
+        <p>План чтения&nbsp;— рекомендация, не&nbsp;дедлайн. Главы короткие, 10-15&nbsp;минут. Можно читать в&nbsp;своём темпе и&nbsp;прийти на&nbsp;встречу с&nbsp;тем, что успела.</p>
+      </details>
+
+      <details class="book-club-faq__item reveal">
+        <summary>Это платно?</summary>
+        <p>Первая встреча бесплатна. Это MVP-тест: я&nbsp;хочу проверить, нужен&nbsp;ли&nbsp;формат. Если откликнетесь&nbsp;— обсудим регулярный клуб и&nbsp;его стоимость.</p>
+      </details>
+
+      <details class="book-club-faq__item reveal">
+        <summary>Когда будут встречи?</summary>
+        <p>Встречи организуем по&nbsp;желанию участниц&nbsp;— когда соберётся группа и&nbsp;выберет удобное время и&nbsp;формат (Zoom, голосовой Telegram, офлайн). Без жёсткого расписания.</p>
+      </details>
+
+      <details class="book-club-faq__item reveal">
+        <summary>Что будет дальше?</summary>
+        <p>Если формат зайдёт&nbsp;— откроем вторую книгу и&nbsp;сделаем регулярной рубрикой. По&nbsp;одной книге, в&nbsp;своём темпе, с&nbsp;встречами когда захотим.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ФИНАЛЬНЫЙ CTA -->
+  <section class="section book-club-cta">
+    <div class="container container--narrow" style="text-align: center;">
+      <h2 class="section__title reveal">Присоединяйтесь</h2>
+      <p class="footer__about reveal" style="margin: 0 auto 24px; max-width: 56ch;">
+        Зарегистрируйтесь на&nbsp;первую встречу&nbsp;— и&nbsp;пройдём «К&nbsp;себе нежно» вместе.
+      </p>
+      <div class="reveal" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a class="btn btn--primary" href="#signup">Хочу в клуб</a>
+        <a class="btn btn--ghost" href="/detector/">Сначала пройти детектор</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { apiFetch, ApiError } from '../lib/api';
+  import { reachGoal, GOALS } from '../lib/metrika';
+
+  const form = document.getElementById('book-club-form') as HTMLFormElement | null;
+  const successBlock = document.getElementById('book-club-success') as HTMLElement | null;
+  const submitBtn = document.getElementById('bc-submit') as HTMLButtonElement | null;
+  const errorEl = form?.querySelector<HTMLParagraphElement>('[data-role="error"]') ?? null;
+
+  function showError(msg: string) {
+    if (!errorEl) return;
+    errorEl.textContent = msg;
+    errorEl.hidden = false;
+  }
+
+  if (form && successBlock && submitBtn && errorEl) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = form.querySelector<HTMLInputElement>('#bc-email');
+      const consent = form.querySelector<HTMLInputElement>('#bc-consent');
+      const hpEl = form.querySelector<HTMLInputElement>('input[name="hp"]');
+      const email = input?.value.trim() ?? '';
+      const hp = hpEl?.value ?? '';
+
+      if (!email) {
+        showError('Введите email');
+        return;
+      }
+      if (!consent?.checked) {
+        showError('Поставьте галочку согласия');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      const originalLabel = submitBtn.textContent ?? '';
+      submitBtn.textContent = 'Отправляем…';
+      errorEl.hidden = true;
+
+      try {
+        reachGoal(GOALS.bookClubSignupStarted);
+        await apiFetch('/api/subscribe', {
+          method: 'POST',
+          body: { email, consent: true, hp, source: 'book-club' },
+        });
+        reachGoal(GOALS.bookClubSignupSuccess);
+        form.hidden = true;
+        successBlock.hidden = false;
+        successBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (err) {
+        const msg = err instanceof ApiError ? err.message : 'Что-то пошло не так. Попробуйте позже.';
+        showError(msg);
+        reachGoal(GOALS.bookClubSignupError);
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
+    });
+  }
+</script>
+
+<style>
+  /* === HERO === */
+  .book-club-hero__inner {
+    max-width: 760px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .book-club-hero__lead {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-soft, #6b3a4a);
+    max-width: 60ch;
+    margin: 16px auto 32px;
+  }
+  .book-club-hero__meta {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 640px;
+    margin: 32px auto 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(225, 29, 72, 0.12);
+    border-radius: 16px;
+  }
+  @media (min-width: 640px) {
+    .book-club-hero__meta { grid-template-columns: repeat(4, 1fr); }
+  }
+  .book-club-hero__meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .book-club-hero__meta-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft, #6b3a4a);
+  }
+  .book-club-hero__meta-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--rose-deep, #881337);
+  }
+
+  /* === ФОРМА === */
+  .container--narrow { max-width: 540px; }
+  .book-club-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .book-club-form__label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft, #6b3a4a);
+  }
+  .book-club-form__input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(225, 29, 72, 0.25);
+    background: #fff5f7;
+    font-size: 16px;
+    color: #1f0a14;
+  }
+  .book-club-form__input:focus {
+    outline: none;
+    border-color: var(--rose, #e11d48);
+    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15);
+  }
+  .book-club-form__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink-soft, #6b3a4a);
+    line-height: 1.45;
+    cursor: pointer;
+  }
+  .book-club-form__consent input { margin-top: 3px; flex-shrink: 0; }
+  .book-club-form__error {
+    margin: 0;
+    font-size: 14px;
+    color: var(--rose, #e11d48);
+  }
+  .book-club-form__success {
+    text-align: center;
+    padding: 32px 20px;
+    background: linear-gradient(135deg, #fff5f7 0%, #ffe4e6 100%);
+    border: 1px solid rgba(225, 29, 72, 0.2);
+    border-radius: 20px;
+  }
+  .book-club-form__icon {
+    font-size: 48px;
+    color: var(--rose, #e11d48);
+    margin-bottom: 12px;
+  }
+  .book-club-form__success h2 { margin: 0 0 12px; font-size: 26px; color: var(--rose-deep, #881337); }
+  .book-club-form__success p { margin: 0 0 8px; color: #2d1418; }
+  .book-club-form__sub { font-size: 14px; color: var(--ink-soft, #6b3a4a); }
+  .book-club-form__sub a { color: var(--rose, #e11d48); }
+
+  /* === КАК ЭТО РАБОТАЕТ === */
+  .book-club-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    counter-reset: step;
+  }
+  @media (min-width: 720px) {
+    .book-club-steps { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 960px) {
+    .book-club-steps { grid-template-columns: repeat(4, 1fr); }
+  }
+  .book-club-step {
+    background: #ffffff;
+    border: 1px solid rgba(225, 29, 72, 0.12);
+    border-radius: 16px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .book-club-step__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rose, #e11d48) 0%, var(--rose-deep, #881337) 100%);
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .book-club-step__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--rose-deep, #881337);
+    margin: 0 0 8px;
+    line-height: 1.3;
+  }
+  .book-club-step__text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #2d1418;
+    margin: 0;
+  }
+
+  /* === ЧТО В ПЕРВОЙ ВСТРЕЧЕ === */
+  .book-club-first__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media (min-width: 720px) {
+    .book-club-first__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .book-club-first__card {
+    background: #ffffff;
+    border: 1px solid rgba(225, 29, 72, 0.12);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .book-club-first__card h3 {
+    font-size: 18px;
+    color: var(--rose-deep, #881337);
+    margin: 0 0 12px;
+  }
+  .book-club-first__card ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #2d1418;
+    line-height: 1.6;
+  }
+  .book-club-first__card li { margin-bottom: 6px; }
+  .book-club-first__card p {
+    margin: 0;
+    color: #2d1418;
+    line-height: 1.55;
+  }
+
+  /* === FAQ === */
+  .book-club-faq__item {
+    background: #ffffff;
+    border: 1px solid rgba(225, 29, 72, 0.12);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .book-club-faq__item summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--rose-deep, #881337);
+    font-size: 15px;
+    list-style: none;
+    position: relative;
+    padding-right: 24px;
+  }
+  .book-club-faq__item summary::-webkit-details-marker { display: none; }
+  .book-club-faq__item summary::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--rose, #e11d48);
+    transition: transform 0.2s ease;
+  }
+  .book-club-faq__item[open] summary::after { content: '−'; }
+  .book-club-faq__item p {
+    margin: 12px 0 0;
+    color: #2d1418;
+    line-height: 1.55;
+    font-size: 15px;
+  }
+
+  /* === CTA === */
+  .book-club-cta {
+    background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+  }
+</style>

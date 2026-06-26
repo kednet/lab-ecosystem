@@ -1,0 +1,321 @@
+---
+import '../styles/global.css';
+import HeaderAuth from '../components/HeaderAuth.astro';
+import { legal } from '../data/legal';
+import { organizationLd } from '../lib/seo';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  pageUrl?: string;
+  publishedTime?: string;
+  author?: string;
+  noTopnav?: boolean;
+  noFooter?: boolean;
+  /** Скрыть страницу от индексации (для auth-gated, /checkout/, /unlock/ и т.п.). */
+  noindex?: boolean;
+  /** Доп. JSON-LD-блоки (несколько — будет несколько ld+json блоков). Каждый элемент — готовая JSON-строка. */
+  extraJsonLd?: string | string[];
+  /** VK Mini App ID. Если задан — подключаем локальный vk-bridge и шлём VKWebAppInit. */
+  vkAppId?: number;
+}
+
+const {
+  title,
+  description = 'ЛАБОРАТОРИЯ ЖЕЛАНИЙ — сообщество осознанных желаний. Библиотека конспектов, карта желаний A3, AI-помощник по книгам и тёплое комьюнити.',
+  ogImage = '/og-default.png',
+  ogType = 'website',
+  pageUrl,
+  publishedTime,
+  author,
+  noTopnav = false,
+  noFooter = false,
+  noindex = false,
+  extraJsonLd,
+  vkAppId,
+} = Astro.props;
+
+const siteName = 'ЛАБОРАТОРИЯ ЖЕЛАНИЙ';
+const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
+
+// Авто-canonical: если pageUrl не передан, собираем из текущего пути.
+//   Astro.url.pathname для /blog/foo/ даёт "/blog/foo/" — то, что нужно.
+const resolvedUrl = pageUrl ?? `https://app.pulab.ru${Astro.url.pathname}`;
+
+const navLinks = [
+  { href: '/library/', label: 'Библиотека' },
+  { href: '/detector/', label: 'Детектор', accent: true },
+  { href: '/experts/', label: 'Эксперты' },
+  { href: '/wish-map/', label: 'Карта желаний' },
+  { href: '/blog/', label: 'Блог' },
+  { href: '/experiments/', label: 'Эксперименты' },
+  { href: '/audio/', label: 'Аудио' },
+  { href: '/pricing/', label: 'Подписка' },
+  { href: '/about/', label: 'О проекте' },
+];
+---
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#fff1f2" />
+    <meta name="yandex-verification" content="801a4211915cd455" />
+    <meta name="zen-verification" content="ObiUdtwbahzevgaSFj8o3Dbdvvoehk0MnbKmaRI1qvziprlpPpEefWmabI6641jQ" />
+    <!-- Admitad Partners — верификация площадки (CPA-сеть) -->
+    <meta name="verify-admitad" content="f366109b7d" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <script is:inline define:vars={{ apiUrl: 'https://api.pulab.ru' }}>
+      // Worker API.
+      //   prod  : https://api.pulab.ru (Nginx на VPS, server_name api.pulab.ru)
+      //   dev   : http://127.0.0.1:8787  (локальный wrangler dev)
+      // Если домен api.pulab.ru временно недоступен у юзера, фронт
+      // автоматически откатится на относительные пути (см. src/lib/api.ts).
+      window.LAB_API_URL = apiUrl;
+    </script>
+    {vkAppId && (
+      <Fragment>
+        <meta name="vk:app_id" content={String(vkAppId)} />
+        <!--
+          Локальный vk-bridge (4.4 КБ) из npm @vkontakte/vk-bridge v3.0.2.
+          Скопирован в public/vk-bridge.min.js, Astro кладёт его в /vk-bridge.min.js.
+          Зачем локально, а не с CDN: https://vk.com/js/api/vk_mini_apps.js → 404,
+          https://unpkg.com/@vkontakte/vk-bridge/... — лишний внешний запрос,
+          а на РФ может блокироваться.
+        -->
+        <script is:inline src="/vk-bridge.min.js"></script>
+        <script is:inline define:vars={{ appId: vkAppId }}>
+          // Инициализация VK Mini App. Делаем по возможности рано,
+          // чтобы мост был готов к первым вызовам vkBridge.send().
+          (function () {
+            var attempts = 0;
+            function init() {
+              if (window.vkBridge && typeof window.vkBridge.send === 'function') {
+                window.vkBridge.send('VKWebAppInit').then(function () {
+                  document.documentElement.dataset.vkMiniApp = String(appId);
+                  console.info('[vk-bridge] VKWebAppInit OK');
+                }).catch(function (e) {
+                  console.warn('[vk-bridge] VKWebAppInit failed:', e);
+                });
+                return true;
+              }
+              return false;
+            }
+            // Сначала пробуем сразу (скрипт vk-bridge.min.js уже загружен выше).
+            if (!init()) {
+              // Если по какой-то причине vkBridge ещё не готов, ждём до 5 сек.
+              var interval = setInterval(function () {
+                attempts++;
+                if (init() || attempts > 50) clearInterval(interval);
+              }, 100);
+            }
+          })();
+        </script>
+      </Fragment>
+    )}
+    <script is:inline>
+      // Единая обёртка над Яндекс.Метрикой для inline-скриптов (<script is:inline>).
+      // <script is:inline> не может импортировать из TS-модулей, поэтому все
+      // хелперы reachGoal() на страницах зовут window.labReachGoal(...) —
+      // ID счётчика и логика безопасности живут в одном месте (metrika.ts).
+      (function () {
+        var COUNTER = 109734669;
+        window.labReachGoal = function (goal, params) {
+          try {
+            if (typeof window.ym !== 'function') return;
+            if (params) window.ym(COUNTER, 'reachGoal', goal, params);
+            else window.ym(COUNTER, 'reachGoal', goal);
+          } catch (_) { /* ignore */ }
+        };
+      })();
+    </script>
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:url" content={resolvedUrl} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {author && <meta property="article:author" content={author} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <link rel="canonical" href={resolvedUrl} />
+
+    <!-- JSON-LD: Organization + WebSite (на каждой странице) -->
+    <script type="application/ld+json" set:html={organizationLd()} />
+    {extraJsonLd && (
+      Array.isArray(extraJsonLd) ? extraJsonLd : [extraJsonLd]
+    ).map((ld) => <script type="application/ld+json" set:html={ld} />)}
+    <link rel="icon" type="image/jpeg" href="/avatar.jpg" />
+    <!--
+      ШРИФТЫ: локальные woff2 (раскладка в public/fonts/, @font-face — в global.css).
+      Раньше были Google Fonts — но fonts.googleapis.com / fonts.gstatic.com
+      заблокированы в РФ (РКН), сайт без VPN висел на загрузке шрифтов.
+    -->
+    <link rel="preload" href="/fonts/manrope-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/dm-serif-display-400.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- ====== АНАЛИТИКА ====== -->
+
+    <!-- Яндекс.Метрика (счётчик 109734669) -->
+    <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();
+      for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(109734669, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true,
+        trackHash:true
+      });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/109734669" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Яндекс.Метрика -->
+
+    <!--
+      Cloudflare Web Analytics — УДАЛЁН.
+      static.cloudflareinsights.com периодически фильтруется на территории РФ.
+      Метрик Яндекса (выше) достаточно для аналитики.
+    -->
+
+    <!-- TODO: GA4 — когда будет ID -->
+  </head>
+  <body>
+    <a class="skip-link" href="#main">К содержимому</a>
+
+    {!noTopnav && (
+      <header class="topnav">
+        <div class="container topnav__inner">
+          <a class="topnav__brand" href="/">
+            <img src="/avatar.jpg" alt="" />
+            <span>{siteName}</span>
+          </a>
+          <nav class="topnav__links" aria-label="Главная навигация">
+            {navLinks.map((l) => (
+              <a href={l.href} class={l.accent ? 'topnav__link--accent' : ''}>{l.label}</a>
+            ))}
+          </nav>
+          <a class="topnav__cta" href="/pricing/">Подписаться</a>
+          <HeaderAuth />
+        </div>
+      </header>
+    )}
+
+    <main id="main">
+      <slot />
+    </main>
+
+    {!noFooter && (
+      <footer class="footer">
+        <div class="container">
+          <div class="footer__grid">
+            <div>
+              <div class="footer__brand">
+                <img src="/avatar.jpg" alt="" />
+                <span class="footer__brand-name">{siteName}</span>
+              </div>
+              <p class="footer__about">
+                Сообщество осознанных желаний. Конспекты книг, карта желаний A3, AI-помощник по книгам и тёплое комьюнити.
+              </p>
+            </div>
+            <div class="footer__col">
+              <h3>Сайт</h3>
+              <ul>
+                <li><a href="/library/">Библиотека</a></li>
+                <li><a href="/experts/">Эксперты</a></li>
+                <li><a href="/experiments/">Эксперименты</a></li>
+                <li><a href="/blog/">Блог</a></li>
+                <li><a href="/audio/">Аудио</a></li>
+                <li><a href="/wish-map/">Карта желаний</a></li>
+                <li><a href="/pricing/">Подписка</a></li>
+                <li><a href="/about/">О проекте</a></li>
+              </ul>
+            </div>
+            <div class="footer__col">
+              <h3>Контакты</h3>
+              <ul>
+                <li><a href="https://vk.com/club237295798" target="_blank" rel="noopener">ВКонтакте</a></li>
+                <li><a href="https://t.me/wishlab_channel" target="_blank" rel="noopener">Telegram</a></li>
+                <li><a href="mailto:hello@pulabru.ru">E-mail</a></li>
+              </ul>
+            </div>
+            <div class="footer__col">
+              <h3>Документы</h3>
+              <ul>
+                <li><a href="/offer/">Публичная оферта</a></li>
+                <li><a href="/privacy/">Политика конфиденциальности</a></li>
+                <li><a href="/about/#legal">Реквизиты</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer__bottom">
+            <span>© 2024–2026 {siteName} · сообщество осознанных желаний</span>
+            <span class="footer__legal">
+              {legal.shortName} · ИНН {legal.inn} · <a href="/offer/">Оферта</a> · <a href="/privacy/">Конфиденциальность</a>
+            </span>
+            <span>Обложка сообщества © vk.com/club237295798 · использована с разрешения владельца</span>
+          </div>
+        </div>
+      </footer>
+    )}
+
+    <script>
+      // Reveal-анимация для секций при скролле
+      const revealTargets = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && revealTargets.length) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+        revealTargets.forEach((el) => io.observe(el));
+      } else {
+        revealTargets.forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  .footer__legal a {
+    color: #881337;
+    text-decoration: none;
+  }
+  .footer__legal a:hover {
+    text-decoration: underline;
+  }
+
+  /* VK Mini App: в iframe vk.com шапка/футер лишние, прячем их. */
+  html[data-vk-mini-app] .topnav { display: none !important; }
+  html[data-vk-mini-app] .footer { display: none !important; }
+
+  /* Акцент-ссылка в топнаве (для лид-магнитов и спецпредложений) */
+  .topnav__link--accent {
+    background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+    color: #881337 !important;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(136, 19, 55, 0.25);
+    font-weight: 600;
+    transition: all 0.18s ease;
+  }
+  .topnav__link--accent:hover {
+    background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+    border-color: rgba(136, 19, 55, 0.4);
+    transform: translateY(-1px);
+  }
+</style>

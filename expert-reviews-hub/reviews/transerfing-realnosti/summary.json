@@ -1,0 +1,36 @@
+{
+  "book": {
+    "title": "Трансерфинг реальности",
+    "author": "Вадим Зеланд"
+  },
+  "generated_at": "2026-06-10T15:00:00",
+  "total_reviews": 1209,
+  "weighted_average": 4.71,
+  "confidence": "high",
+  "trust_score": 0.87,
+  "sources_breakdown": [
+    {"source": "livelib", "count": 847, "avg": 4.7, "weight": 1.2},
+    {"source": "litres", "count": 234, "avg": 4.8, "weight": 1.5},
+    {"source": "own", "count": 8, "avg": 5.0, "weight": 1.5},
+    {"source": "ozon", "count": 120, "avg": 4.5, "weight": 0.7, "verified_ratio": 0.6}
+  ],
+  "pros": [
+    {"text": "Изменяет мышление и отношение к реальности", "mentions": 234, "pct": 78},
+    {"text": "Практические техники, применимые в жизни", "mentions": 198, "pct": 66}
+  ],
+  "cons": [
+    {"text": "Нет научного обоснования", "mentions": 156, "pct": 52},
+    {"text": "Повторы в серии книг", "mentions": 89, "pct": 30}
+  ],
+  "top_quotes": [
+    {"quote": "Эта книга перевернула моё мышление", "author": "Анна К.", "source": "LiveLib", "rating": 5},
+    {"quote": "Прочитал за 2 дня, начал применять — работает", "author": "Сергей", "source": "Литрес", "rating": 5}
+  ],
+  "sentiment_distribution": {"positive": 78, "neutral": 14, "negative": 8},
+  "trends": [
+    {"period": "2024", "count": 96, "avg_rating": 4.6},
+    {"period": "2025", "count": 144, "avg_rating": 4.7},
+    {"period": "2026", "count": 75, "avg_rating": 4.8}
+  ],
+  "verdict": "Книга имеет высокий рейтинг 4.71/5 в основных источниках. Хвалят за практичность и изменение мышления, критикуют за отсутствие научной базы."
+}

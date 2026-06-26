@@ -1,0 +1,69 @@
+# Ролевой диалог: How to Report a Blocker
+# Категория: collaboration
+
+meta:
+  name: "blocker"
+  display_name: "Reporting a Blocker"
+  category: "collaboration"
+  level: "B1-B2"
+  estimated_min: 5
+  grammar_focus: ["present-continuous", "present-simple", "modal-verbs"]
+  vocab_from_glossary: ["I'm blocked on", "I need help with", "Can we escalate", "Let me loop in"]
+
+context:
+  role: "Developer stuck on a task"
+  team: "Pulse Lab"
+  setting: "Slack message to a teammate"
+  scenario: |
+    You're stuck on the auth refactor. The design spec is missing, and you need
+    feedback before you can proceed. You're messaging your teammate Alex who might
+    know what to do.
+
+script:
+  - speaker: "alex"
+    line: "Hey! How's the auth refactor going?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — explain you're blocked]"
+    hint: "Hey, I'm stuck. I'm blocked on <dependency>."
+    model_answer: "Hey! Honestly, I'm stuck. I'm blocked on the design spec — there's no documentation on the new auth flow, and I'm not sure how to proceed."
+    alternatives:
+      - "Not great, I'm afraid. I'm blocked on the design review for the new auth module."
+      - "Hi! I'm hitting a blocker. I can't find the spec for the new auth flow."
+
+  - speaker: "alex"
+    line: "Hmm, that's tough. What have you tried?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — explain what you've tried]"
+    hint: "I tried <X> but <problem>."
+    model_answer: "I checked the Notion docs and Slack history, but I can't find the spec. I also asked in #auth channel but no response."
+    alternatives:
+      - "I looked through Confluence and Notion, but no luck. I also asked in #auth but no one's replied."
+      - "I read the old design doc, but it's outdated. I can't find anyone who knows the new flow."
+
+  - speaker: "alex"
+    line: "OK, let me loop in Maria — she was the one who designed it."
+
+  - speaker: "user"
+    line: "[YOUR TURN — express thanks + ask for follow-up]"
+    hint: "Thanks! Can you <action> if <condition>?"
+    model_answer: "Thanks a lot! Can you ping me when she responds? I'm stuck until I have the spec."
+    alternatives:
+      - "That would be great! Please loop me in on the conversation."
+      - "Thanks! Can you let me know if she doesn't respond in an hour? I'll escalate then."
+
+after_dialog:
+  recap_vocab:
+    - "I'm stuck on ..."
+    - "I'm blocked on ..."
+    - "I tried <X> but ..."
+    - "Can you loop me in?"
+    - "Thanks! Can you ping me when ...?"
+
+  grammar_notes:
+    - "Present Continuous: 'I'm blocked on...' (текущая ситуация)"
+    - "Past Simple: 'I tried / I checked / I asked' (что ты делал)"
+
+  next_dialog: "estimate"
+  notes: "Blockers — это нормально. Главное — сообщать о них СРАЗУ, а не за 2 часа до дедлайна."

@@ -1,0 +1,49 @@
+{
+  "source": "livelib.ru",
+  "query": "психология саморазвития",
+  "min_rating": null,
+  "collected_at": "2026-06-13T13:54:23.271209+00:00",
+  "count": 5,
+  "books": [
+    {
+      "title": "Нейро-яд. Ошибка 404: Мозг не найден. Саморазвитие. Личностный рост. Психология. Мотивация. Успех.",
+      "book_id": "1013669335",
+      "url": "https://www.livelib.ru/book/1013669335-nejroyad-oshibka-404-mozg-ne-najden-samorazvitie-lichnostnyj-rost-psihologiya-motivatsiya-uspeh-kaj-vektor",
+      "author": "Кай Вектор",
+      "author_id": "2999536",
+      "author_url": "https://www.livelib.ru/author/2999536"
+    },
+    {
+      "title": "Психология успеха. Практикум по саморазвитию личности",
+      "book_id": "1002000550",
+      "url": "https://www.livelib.ru/book/1002000550-psihologiya-uspeha-praktikum-po-samorazvitiyu-lichnosti-e-k-klimova",
+      "author": "Е. К. Климова",
+      "author_id": "942937",
+      "author_url": "https://www.livelib.ru/author/942937"
+    },
+    {
+      "title": "Психология саморазвития человека в профессии",
+      "book_id": "1000394054",
+      "url": "https://www.livelib.ru/book/1000394054-psihologiya-samorazvitiya-cheloveka-v-professii-minyurova-s",
+      "author": "О. А. Помазина",
+      "author_id": "942938",
+      "author_url": "https://www.livelib.ru/author/942938"
+    },
+    {
+      "title": "Проблема саморазвития личности в психологии: Аналитический обзор. Серия: Библиотека педагогапрактика",
+      "book_id": "1000835924",
+      "url": "https://www.livelib.ru/book/1000835924-problema-samorazvitiya-lichnosti-v-psihologii-analiticheskij-obzor-seriya-biblioteka-pedagogapraktika",
+      "author": "Минюрова С.",
+      "author_id": "273510",
+      "author_url": "https://www.livelib.ru/author/273510"
+    },
+    {
+      "title": "Фактор успеха. Новая психология саморазвития",
+      "book_id": "1001411790",
+      "url": "https://www.livelib.ru/book/1001411790-faktor-uspeha-novaya-psihologiya-samorazvitiya-sergej-klyuchnikov",
+      "author": "Сергей Ключников",
+      "author_id": "102145",
+      "author_url": "https://www.livelib.ru/author/102145"
+    }
+  ]
+}

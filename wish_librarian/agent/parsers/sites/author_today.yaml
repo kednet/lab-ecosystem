@@ -1,0 +1,32 @@
+name: author_today
+display: Author.Today
+host_patterns:
+  - "^https?://(www\\.)?author\\.today/"
+encoding: utf-8
+strategy: hybrid
+selectors:
+  title:
+    - "css:h1.book-title"
+    - "css:div.book-info h1"
+    - "@og:title"
+  author:
+    - "css:a[href*='/user/']"
+    - "css:.book-author a"
+    - "css:div.book-info a[href*='/user/']"
+    - "@og:book:author"
+  year:
+    - "css:.book-info-date"
+    - "regex_in:full:\\b(19|20)\\d{2}\\b"
+  cover:
+    - "css:.book-cover img"
+    - "css:img.cover"
+    - "@og:image"
+  short_description:
+    - "css:.book-description"
+    - "css:div.book-info p.annotation"
+    - "@content:meta[name=description]"
+  key_ideas:
+    - "css:div.annotation p"
+  genre:
+    - "css:.book-genres a"
+    - "css:a[href*='/genre/']"

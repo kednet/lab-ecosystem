@@ -1,0 +1,39 @@
+name: livelib
+display: LiveLib.ru
+host_patterns:
+  - "^https?://(www\\.)?livelib\\.ru/"
+encoding: utf-8
+strategy: hybrid
+selectors:
+  title:
+    - "css:h1"
+    - "css:.book-title"
+    - "@og:title"
+  author:
+    - "css:.book-author a"
+    - "css:a[href*='/author/']"
+    - "@og:book:author"           # og:book:author или og:author
+    - "@split_title:last"
+  year:
+    - "css:.book-year"
+    - "regex_in:title:\\b(19|20)\\d{2}\\b"
+  cover:
+    - "css:.book-cover img"
+    - "css:img.cover"
+    - "css:img[itemprop='image']"
+    - "@og:image"
+  short_description:
+    - "css:.book-about p"
+    - "css:.annotation p"
+    - "css:div.book-description"
+    - "@content:meta[name=description]"
+  isbn:
+    - "css:.book-attribute:has-text('ISBN') .attribute-value"
+    - "css:span[itemprop='isbn']"
+  page_count:
+    - "css:.book-attribute:has-text('страниц') .attribute-value"
+    - "css:span[itemprop='numberOfPages']"
+rating:
+  selector: ".book-rating .rating-value, .ll-rating"
+  attr: text
+  regex: "[\\d.,]+"

@@ -1,0 +1,39 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "{{TITLE}}",
+  "alternateName": "{{ALT_NAME}}",
+  "bookFormat": "https://schema.org/EBook",
+  "inLanguage": "ru",
+  "isbn": "{{ISBN}}",
+  "author": {
+    "@type": "Person",
+    "name": "{{AUTHOR}}",
+    "url": "{{AUTHOR_URL}}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{PUBLISHER}}"
+  },
+  "datePublished": "{{DATE}}",
+  "image": "{{COVER_URL}}",
+  "description": "{{DESCRIPTION}}",
+  "genre": ["{{GENRE_1}}", "{{GENRE_2}}"],
+  "numberOfPages": {{PAGES}},
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{RATING}}",
+    "ratingCount": {{COUNT}},
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": {"@type": "Person", "name": "{{REVIEWER_1}}"},
+      "datePublished": "{{REVIEW_DATE}}",
+      "reviewBody": "{{REVIEW_TEXT}}",
+      "reviewRating": {"@type": "Rating", "ratingValue": "5"}
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+# image_skill — профиль «WishLibrarian» (заглушка, заполняется по мере использования)
+
+name: wl
+display_name: "WishLibrarian"
+description: "ИИ-агент обработки книг в конспекты (B2C-сервис Лаборатории желаний)"
+
+defaults:
+  format: vk_post
+  style: flat
+  mood: calm
+  aspect: "1:1"
+  seed: null
+
+branding:
+  watermark: "@wishlibrarian"
+  accent_color: "#3B82F6"
+  palette:
+    primary: "#3B82F6"
+    primary_deep: "#1E3A8A"
+    primary_soft: "#BFDBFE"
+    bg: "#EFF6FF"
+    text: "#1E293B"
+
+prompt_styles:
+  flat: "flat vector design, clean lines, blue-violet palette"
+  watercolor: "soft watercolor, blue tones, gentle"
+  photo: "realistic, book covers, library atmosphere"
+
+prompt_moods:
+  soft: "calm, intellectual, library vibes"
+  bold: "confident, knowledge-focused"
+  calm: "minimalist, lots of negative space"
+  warm: "warm library light, cozy reading nook"
+
+hashtags_base: ["#wishlibrarian", "#конспектыкниг", "#саморазвитие"]
+
+negative_prompts:
+  - "text on image"
+  - "watermark"
+  - "low quality"
+  - "blurry"
+
+output:
+  state_subdir: "wl"
+  filename_template: "{slug}-wl-{format}"

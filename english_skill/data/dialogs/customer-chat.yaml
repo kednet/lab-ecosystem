@@ -1,0 +1,94 @@
+# Ролевой диалог: Customer Chat
+# Категория: customer
+
+meta:
+  name: "customer-chat"
+  display_name: "Customer Support Chat"
+  category: "customer"
+  level: "B1-B2"
+  estimated_min: 8
+  grammar_focus: ["present-perfect", "past-simple", "modal-verbs"]
+  vocab_from_glossary: ["We're investigating", "I have to check", "Let me follow up on that", "I'll get back to you", "Sorry to hear that"]
+
+context:
+  role: "Customer Success Engineer at SaaS company"
+  team: "Pulse Lab"
+  setting: "Intercom-style chat with a customer who's reporting a bug"
+  scenario: |
+    A customer (Anna from Acme Corp) is reporting that the export feature broke after
+    your latest release. She's frustrated. You've already looked at the logs and see
+    the bug, but the fix won't ship until tomorrow. You need to acknowledge, empathize,
+    and set expectations.
+
+script:
+  - speaker: "customer"
+    line: "Hi! The export feature is broken. We've been trying to use it all morning and it keeps failing. This is urgent — we have a board meeting tomorrow!"
+
+  - speaker: "user"
+    line: "[YOUR TURN — acknowledge + empathize]"
+    hint: "Hi <name>, <apology>. I'll <action>."
+    model_answer: "Hi Anna, I'm really sorry to hear that — let me look into this right now."
+    alternatives:
+      - "Hi Anna, thanks for reaching out. Sorry for the trouble — I'll investigate immediately."
+      - "Hi Anna, I understand how frustrating this must be. Let me check the logs."
+
+  - speaker: "customer"
+    line: "Thanks. How long will it take to fix?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — explain + set expectations]"
+    hint: "I found the issue. We're <action> and will <future>."
+    model_answer: "I found the issue — it's a regression from yesterday's release. We're cutting a hotfix now and will deploy it within the hour."
+    alternatives:
+      - "I see the bug in our logs. We're prioritizing a hotfix and will ship it today."
+      - "We've identified the root cause. The fix is in progress — I'll update you in 30 minutes."
+
+  - speaker: "customer"
+    line: "Can you give me an exact time?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — commit to a time]"
+    hint: "I'll <action> by <time>."
+    model_answer: "I'll deploy the fix by 2 PM your time. I'll message you as soon as it's live."
+    alternatives:
+      - "Expect the fix by 3 PM EST. I'll ping you with confirmation."
+      - "I'll have it fixed by end of day. I'll follow up by 5 PM."
+
+  - speaker: "customer"
+    line: "OK, thanks. What can I do in the meantime?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — workaround]"
+    hint: "As a workaround, you can <action>."
+    model_answer: "As a workaround, you can use the manual export from the dashboard — the API export is the broken one. I'll send you the direct link."
+    alternatives:
+      - "In the meantime, you can download the data via the dashboard export. The API endpoint is the broken part."
+      - "Quick workaround: use the CSV download from the Reports page. The PDF export is what fails."
+
+  - speaker: "customer"
+    line: "OK that helps. Thanks."
+
+  - speaker: "user"
+    line: "[YOUR TURN — close professionally]"
+    hint: "You're welcome. I'll <action>. Have a great day."
+    model_answer: "You're welcome, Anna. I'll message you as soon as the fix is deployed. Thanks for your patience!"
+    alternatives:
+      - "Of course! I'll keep you posted. Apologies again for the disruption."
+      - "No problem at all. I'll send you an update within the hour."
+
+after_dialog:
+  recap_vocab:
+    - "I'm really sorry to hear that."
+    - "Let me look into this."
+    - "I found the issue — it's a regression from yesterday's release."
+    - "We're cutting a hotfix now."
+    - "I'll deploy the fix by [time]."
+    - "As a workaround, you can ..."
+    - "I'll keep you posted."
+
+  grammar_notes:
+    - "Empathy phrases: 'I'm really sorry to hear that' / 'I understand how frustrating this must be'"
+    - "Committing to specific times: 'by 2 PM' / 'within the hour'"
+
+  next_dialog: "blocker"
+  notes: "Customer chat = 50% технический, 50% эмпатия. Тон решает."

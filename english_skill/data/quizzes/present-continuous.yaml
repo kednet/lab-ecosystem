@@ -1,0 +1,91 @@
+meta:
+  name: "present-continuous"
+  display_name: "Present Continuous"
+  level: "B1"
+  estimated_min: 5
+  description: "Действие прямо сейчас или временная ситуация. I am working / He is debugging."
+  grammar_point: "present-continuous"
+  prerequisites: ["present-simple"]
+
+questions:
+  - id: 1
+    type: "multiple_choice"
+    prompt: "I ___ the migration right now."
+    options: ["debug", "am debugging", "debugs", "have debugged"]
+    correct: "am debugging"
+    explanation: "I + am + V-ing. 'right now' = прямо сейчас."
+
+  - id: 2
+    type: "open"
+    prompt: "She ___ (review) Maria's PR at the moment."
+    correct_answer: "is reviewing"
+    acceptable_answers: ["is reviewing", "is currently reviewing"]
+    explanation: "He/She/It + is + V-ing. 'at the moment' = прямо сейчас."
+
+  - id: 3
+    type: "multiple_choice"
+    prompt: "We ___ a new feature this sprint."
+    options: ["build", "builds", "are building", "have built"]
+    correct: "are building"
+    explanation: "We + are + V-ing. 'this sprint' = временная ситуация (ближайшие 2 недели)."
+
+  - id: 4
+    type: "open"
+    prompt: "The service ___ (crash) every 5 minutes. It's a critical issue!"
+    correct_answer: "is crashing"
+    acceptable_answers: ["is crashing", "is constantly crashing"]
+    explanation: "Временная ситуация (прямо сейчас происходит часто) → Present Continuous."
+
+  - id: 5
+    type: "multiple_choice"
+    prompt: "Look at the errors! The build ___ to fail."
+    options: ["is going", "goes", "is going", "go"]
+    correct: "is going"
+    explanation: "Going to fail = собирается упасть (предсказание по признакам)."
+
+  - id: 6
+    type: "multiple_choice"
+    prompt: "I ___ a meeting with the CTO at 3 PM. (planned)"
+    options: ["have", "am having", "had", "have had"]
+    correct: "am having"
+    explanation: "Запланированное в будущем (в календаре) → Present Continuous."
+
+  - id: 7
+    type: "open"
+    prompt: "He ___ (not / work) on the auth refactor today."
+    correct_answer: "is not working"
+    acceptable_answers: ["is not working", "isn't working", "isn't working on"]
+    explanation: "He/She/It + is not + V-ing. Today = временно."
+
+  - id: 8
+    type: "multiple_choice"
+    prompt: "What ___ you ___ on right now?"
+    options: ["do / work", "are / working", "is / working", "have / worked"]
+    correct: "are / working"
+    explanation: "Вопрос в Present Continuous: are + you + V-ing?"
+
+  - id: 9
+    type: "open"
+    prompt: "The team ___ (grow) fast this year."
+    correct_answer: "is growing"
+    acceptable_answers: ["is growing", "is growing fast"]
+    explanation: "Тренд/изменение (this year) → Present Continuous."
+
+  - id: 10
+    type: "multiple_choice"
+    prompt: "She usually ___ coffee, but today she ___ tea."
+    options: ["drinks / is drinking", "is drinking / drinks", "drink / is drinking", "drinks / drinks"]
+    correct: "drinks / is drinking"
+    explanation: "usually = Present Simple (регулярное). Today = временная ситуация → PC."
+
+after_quiz:
+  recap: |
+    **Present Continuous:**
+    - I + am + V-ing
+    - He/She/It + is + V-ing
+    - You/We/They + are + V-ing
+    - Когда: прямо сейчас, временная ситуация, тренд, запланированное
+
+  next_tense: "future-will-going"
+  recommended_review: "references/tenses-12-table.md#present-continuous"
+  related_lesson: "Week 5 (curriculum.yaml)"

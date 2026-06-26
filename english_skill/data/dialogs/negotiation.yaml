@@ -1,0 +1,92 @@
+# Ролевой диалог: Negotiation (Scope & Timeline)
+# Категория: negotiation
+
+meta:
+  name: "negotiation"
+  display_name: "Scope and Timeline Negotiation"
+  category: "negotiation"
+  level: "B2"
+  estimated_min: 7
+  grammar_focus: ["conditionals-1st-2nd", "modal-verbs", "future-will"]
+  vocab_from_glossary: ["This deadline is too tight", "We need more time", "What's the MVP", "Can we split this into phases", "Let's cut scope", "I disagree, here's why"]
+
+context:
+  role: "Tech lead negotiating scope with PM and stakeholders"
+  team: "Pulse Lab"
+  setting: "Sprint planning meeting with multiple stakeholders"
+  scenario: |
+    A major client wants 5 features in 2 weeks. You know this is unrealistic. You need
+    to negotiate: which features MUST ship, which can wait, what's the impact of cutting.
+
+script:
+  - speaker: "stakeholder"
+    line: "The client wants all 5 features by end of month. Can we do it?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — honest assessment + 2nd conditional]"
+    hint: "If we <had> <resources>, we <would> <verb>. But <reality>."
+    model_answer: "If we had a team of 10 engineers, we could do it. With our current 5-person team, 5 features in 2 weeks would mean cutting quality significantly."
+    alternatives:
+      - "If we doubled the team, we could ship 5 features in 2 weeks. But with our current resources, it's not realistic."
+      - "Honestly, that timeline only works if we're willing to ship without proper testing. I'd advise against it."
+
+  - speaker: "pm"
+    line: "OK, what's realistic?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — propose phases + 1st conditional]"
+    hint: "If we <phase 1>, we <will> <result>."
+    model_answer: "If we ship 3 features in 2 weeks — the MVP — we'll have a solid release. The remaining 2 features can go in the next sprint with proper testing."
+    alternatives:
+      - "If we focus on the top 3 features, we can ship those in 2 weeks with high quality. The other 2 will follow."
+      - "I'd propose: phase 1 ships 3 critical features in 2 weeks, phase 2 ships the other 2 in 3 weeks. This gives us quality + on-time delivery."
+
+  - speaker: "stakeholder"
+    line: "The client said all 5 are critical."
+
+  - speaker: "user"
+    line: "[YOUR TURN — agree to disagree + ask for clarification]"
+    hint: "I disagree, but <understand>. Can we <ask client>?"
+    model_answer: "I disagree that all 5 are equally critical — we should ask the client to prioritize. Maybe they need 3 by month-end and 2 the week after?"
+    alternatives:
+      - "I'd push back on that. Can we ask the client to rank them? Usually 'critical' means different things to different people."
+      - "Let's clarify with the client. 'Critical for what?' — demo? production? compliance? The answer changes the priority."
+
+  - speaker: "pm"
+    line: "Good idea. Let's schedule a call with the client."
+
+  - speaker: "user"
+    line: "[YOUR TURN — propose agenda + commit]"
+    hint: "I'll <action> by <time>."
+    model_answer: "I'll draft the agenda and questions for the client call by tomorrow. We'll send it to the client and schedule for next week."
+    alternatives:
+      - "I'll send the agenda by EOD. Let's get the call scheduled for Tuesday."
+      - "I'll create the doc with priority questions by tomorrow morning."
+
+  - speaker: "pm"
+    line: "Great. Thanks for pushing back on this — we needed the honest assessment."
+
+  - speaker: "user"
+    line: "[YOUR TURN — close professionally]"
+    hint: "Thanks! <closing thought>."
+    model_answer: "Thanks! Let's get clarity from the client before we commit to anything. Better to align now than to scramble later."
+    alternatives:
+      - "Anytime! I'd rather over-deliver on 3 features than under-deliver on 5."
+      - "Of course. Let's reconvene after the client call."
+
+after_dialog:
+  recap_vocab:
+    - "If we had <X>, we could <verb>."
+    - "With our current <resources>, <Y> is not realistic."
+    - "If we <verb> <phase 1>, we'll have a <result>."
+    - "I'd push back on that."
+    - "Can we <verb>?"
+    - "Let's clarify with the client."
+
+  grammar_notes:
+    - "2nd Conditional: 'If we had 10 engineers, we could ship 5 features' (нереально)"
+    - "1st Conditional: 'If we ship the MVP, we'll have a solid release' (реально)"
+    - "Modal verbs: 'would', 'could' (потенциал) vs 'will', 'can' (реальность)"
+
+  next_dialog: "estimate"
+  notes: "Negotiation = win-win. Не 'да/нет', а 'как мы можем сделать это лучше'."

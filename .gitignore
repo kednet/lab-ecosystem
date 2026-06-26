@@ -1,0 +1,154 @@
+# ============================================================================
+# Lab Ecosystem — root .gitignore
+# Covers ALL projects. Project-local .gitignore files (wish_librarian,
+# lab_site, coach_agent, chief-agent, whitewill_ai_engine) are merged in.
+# ============================================================================
+
+# ---- Secrets / credentials (CRITICAL — never push real .env) ----
+.env
+.env.local
+.env.*.local
+.envrc
+*.pem
+*.key
+*.p12
+secrets/
+.secrets/
+
+# Allow only .env.example templates to be committed
+!.env.example
+!.env.*.example
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+*.egg
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ---- Node / Astro / frontend ----
+node_modules/
+.npm/
+.yarn/
+.pnpm-store/
+dist/
+build/
+.astro/
+.next/
+.nuxt/
+.vite/
+.cache/
+*.tsbuildinfo
+.eslintcache
+
+# ---- Logs / runtime / caches ----
+*.log
+logs/
+*.pid
+
+# ---- Per-skill heavy artifact folders (kept local) ----
+tmp/
+temp/
+cache/
+output/
+state/
+
+# ---- ML models & weights (image_skill, audio_skill) ----
+*.pt
+*.pth
+*.onnx
+*.bin
+*.safetensors
+*.h5
+*.hdf5
+models/
+weights/
+checkpoints/
+*.gguf
+
+# ---- Generated audio / video / images ----
+*.mp3
+*.wav
+*.ogg
+*.flac
+*.m4a
+*.mp4
+*.mov
+*.avi
+*.webm
+*.gif
+
+# ---- Media assets generated at runtime ----
+*.mp3.bak
+preview-*.png
+result-*.png
+
+# ---- Databases / dumps ----
+*.db
+*.sqlite
+*.sqlite3
+*.sql.gz
+d1-dump.sql
+
+# ---- IDE / editor ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cursor/
+.cursorignore
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ---- Backups ----
+*.bak
+*.backup
+*.dump
+*.orig
+*.rej
+
+# ---- Personal / session artifacts ----
+# Временные артефакты сессий (отчёты, скриншоты, логи парсинга)
+C:/Users/kfigh/temp/
+# Дизайн-документы и роадмапы
+plans/
+
+# ---- Cloudflare / Workers / Wrangler ----
+.wrangler/
+.dev.vars*
+!.dev.vars.example
+
+# ---- Bot session state (Telegram / VK) ----
+*.session
+*.session-journal
+bot.session
+*.updater
+
+# ---- Secret token files (lab_site/worker, .jwt_secret.txt, etc.) ----
+.jwt_secret.txt
+.python_token.txt
+.jwt_secret
+.python_token
+*-secret.py
+push-unisender-secret.py
+
+# ---- Generated audio library (Yandex SpeechKit output) ----
+library/
+audio_library/

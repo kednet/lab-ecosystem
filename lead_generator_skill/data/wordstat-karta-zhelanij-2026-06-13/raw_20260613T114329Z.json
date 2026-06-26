@@ -1,0 +1,120 @@
+{
+  "source": "wordstat.yandex.ru",
+  "collected_at": "2026-06-13T11:43:29.365609+00:00",
+  "input_file": "data\\draft_karta_zhelanij_keywords.md",
+  "queries_count": 5,
+  "queries_with_data": 5,
+  "queries_no_data": 0,
+  "results": [
+    {
+      "query": "карта желаний",
+      "frequency": 46838,
+      "related": [
+        {
+          "query": "карта желаний сериал",
+          "frequency": 6879
+        },
+        {
+          "query": "карта желаний смотреть",
+          "frequency": 3710
+        },
+        {
+          "query": "карта желаний онлайн",
+          "frequency": 2955
+        }
+      ],
+      "no_data": false,
+      "period": "30 дней",
+      "region": "Россия",
+      "timestamp": "2026-06-13T11:42:50.898453+00:00"
+    },
+    {
+      "query": "как составить карту желаний",
+      "frequency": 492,
+      "related": [
+        {
+          "query": "как составить карту желаний правильно",
+          "frequency": 290
+        },
+        {
+          "query": "как составить работающую карту желаний",
+          "frequency": 54
+        },
+        {
+          "query": "карта желаний как правильно составить и активировать",
+          "frequency": 48
+        }
+      ],
+      "no_data": false,
+      "period": "30 дней",
+      "region": "Россия",
+      "timestamp": "2026-06-13T11:43:02.028405+00:00"
+    },
+    {
+      "query": "карта желаний на год",
+      "frequency": 374,
+      "related": [
+        {
+          "query": "карта желаний на",
+          "frequency": 2026
+        },
+        {
+          "query": "год",
+          "frequency": 244
+        },
+        {
+          "query": "как сделать карту желаний на год",
+          "frequency": 125
+        }
+      ],
+      "no_data": false,
+      "period": "30 дней",
+      "region": "Россия",
+      "timestamp": "2026-06-13T11:43:12.148798+00:00"
+    },
+    {
+      "query": "карта желаний шаблон",
+      "frequency": 303,
+      "related": [
+        {
+          "query": "скачать шаблон карты желаний",
+          "frequency": 34
+        },
+        {
+          "query": "карта желаний картинки шаблон",
+          "frequency": 27
+        },
+        {
+          "query": "карта желаний распечатать шаблон",
+          "frequency": 23
+        }
+      ],
+      "no_data": false,
+      "period": "30 дней",
+      "region": "Россия",
+      "timestamp": "2026-06-13T11:43:20.263217+00:00"
+    },
+    {
+      "query": "карта желаний онлайн бесплатно",
+      "frequency": 1907,
+      "related": [
+        {
+          "query": "карта желаний смотреть онлайн бесплатно",
+          "frequency": 1589
+        },
+        {
+          "query": "карта желаний онлайн бесплатно сериал",
+          "frequency": 1176
+        },
+        {
+          "query": "карта желаний сериал смотреть онлайн бесплатно",
+          "frequency": 1175
+        }
+      ],
+      "no_data": false,
+      "period": "30 дней",
+      "region": "Россия",
+      "timestamp": "2026-06-13T11:43:29.364606+00:00"
+    }
+  ]
+}

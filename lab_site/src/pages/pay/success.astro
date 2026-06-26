@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const url = new URL(Astro.request.url);
+const orderId = url.searchParams.get('order_id') ?? '';
+const mockPay = url.searchParams.get('mock_pay') === '1';
+const paymentId = url.searchParams.get('payment_id') ?? '';
+---
+<Base
+  title="Оплата прошла"
+  description="Спасибо за подписку! Проверьте почту — мы отправили ссылку для входа в клуб."
+  noindex
+>
+  <section class="section">
+    <div class="container" style="max-width: 640px;">
+      <p class="section__eyebrow reveal">Готово ✨</p>
+      <h1 class="section__title reveal">Спасибо за&nbsp;подписку!</h1>
+
+      <div class="checkout-card reveal">
+        {mockPay && (
+          <p class="checkout-card__notice" style="background:#fff5f7;border:1px dashed rgba(225,29,72,0.3);">
+            ⚙️ <strong>Тестовый режим.</strong> Ключи&nbsp;ЮKassa ещё не&nbsp;подключены&nbsp;— оплата эмулирована, деньги не&nbsp;списывались.
+          </p>
+        )}
+
+        <p class="checkout-card__notice">
+          Проверьте почту — мы отправили письмо со&nbsp;ссылкой для&nbsp;входа в&nbsp;клуб. Ссылка одноразовая, действует до&nbsp;конца подписки.
+        </p>
+        <p class="checkout-card__alt">
+          Если письма нет — посмотрите в&nbsp;папке «Спам» или&nbsp;«Промоакции». Оно приходит с&nbsp;адреса <strong>info@pulab.ru</strong>.
+        </p>
+        <a class="btn btn--primary btn--block" href="/members/">Открыть клуб</a>
+        <a class="btn btn--ghost btn--block" href="/library/">К библиотеке</a>
+
+        {(orderId || paymentId) && (
+          <p class="checkout-card__alt" style="font-size:11px;opacity:0.6;">
+            ID заказа: <code>{orderId || paymentId}</code>
+          </p>
+        )}
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,81 @@
+# Ролевой диалог: Push Back
+# Категория: negotiation
+
+meta:
+  name: "push-back"
+  display_name: "How to Push Back Politely"
+  category: "negotiation"
+  level: "B2"
+  estimated_min: 6
+  grammar_focus: ["conditionals-1st-2nd", "modal-verbs", "future-will"]
+  vocab_from_glossary: ["I disagree, here's why", "This deadline is too tight", "We need more time", "I'll need to escalate"]
+
+context:
+  role: "Tech lead being asked to commit to an unrealistic timeline"
+  team: "Pulse Lab"
+  setting: "Slack DM from PM pushing for faster delivery"
+  scenario: |
+    PM is asking you to ship a major rewrite in 1 week. You know from experience
+    that this is unrealistic — it would normally take 1 month. You need to push back
+    without sounding defensive or unhelpful.
+
+script:
+  - speaker: "pm"
+    line: "Hey, can we ship the rewrite by next Friday? It would really help us with the client."
+
+  - speaker: "user"
+    line: "[YOUR TURN — acknowledge + state concern]"
+    hint: "I understand the urgency, but <concern>."
+    model_answer: "I understand the urgency with the client, but a full rewrite in 1 week would mean cutting a lot of corners — I don't think that's a good trade-off."
+    alternatives:
+      - "I hear you on the client pressure. But 1 week for a rewrite is unrealistic — we'll end up with more bugs than we solve."
+      - "I get the urgency, but shipping this in 1 week would compromise the quality significantly."
+
+  - speaker: "pm"
+    line: "Can we at least try? Even if it's not perfect?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — propose alternative]"
+    hint: "If we <cut scope>, we could ship <MVP> by <date>."
+    model_answer: "If we cut scope to just the auth module, we could ship a working version in 2 weeks. The full rewrite would still need a month."
+    alternatives:
+      - "Here's an alternative: we ship the critical path in 2 weeks, then iterate. Trying to do it all in 1 week will just create technical debt."
+      - "I can commit to a phased rollout — phase 1 in 2 weeks (basic functionality), phase 2 in a month (full feature set)."
+
+  - speaker: "pm"
+    line: "What are the risks of doing it in 1 week?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — explain risks]"
+    hint: "The risk is <X>. If <bad scenario>, <consequence>."
+    model_answer: "The main risk is we'd ship buggy code. If the client hits a critical bug, we'd have to roll back anyway — that's worse than waiting 1 more week."
+    alternatives:
+      - "The risk is introducing regressions. If we break existing functionality, the rollback would take more time than doing it right."
+      - "If we rush, we'll likely ship without proper tests. One bug in production could cost more than the time we save."
+
+  - speaker: "pm"
+    line: "OK, I'll escalate to the client. Let's go with 2 weeks for the MVP."
+
+  - speaker: "user"
+    line: "[YOUR TURN — agree + commit]"
+    hint: "Sounds good. I'll <commit> by <time>."
+    model_answer: "Sounds good. I'll send you a breakdown of the MVP by tomorrow and commit to a 2-week timeline."
+    alternatives:
+      - "Agreed. I'll write up the plan and share it with you by EOD."
+      - "Great. I'll create the tickets and share the plan by tomorrow."
+
+after_dialog:
+  recap_vocab:
+    - "I understand the urgency, but ..."
+    - "Here's an alternative: ..."
+    - "The risk is ..."
+    - "If we <rush>, we'll likely ..."
+    - "I'll write up the plan by ..."
+
+  grammar_notes:
+    - "1st Conditional: 'If we ship in 1 week, we'll have bugs'"
+    - "2nd Conditional: 'If we had more time, we'd do it right' (но не в этом разговоре)"
+    - "Modal verbs: 'would' (гипотетически) vs 'will' (реально)"
+
+  next_dialog: "code-review"
+  notes: "Push back с альтернативой = конструктивно. Push back без альтернативы = just complaint."

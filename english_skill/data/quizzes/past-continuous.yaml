@@ -1,0 +1,91 @@
+meta:
+  name: "past-continuous"
+  display_name: "Past Continuous"
+  level: "B1-B2"
+  estimated_min: 5
+  description: "Действие в процессе в прошлом (фон). I was debugging when..."
+  grammar_point: "past-continuous"
+  prerequisites: ["past-simple", "present-continuous"]
+
+questions:
+  - id: 1
+    type: "multiple_choice"
+    prompt: "I ___ the PR when the build failed."
+    options: ["reviewed", "was reviewing", "am reviewing", "have reviewed"]
+    correct: "was reviewing"
+    explanation: "Фон (что я делал) + событие (build failed). When + Past Continuous = фон."
+
+  - id: 2
+    type: "open"
+    prompt: "She ___ (debug) the memory leak all day yesterday."
+    correct_answer: "was debugging"
+    acceptable_answers: ["was debugging"]
+    explanation: "I/He/She/It + was + V-ing. 'All day yesterday' = длительный процесс."
+
+  - id: 3
+    type: "multiple_choice"
+    prompt: "While we ___ the database, the network went down."
+    options: ["were migrating", "migrated", "are migrating", "have migrated"]
+    correct: "were migrating"
+    explanation: "While + Past Continuous (фон) + Past Simple (событие)."
+
+  - id: 4
+    type: "multiple_choice"
+    prompt: "At 3 PM yesterday, they ___ on the release."
+    options: ["worked", "were working", "are working", "have worked"]
+    correct: "were working"
+    explanation: "At specific time in past (at 3 PM yesterday) → Past Continuous."
+
+  - id: 5
+    type: "open"
+    prompt: "What ___ you ___ when I called? (long action in progress)"
+    correct_answer: "were you doing"
+    acceptable_answers: ["were you doing"]
+    explanation: "Вопрос в Past Continuous: was/were + you + V-ing?"
+
+  - id: 6
+    type: "multiple_choice"
+    prompt: "The service ___ every minute. We restarted it."
+    options: ["was crashing", "crashed", "is crashing", "had crashed"]
+    correct: "was crashing"
+    explanation: "Повторяющееся действие в прошлом (было в процессе, мы его прервали) → Past Continuous."
+
+  - id: 7
+    type: "open"
+    prompt: "I ___ (write) tests when the CI broke."
+    correct_answer: "was writing"
+    acceptable_answers: ["was writing"]
+    explanation: "Фон + событие (CI broke = Past Simple)."
+
+  - id: 8
+    type: "multiple_choice"
+    prompt: "While Maria ___ the migration, Tom reviewed PRs."
+    options: ["was doing", "did", "is doing", "has done"]
+    correct: "was doing"
+    explanation: "While + Past Continuous. Два параллельных действия в прошлом."
+
+  - id: 9
+    type: "open"
+    prompt: "He ___ (not / sleep) when the alert came."
+    correct_answer: "was not sleeping"
+    acceptable_answers: ["was not sleeping", "wasn't sleeping"]
+    explanation: "Negative Past Continuous: was + not + V-ing."
+
+  - id: 10
+    type: "multiple_choice"
+    prompt: "Yesterday morning, we ___ standup at 10 AM. (single event, habitual)"
+    options: ["were having", "had", "have", "are having"]
+    correct: "had"
+    explanation: "'Yesterday morning at 10 AM' = одна встреча = Past Simple (не длительное действие)."
+
+after_quiz:
+  recap: |
+    **Past Continuous:**
+    - I/He/She/It + was + V-ing
+    - You/We/They + were + V-ing
+    - Когда: действие в процессе в конкретный момент в прошлом, фон для Past Simple
+    - While + Past Continuous, When + Past Simple (фон + событие)
+
+  next_tense: "past-perfect"
+  recommended_review: "references/tenses-12-table.md#past-continuous"
+  related_lesson: "Week 7 (curriculum.yaml)"

@@ -1,0 +1,532 @@
+---
+import Base from '../layouts/Base.astro';
+import { breadcrumbLd, faqLd } from '../lib/seo';
+
+const pageUrl = 'https://app.pulab.ru/club/';
+const pageTitle = 'Разобраться в себе с чего начать — Лаборатория желаний';
+const pageDescription =
+  'Не понимаете, чего хотите? 4 инструмента Лаборатории желаний: детектор, библиотека конспектов, книжный клуб и карта желаний. Начните с того, что ближе прямо сейчас.';
+
+// === 4 инструмента Лаборатории (карточки) ====================================
+const tools = [
+  {
+    id: 'detector',
+    eyebrow: 'За 2 минуты',
+    title: 'Детектор желаний',
+    desc: 'Короткий тест: 4 вопроса, которые отличают навязанное «хочу» от истинного. Видите сразу, в чём путаница.',
+    cta: 'Пройти детектор',
+    href: '/detector/',
+    icon: '🔍',
+  },
+  {
+    id: 'library',
+    eyebrow: 'В своём темпе',
+    title: 'Библиотека конспектов',
+    desc: 'Краткий пересказ книг: вопросы для рефлексии и практические задания.',
+    cta: 'Открыть библиотеку',
+    href: '/library/',
+    icon: '📚',
+  },
+  {
+    id: 'map',
+    eyebrow: 'A3 на стену',
+    title: 'Карта желаний',
+    desc: 'Соберите визуальную карту своих истинных желаний. Готовая разметка A3 + пошаговая инструкция.',
+    cta: 'Собрать карту',
+    href: '/wish-map/',
+    icon: '🗺️',
+  },
+  {
+    id: 'club',
+    eyebrow: 'С тёплым разговором',
+    title: 'Книжный клуб',
+    desc: 'Одна книга в месяц, обсуждение в Zoom и чат в Telegram. Читаем в своём темпе, без оценок и дедлайнов.',
+    cta: 'Записаться в клуб',
+    href: '/book-club/',
+    icon: '💌',
+  },
+];
+
+// === Schema.org: FAQ (5 вопросов под интент «разобраться в себе») ===========
+const faqItems: Array<{ question: string; answer: string }> = [
+  {
+    question: 'С чего вообще начать, если не понимаешь, чего хочешь?',
+    answer:
+      'Самый честный первый шаг — короткий детектор желаний: 4 вопроса, которые показывают, где «хочу» на самом деле ваше, а где навязанное. Дальше — подберите инструмент по ситуации: библиотека, если хочется в своём темпе; клуб, если нужна компания; карта желаний, если хочется увидеть картину целиком.',
+  },
+  {
+    question: 'А это точно работает? В чём подход?',
+    answer:
+      'Мы работаем на стыке доказательной психологии (КПТ, нарративная практика, психология привязанности) и честной литературы. Каждый инструмент — это структура, которая помогает отделить мысли от ваших истинных чувств, без быстрых обещаний и внешней магии.',
+  },
+  {
+    question: 'Сколько это стоит?',
+    answer:
+      'Детектор желаний, библиотека конспектов, карта желаний и вход в книжный клуб — бесплатно. Платное только: подписка на аудио-разборы книг и индивидуальные разборы с психологом. Без скрытых платежей.',
+  },
+  {
+    question: 'Не заменит ли это терапию с психологом?',
+    answer:
+      'Нет, и мы честно об этом говорим. Лаборатория — это самоорганизация, опора и мягкая практика. Если у вас глубокие переживания, потеря смысла или отношения, в которых вы застряли, — мы рекомендуем параллельно или до нас обратиться к специалисту.',
+  },
+  {
+    question: 'А что если у меня нет времени читать книги?',
+    answer:
+      'Детектор желаний — это 2 минуты. Карта желаний — 1 вечер. Это уже даёт результат. Книги и клуб — для тех, у кого есть ресурс. Идти в своём темпе — нормально.',
+  },
+];
+
+// === Schema.org: BreadcrumbList ==============================================
+const breadcrumb = breadcrumbLd([
+  { name: 'Главная', url: '/' },
+  { name: 'Разобраться в себе', url: '/club/' },
+]);
+
+// === Schema.org: FAQPage =====================================================
+const faqSchema = faqLd(faqItems);
+---
+
+<Base
+  title={pageTitle}
+  description={pageDescription}
+  ogImage="/og/club-1200x630.png"
+  pageUrl={pageUrl}
+  extraJsonLd={[faqSchema, breadcrumb]}
+>
+  <!-- 1. HERO -->
+  <section class="section club-hero">
+    <div class="container club-hero__inner">
+      <p class="section__eyebrow reveal">Лаборатория желаний</p>
+      <h1 class="section__title reveal">Разобраться в&nbsp;себе&nbsp;— с&nbsp;чего начать</h1>
+      <p class="club-hero__lead reveal">
+        7&nbsp;из&nbsp;10&nbsp;женщин не&nbsp;знают, чего хотят на&nbsp;самом деле. Это не&nbsp;лень и&nbsp;не&nbsp;«надо подумать»&nbsp;— это путаница между своими и&nbsp;навязанными желаниями.
+        У&nbsp;нас 4&nbsp;инструмента, чтобы в&nbsp;этой путанице разобраться.
+      </p>
+
+      <div class="club-hero__actions reveal">
+        <a class="btn btn--primary" href="#start" data-club-goal="club_hero_cta_clicked">С чего начать</a>
+        <a class="btn btn--ghost" href="#tools">Все инструменты</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 4 ИНСТРУМЕНТА (карточки) -->
+  <section class="section section--alt club-tools" id="tools" data-section="tools">
+    <div class="container">
+      <p class="section__eyebrow reveal">Инструменты</p>
+      <h2 class="section__title reveal">Что вам подойдёт прямо сейчас</h2>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 16px auto 32px;">
+        Все 4&nbsp;инструмента бесплатные. Начните с&nbsp;любого&nbsp;— можно чередовать.
+      </p>
+
+      <div class="club-tools__grid reveal">
+        {tools.map((t) => (
+          <article class="club-tool" data-section={`tool-${t.id}`}>
+            <span class="club-tool__eyebrow">{t.eyebrow}</span>
+            <h3 class="club-tool__title">
+              <span class="club-tool__icon" aria-hidden="true">{t.icon}</span>
+              {t.title}
+            </h3>
+            <p class="club-tool__desc">{t.desc}</p>
+            <a class="btn btn--primary btn--block" href={t.href} data-club-goal={`club_tool_${t.id}_clicked`}>
+              {t.cta} &rarr;
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. ИСТОРИЯ ОДНОГО ЖЕЛАНИЯ — welcome-цепочка 7 писем / 18 дней -->
+  <section class="section club-start" id="start" data-section="start">
+    <div class="container container--narrow">
+      <p class="section__eyebrow reveal">История одного желания</p>
+      <h2 class="section__title reveal">Пришлём 7&nbsp;писем,<br />с&nbsp;чего начать</h2>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 16px auto 32px;">
+        История одного желания&nbsp;— как&nbsp;от&nbsp;«я&nbsp;не&nbsp;понимаю, чего хочу»
+        за&nbsp;18&nbsp;дней дойти до&nbsp;записанного желания и&nbsp;одной сделанной вещи.
+        Без рассылок и&nbsp;спама&nbsp;— ровно 7&nbsp;писем, по&nbsp;одному каждые 2–4&nbsp;дня.
+      </p>
+
+      <p class="footer__about reveal" style="text-align: center; max-width: 56ch; margin: 0 auto 32px;">
+        <strong>Оставьте email&nbsp;— пришлём первое письмо сразу.</strong> Дальше&nbsp;— по&nbsp;расписанию,
+        отписаться можно в&nbsp;один клик.
+      </p>
+
+      <form class="club-form reveal" id="club-form" autocomplete="on" novalidate>
+        <label class="club-form__label" for="club-email">Ваш email</label>
+        <input
+          class="club-form__input"
+          type="email"
+          id="club-email"
+          name="email"
+          required
+          autocomplete="email"
+          placeholder="вы@example.com"
+        />
+        <label class="club-form__consent">
+          <input type="checkbox" name="consent" required />
+          <span>Согласна получить 7&nbsp;писем «История одного желания»</span>
+        </label>
+        <!-- honeypot -->
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" style="position: absolute; left: -9999px;" aria-hidden="true" />
+        <button class="btn btn--primary btn--block" type="submit" id="club-submit" data-club-goal="club_signup_started">
+          Прислать первое письмо
+        </button>
+        <p class="club-form__error" data-role="error" hidden></p>
+        <p class="club-form__success" data-role="success" hidden>
+          Готово! Проверьте почту&nbsp;— первое письмо уже&nbsp;там. Остальные придут по&nbsp;расписанию.
+        </p>
+      </form>
+
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 24px auto 0;">
+        Не&nbsp;хочется ждать? <a href="/detector/">Пройдите мини-тест прямо сейчас</a> — это 2&nbsp;минуты.
+      </p>
+    </div>
+  </section>
+
+  <!-- 4. FAQ -->
+  <section class="section section--alt club-faq" id="faq" data-section="faq">
+    <div class="container container--narrow">
+      <p class="section__eyebrow reveal">FAQ</p>
+      <h2 class="section__title reveal">Часто спрашивают</h2>
+
+      <div class="club-faq__list reveal">
+        {faqItems.map((item) => (
+          <details class="club-faq__item">
+            <summary class="club-faq__summary">
+              <span>{item.question}</span>
+              <span class="club-faq__chev" aria-hidden="true">&rsaquo;</span>
+            </summary>
+            <p class="club-faq__answer">{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* === HERO === */
+  .club-hero__inner { max-width: 760px; margin: 0 auto; text-align: center; }
+  .club-hero__lead {
+    font-size: 18px;
+    line-height: 1.55;
+    color: #2d1418;
+    max-width: 62ch;
+    margin: 16px auto 24px;
+  }
+  .club-hero__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* === TOOLS (4 карточки) === */
+  .club-tools__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  @media (min-width: 640px) { .club-tools__grid { grid-template-columns: repeat(2, 1fr); } }
+  .club-tool {
+    background: #ffffff;
+    border: 1px solid rgba(225, 29, 72, 0.14);
+    border-radius: 18px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .club-tool__eyebrow {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--rose-deep, #881337);
+    background: #fff1f2;
+    border: 1px solid rgba(225, 29, 72, 0.25);
+    border-radius: 999px;
+    padding: 4px 10px;
+    align-self: flex-start;
+  }
+  .club-tool__title {
+    font-size: 20px;
+    margin: 0;
+    color: var(--rose-deep, #881337);
+    line-height: 1.3;
+  }
+  .club-tool__icon {
+    font-size: 22px;
+    line-height: 1;
+    color: var(--rose-deep, #881337);
+    margin-right: 6px;
+    font-weight: 400;
+    /* Принудительно берём эмодзи-шрифт, иначе Win-браузер рисует пустой квадратик (tofu). */
+    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', sans-serif;
+  }
+  .club-tool__desc {
+    font-size: 15px;
+    line-height: 1.55;
+    color: #2d1418;
+    margin: 0;
+    flex: 1;
+  }
+
+  /* === FAQ === */
+  .club-faq__list { display: grid; gap: 10px; }
+  .club-faq__item {
+    background: #ffffff;
+    border: 1px solid rgba(225, 29, 72, 0.12);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .club-faq__item[open] { border-color: rgba(225, 29, 72, 0.3); }
+  .club-faq__summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--rose-deep, #881337);
+  }
+  .club-faq__summary::-webkit-details-marker { display: none; }
+  .club-faq__chev { transition: transform 0.2s ease; font-size: 22px; line-height: 1; }
+  .club-faq__item[open] .club-faq__chev { transform: rotate(90deg); }
+  .club-faq__answer {
+    margin: 12px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #2d1418;
+  }
+
+  /* === FORM === */
+  /* 7-шаговая цепочка */
+  .chain {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto 40px;
+    max-width: 640px;
+    counter-reset: step;
+  }
+  .chain__step {
+    position: relative;
+    padding: 16px 20px 18px 72px;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff 0%, #fff5f7 100%);
+    border: 1px solid rgba(225, 29, 72, 0.12);
+    border-radius: 14px;
+    counter-increment: step;
+  }
+  .chain__step::before {
+    content: counter(step);
+    position: absolute;
+    left: 18px;
+    top: 16px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--rose-primary, #e11d48);
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 50%;
+    line-height: 1;
+  }
+  .chain__day {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--rose-primary, #e11d48);
+    margin-bottom: 4px;
+  }
+  .chain__title {
+    margin: 0 0 6px;
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--ink, #1f2937);
+  }
+  .chain__text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft, #6b3a4a);
+  }
+  .chain__step:last-child { margin-bottom: 0; }
+  @media (max-width: 540px) {
+    .chain__step { padding: 14px 14px 16px 60px; }
+    .chain__step::before { left: 12px; top: 14px; width: 32px; height: 32px; font-size: 14px; }
+    .chain__title { font-size: 16px; }
+  }
+
+  .club-form {
+    max-width: 480px;
+    margin: 0 auto;
+    display: grid;
+    gap: 12px;
+  }
+  .club-form__label { font-size: 13px; color: var(--ink-soft, #6b3a4a); }
+  .club-form__input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(225, 29, 29, 0.3);
+    border-radius: 12px;
+    font-size: 16px;
+    background: #fff;
+    color: #2d1418;
+  }
+  .club-form__input:focus {
+    outline: none;
+    border-color: var(--rose-deep, #881337);
+    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.18);
+  }
+  .club-form__consent {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--ink-soft, #6b3a4a);
+    line-height: 1.4;
+  }
+  .club-form__consent input { margin-top: 2px; }
+  .club-form__error {
+    font-size: 14px;
+    color: #b91c1c;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin: 0;
+  }
+  .club-form__success {
+    font-size: 14px;
+    color: #15803d;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin: 0;
+  }
+  .btn--block { width: 100%; }
+
+  /* === DARK MODE === */
+  @media (prefers-color-scheme: dark) {
+    .club-tool,
+    .club-faq__item { background: #1f0a14; border-color: rgba(225, 29, 72, 0.25); }
+    .club-tool__desc,
+    .club-faq__answer { color: #ffe4e6; }
+    .club-form__input { background: #2d1418; color: #fff5f7; border-color: rgba(225, 29, 72, 0.4); }
+  }
+</style>
+
+<script>
+  // === Метрика и форма лид-магнита /club/ ==================================
+  import { apiFetch, ApiError } from '../lib/api';
+  import { reachGoal, GOALS } from '../lib/metrika';
+
+  const FORM_KEY = '__lab_club_form_initialized';
+  const SECTION_KEY = '__lab_club_sections_initialized';
+
+  function initClubForm() {
+    if ((window as unknown as Record<string, boolean>)[FORM_KEY]) return;
+    (window as unknown as Record<string, boolean>)[FORM_KEY] = true;
+
+    const form = document.getElementById('club-form') as HTMLFormElement | null;
+    if (!form) return;
+    const submit = document.getElementById('club-submit') as HTMLButtonElement | null;
+    const errorEl = form.querySelector('[data-role="error"]') as HTMLElement | null;
+    const successEl = form.querySelector('[data-role="success"]') as HTMLElement | null;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!submit) return;
+      if (errorEl) errorEl.hidden = true;
+      if (successEl) successEl.hidden = true;
+
+      const fd = new FormData(form);
+      const hp = (fd.get('hp') as string | null) ?? '';
+      if (hp.trim() !== '') {
+        // honeypot: бот заполнил скрытое поле — притворимся успехом
+        if (successEl) successEl.hidden = false;
+        form.reset();
+        return;
+      }
+
+      const email = ((fd.get('email') as string | null) ?? '').trim();
+      const consent = fd.get('consent') === 'on';
+      if (!email || !consent) {
+        if (errorEl) {
+          errorEl.textContent = 'Укажите email и подтвердите согласие.';
+          errorEl.hidden = false;
+        }
+        return;
+      }
+
+      submit.disabled = true;
+      const prevText = submit.textContent;
+      submit.textContent = 'Отправляем…';
+
+      try {
+        await apiFetch('/api/subscribe', {
+          method: 'POST',
+          body: { email, source: 'club-landing' },
+        });
+        reachGoal(GOALS.clubSignupSuccess);
+        if (successEl) successEl.hidden = false;
+        form.reset();
+      } catch (err) {
+        reachGoal(GOALS.clubSignupError);
+        if (errorEl) {
+          const msg = err instanceof ApiError ? err.message : 'Не получилось отправить. Попробуйте ещё раз.';
+          errorEl.textContent = msg;
+          errorEl.hidden = false;
+        }
+      } finally {
+        submit.disabled = false;
+        submit.textContent = prevText;
+      }
+    });
+  }
+
+  function initClubSections() {
+    if ((window as unknown as Record<string, boolean>)[SECTION_KEY]) return;
+    (window as unknown as Record<string, boolean>)[SECTION_KEY] = true;
+
+    // === Цели по скроллу: каждая секция 1 раз =============================
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              const id = (entry.target as HTMLElement).dataset.section;
+              if (id) reachGoal(GOALS.clubSectionViewed, { section: id });
+              io.unobserve(entry.target);
+            }
+          }
+        },
+        { threshold: 0.25 },
+      );
+      document.querySelectorAll('[data-section]').forEach((el) => io.observe(el));
+    }
+
+    // === Цели на клик по CTA и карточкам ==================================
+    document.querySelectorAll<HTMLElement>('[data-club-goal]').forEach((el) => {
+      el.addEventListener('click', () => {
+        const goal = el.dataset.clubGoal;
+        if (!goal) return;
+        if (el.tagName === 'DETAILS') return;
+        reachGoal(goal as keyof typeof GOALS);
+      });
+    });
+  }
+
+  initClubForm();
+  initClubSections();
+</script>

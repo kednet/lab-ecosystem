@@ -1,0 +1,381 @@
+# IT/бизнес-глоссарий English Skill v1.0
+# 80 must-know фраз для IT/бизнеса в 8 тематических группах
+# Уровень: B1+
+# Аудитория: IT-специалисты, продакт-менеджеры, инженеры
+# Экспорт в CSV: `python scripts/english.py glossary --export=csv --output=it_phrases.csv`
+
+meta:
+  total_phrases: 80
+  groups_count: 8
+  audience: "IT professionals, B1+"
+  last_updated: "2026-06-25"
+
+# === ГРУППА 1: MEETINGS (митинги) ===
+
+groups:
+  - name: "meetings"
+    description: "Фразы для митингов и обсуждений."
+    phrases:
+      - phrase: "Let's sync up on this."
+        translation_ru: "Давай синхронизируемся по этому."
+        example_en: "I think we need to sync up on the deployment plan before tomorrow."
+        example_ru: "Думаю, надо синхронизироваться по плану деплоя до завтра."
+        tags: [meeting, collaboration]
+      - phrase: "Let's take this offline."
+        translation_ru: "Обсудим это отдельно (не на общем митинге)."
+        example_en: "That's a long topic — let's take it offline and continue in DM."
+        tags: [meeting, communication]
+      - phrase: "Let's circle back on this."
+        translation_ru: "Вернёмся к этому позже."
+        example_en: "Let's circle back on this next week when we have more data."
+        tags: [meeting, follow-up]
+      - phrase: "Let's park that for now."
+        translation_ru: "Отложим это пока."
+        example_en: "I think we should park that topic for now and focus on the deadline."
+        tags: [meeting, prioritization]
+      - phrase: "Can we add this to the parking lot?"
+        translation_ru: "Можем добавить это в список отложенных?"
+        example_en: "This is a great point — can we add it to the parking lot?"
+        tags: [meeting, agenda]
+      - phrase: "Let's wrap up."
+        translation_ru: "Давай подведём итоги / заканчиваем."
+        example_en: "We're running out of time — let's wrap up."
+        tags: [meeting, ending]
+      - phrase: "What are the action items?"
+        translation_ru: "Какие задачи по итогам?"
+        example_en: "Before we end, what are the action items from this meeting?"
+        tags: [meeting, summary]
+      - phrase: "I'll follow up on that."
+        translation_ru: "Я возьму это на контроль."
+        example_en: "I'll follow up on that and send an update tomorrow."
+        tags: [meeting, follow-up]
+      - phrase: "Sorry, can you repeat that?"
+        translation_ru: "Прости, можешь повторить?"
+        example_en: "Sorry, can you repeat that? I missed the last part."
+        tags: [meeting, clarification]
+      - phrase: "I have to drop off — catch you later."
+        translation_ru: "Мне нужно отключиться — спишемся позже."
+        example_en: "I have to drop off — catch you later in Slack."
+        tags: [meeting, leaving]
+
+# === ГРУППА 2: CODE REVIEW (код-ревью) ===
+
+  - name: "code-review"
+    description: "Фразы для PR review и обсуждения кода."
+    phrases:
+      - phrase: "LGTM"
+        translation_ru: "Looks good to me (одобрено)."
+        example_en: "LGTM! Ship it."
+        tags: [review, approval]
+      - phrase: "Could you push back on this?"
+        translation_ru: "Можешь настоять на своём / оспорить?"
+        example_en: "I think we should push back on the deadline — it's too tight."
+        tags: [negotiation, deadline]
+      - phrase: "Let me loop in [name]."
+        translation_ru: "Подключу [имя] к обсуждению."
+        example_en: "Let me loop in Maria — she knows the auth system better."
+        tags: [collaboration, communication]
+      - phrase: "Nit: ..."
+        translation_ru: "Мелочь: ..."
+        example_en: "Nit: add a space here for readability."
+        tags: [review, minor]
+      - phrase: "Blocking comment"
+        translation_ru: "Блокирующий комментарий (без него нельзя мержить)."
+        example_en: "I left one blocking comment about the migration order."
+        tags: [review, blocking]
+      - phrase: "Could you add a test for this?"
+        translation_ru: "Можешь добавить тест для этого?"
+        example_en: "This is a critical path — could you add a test for this?"
+        tags: [review, testing]
+      - phrase: "Let's refactor this later."
+        translation_ru: "Отрефакторим потом (отдельным PR)."
+        example_en: "I see the duplication, but let's refactor this later — out of scope for this PR."
+        tags: [review, tech-debt]
+      - phrase: "Out of scope for this PR."
+        translation_ru: "Выходит за рамки этого PR."
+        example_en: "Good point, but that's out of scope for this PR — let's file a separate ticket."
+        tags: [review, scope]
+      - phrase: "Approve."
+        translation_ru: "Одобрено."
+        example_en: "Approve. Ship it!"
+        tags: [review, approval]
+      - phrase: "Request changes."
+        translation_ru: "Нужны правки."
+        example_en: "Request changes — please address the comments above before merging."
+        tags: [review, blocking]
+
+# === ГРУППА 3: STANDUP ===
+
+  - name: "standup"
+    description: "Фразы для ежедневного standup-митинга."
+    phrases:
+      - phrase: "Yesterday I worked on..."
+        translation_ru: "Вчера я работал над..."
+        example_en: "Yesterday I worked on the migration script for the new schema."
+        tags: [standup, past]
+      - phrase: "Today I'm planning to..."
+        translation_ru: "Сегодня планирую..."
+        example_en: "Today I'm planning to review the PR from Maria and start the new endpoint."
+        tags: [standup, future]
+      - phrase: "I'm blocked on..."
+        translation_ru: "Я заблокирован на..."
+        example_en: "I'm blocked on the design review — I need feedback before I can merge."
+        tags: [standup, blocker]
+      - phrase: "No blockers from my side."
+        translation_ru: "С моей стороны блокеров нет."
+        example_en: "No blockers from my side. I'll ship today."
+        tags: [standup, status]
+      - phrase: "I'm still working on..."
+        translation_ru: "Я всё ещё работаю над..."
+        example_en: "I'm still working on the migration — should finish by EOD."
+        tags: [standup, status]
+      - phrase: "I need help with..."
+        translation_ru: "Мне нужна помощь с..."
+        example_en: "I need help with the auth setup — anyone have experience with OAuth2?"
+        tags: [standup, help]
+      - phrase: "I'll pick that up today."
+        translation_ru: "Возьму это сегодня."
+        example_en: "I'll pick that up today and report back tomorrow."
+        tags: [standup, commitment]
+      - phrase: "I'll push back on this and report tomorrow."
+        translation_ru: "Разберусь сегодня, отчитаюсь завтра."
+        example_en: "I'll push back on this and report tomorrow with an update."
+        tags: [standup, follow-up]
+      - phrase: "Quick update: ..."
+        translation_ru: "Коротко: ..."
+        example_en: "Quick update: I shipped v2.1 yesterday and started on the new feature."
+        tags: [standup, summary]
+      - phrase: "That's it from me."
+        translation_ru: "У меня всё."
+        example_en: "That's it from me. Over to you, Tom."
+        tags: [standup, ending]
+
+# === ГРУППА 4: DELIVERY (деплой и релизы) ===
+
+  - name: "delivery"
+    description: "Фразы про деплой, релизы и CI/CD."
+    phrases:
+      - phrase: "Let's ship it."
+        translation_ru: "Давай зарелизим / запустим."
+        example_en: "All tests pass — let's ship it."
+        tags: [delivery, decision]
+      - phrase: "I'll cut a release tomorrow."
+        translation_ru: "Завтра сделаю релиз."
+        example_en: "I'll cut a release tomorrow morning, around 10 AM."
+        tags: [delivery, plan]
+      - phrase: "We're rolling out v3 today."
+        translation_ru: "Катим v3 сегодня."
+        example_en: "We're rolling out v3 today, in stages."
+        tags: [delivery, deployment]
+      - phrase: "We're rolling back."
+        translation_ru: "Откатываемся (на предыдущую версию)."
+        example_en: "Tests failed in staging — we're rolling back."
+        tags: [delivery, rollback]
+      - phrase: "Hotfix went out at 14:00."
+        translation_ru: "Хотфикс ушёл в 14:00."
+        example_en: "Hotfix went out at 14:00. Monitoring now."
+        tags: [delivery, hotfix]
+      - phrase: "The build is green."
+        translation_ru: "Сборка прошла успешно."
+        example_en: "The build is green — ready to deploy."
+        tags: [delivery, ci]
+      - phrase: "The build is red."
+        translation_ru: "Сборка упала."
+        example_en: "The build is red — looking into the failure now."
+        tags: [delivery, ci]
+      - phrase: "Pushing to staging."
+        translation_ru: "Заливаю на staging."
+        example_en: "Pushing to staging. Will test in 5 minutes."
+        tags: [delivery, staging]
+      - phrase: "Canary deployment in progress."
+        translation_ru: "Канареечный деплой в процессе."
+        example_en: "Canary deployment in progress — monitoring error rates."
+        tags: [delivery, canary]
+      - phrase: "Going to prod now."
+        translation_ru: "Заливаю в прод."
+        example_en: "Going to prod now. Will report back in 15 minutes."
+        tags: [delivery, production]
+
+# === ГРУППА 5: INCIDENTS (инциденты) ===
+
+  - name: "incidents"
+    description: "Фразы для коммуникации в инцидентах."
+    phrases:
+      - phrase: "We're investigating."
+        translation_ru: "Разбираемся."
+        example_en: "We're investigating the spike in error rates."
+        tags: [incident, status]
+      - phrase: "Root cause is..."
+        translation_ru: "Корневая причина —..."
+        example_en: "Root cause is a memory leak in the new feature."
+        tags: [incident, diagnosis]
+      - phrase: "It's a regression from yesterday's deploy."
+        translation_ru: "Это регрессия со вчерашнего деплоя."
+        example_en: "It's a regression from yesterday's deploy — rolling back."
+        tags: [incident, regression]
+      - phrase: "We're paged."
+        translation_ru: "Нас подняли по тревоге."
+        example_en: "We're paged — investigating the production outage now."
+        tags: [incident, alert]
+      - phrase: "Production is down."
+        translation_ru: "Прод лежит."
+        example_en: "Production is down — all hands on deck."
+        tags: [incident, severity]
+      - phrase: "All hands on deck."
+        translation_ru: "Все на помощь."
+        example_en: "Production is down — all hands on deck."
+        tags: [incident, escalation]
+      - phrase: "We have a mitigation."
+        translation_ru: "У нас есть временное решение."
+        example_en: "We have a mitigation — traffic is now routed to the old version."
+        tags: [incident, fix]
+      - phrase: "Post-mortem scheduled for tomorrow."
+        translation_ru: "Пост-мортем завтра."
+        example_en: "Post-mortem scheduled for tomorrow at 10 AM."
+        tags: [incident, follow-up]
+      - phrase: "Customer impact is limited."
+        translation_ru: "Влияние на пользователей ограничено."
+        example_en: "Customer impact is limited — only 2% of users affected."
+        tags: [incident, communication]
+      - phrase: "Service is restored."
+        translation_ru: "Сервис восстановлен."
+        example_en: "Service is restored. Monitoring for the next hour."
+        tags: [incident, resolution]
+
+# === ГРУППА 6: NEGOTIATION (переговоры и сроки) ===
+
+  - name: "negotiation"
+    description: "Фразы для обсуждения сроков, scope и приоритетов."
+    phrases:
+      - phrase: "This deadline is too tight."
+        translation_ru: "Срок слишком сжатый."
+        example_en: "I think this deadline is too tight — we need at least 2 more weeks."
+        tags: [negotiation, deadline]
+      - phrase: "Can we push the deadline?"
+        translation_ru: "Можем сдвинуть срок?"
+        example_en: "Can we push the deadline to next Friday?"
+        tags: [negotiation, deadline]
+      - phrase: "We need more time."
+        translation_ru: "Нам нужно больше времени."
+        example_en: "We need more time to add proper tests."
+        tags: [negotiation, scope]
+      - phrase: "That's out of scope."
+        translation_ru: "Это выходит за рамки."
+        example_en: "That's out of scope for this sprint — let's prioritize it for the next."
+        tags: [negotiation, scope]
+      - phrase: "Let's cut scope."
+        translation_ru: "Давай урежем scope."
+        example_en: "To hit the deadline, let's cut scope and ship the MVP first."
+        tags: [negotiation, prioritization]
+      - phrase: "What's the MVP?"
+        translation_ru: "Какой минимальный работающий продукт?"
+        example_en: "Before we commit, what's the MVP for this feature?"
+        tags: [negotiation, prioritization]
+      - phrase: "Can we split this into phases?"
+        translation_ru: "Можем разбить на фазы?"
+        example_en: "Can we split this into phases? Phase 1 ships next month, phase 2 later."
+        tags: [negotiation, planning]
+      - phrase: "I'll need to escalate this."
+        translation_ru: "Мне нужно эскалировать это."
+        example_en: "I can't approve this — I'll need to escalate this to my manager."
+        tags: [negotiation, escalation]
+      - phrase: "Let me check and get back to you."
+        translation_ru: "Дай я проверю и вернусь с ответом."
+        example_en: "Let me check with the team and get back to you by EOD."
+        tags: [negotiation, defer]
+      - phrase: "I disagree, here's why..."
+        translation_ru: "Я не согласен, вот почему..."
+        example_en: "I disagree with this approach — here's why we should use TypeScript."
+        tags: [negotiation, disagreement]
+
+# === ГРУППА 7: ONBOARDING (онбординг) ===
+
+  - name: "onboarding"
+    description: "Фразы для онбординга новичков."
+    phrases:
+      - phrase: "Welcome to the team!"
+        translation_ru: "Добро пожаловать в команду!"
+        example_en: "Welcome to the team! We're excited to have you."
+        tags: [onboarding, greeting]
+      - phrase: "Let me show you around."
+        translation_ru: "Давай покажу, что тут как."
+        example_en: "Let me show you around the codebase and the team."
+        tags: [onboarding, introduction]
+      - phrase: "Who is your buddy?"
+        translation_ru: "Кто твой бадди (наставник)?"
+        example_en: "Your buddy is Maria — she'll help you ramp up."
+        tags: [onboarding, mentor]
+      - phrase: "How's your ramp-up going?"
+        translation_ru: "Как проходит твоё вхождение в работу?"
+        example_en: "How's your ramp-up going? Anything blocking you?"
+        tags: [onboarding, check-in]
+      - phrase: "Read the README first."
+        translation_ru: "Сначала прочитай README."
+        example_en: "Before you start, read the README and the architecture docs."
+        tags: [onboarding, docs]
+      - phrase: "Clone the repo and run the setup script."
+        translation_ru: "Склонируй репо и запусти setup-скрипт."
+        example_en: "First step: clone the repo and run the setup script."
+        tags: [onboarding, technical]
+      - phrase: "Don't hesitate to ask questions."
+        translation_ru: "Не стесняйся задавать вопросы."
+        example_en: "Don't hesitate to ask questions in our Slack channel."
+        tags: [onboarding, culture]
+      - phrase: "What's the onboarding plan?"
+        translation_ru: "Какой план онбординга?"
+        example_en: "What's the onboarding plan for the first 30 days?"
+        tags: [onboarding, planning]
+      - phrase: "I'll pair with you on that."
+        translation_ru: "Давай я с тобой попарюсь над этим."
+        example_en: "I'll pair with you on the first PR — let's set up a session tomorrow."
+        tags: [onboarding, mentorship]
+      - phrase: "When in doubt, ask."
+        translation_ru: "Если сомневаешься — спроси."
+        example_en: "When in doubt, ask. Better to ask than to break something."
+        tags: [onboarding, culture]
+
+# === ГРУППА 8: RETROSPECTIVES (ретроспективы) ===
+
+  - name: "retrospectives"
+    description: "Фразы для ретроспектив и фидбэка."
+    phrases:
+      - phrase: "What went well?"
+        translation_ru: "Что прошло хорошо?"
+        example_en: "Let's start the retro: what went well this sprint?"
+        tags: [retro, structure]
+      - phrase: "What didn't go well?"
+        translation_ru: "Что не задалось?"
+        example_en: "What didn't go well this sprint?"
+        tags: [retro, structure]
+      - phrase: "What can we improve?"
+        translation_ru: "Что можно улучшить?"
+        example_en: "What can we improve next sprint?"
+        tags: [retro, structure]
+      - phrase: "I take ownership of that."
+        translation_ru: "Беру ответственность на себя."
+        example_en: "The deploy failed because of my mistake — I take ownership of that."
+        tags: [retro, accountability]
+      - phrase: "Good catch!"
+        translation_ru: "Хорошее замечание!"
+        example_en: "Good catch on that bug — saved us a lot of pain."
+        tags: [retro, feedback]
+      - phrase: "Let's add an action item."
+        translation_ru: "Давай добавим action item."
+        example_en: "Let's add an action item to add more tests for the auth module."
+        tags: [retro, follow-up]
+      - phrase: "I'll own that action item."
+        translation_ru: "Я возьму этот action item."
+        example_en: "I'll own that action item and report back next sprint."
+        tags: [retro, ownership]
+      - phrase: "Can we do this differently?"
+        translation_ru: "Можем сделать это иначе?"
+        example_en: "Can we do this differently next time? The current process is too slow."
+        tags: [retro, improvement]
+      - phrase: "That's a fair point."
+        translation_ru: "Справедливое замечание."
+        example_en: "That's a fair point — let's discuss it more."
+        tags: [retro, acknowledgment]
+      - phrase: "I disagree, but I hear you."
+        translation_ru: "Не согласен, но слышу тебя."
+        example_en: "I disagree with the approach, but I hear you — let's find a middle ground."
+        tags: [retro, communication]

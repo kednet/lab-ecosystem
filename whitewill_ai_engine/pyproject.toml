@@ -1,0 +1,76 @@
+[project]
+name = "whitewill-ai-engine"
+version = "0.1.0"
+description = "AI-консьерж + Off-market матчинг для Whitewill. Demo-MVP для презентации Олегу Торбосову."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Proprietary" }
+
+dependencies = [
+    # Core
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "pydantic>=2.9.0",
+    "pydantic-settings>=2.6.0",
+    "httpx>=0.28.0",
+
+    # LLM / RAG
+    "openai>=1.55.0",  # Используется через OpenAI-совместимый API Yandex Cloud
+    "yandex-cloud-ml-sdk>=0.6.0",  # Yandex Cloud ML SDK (Embeddings, Vector Search)
+
+    # Storage
+    "sqlalchemy>=2.0.30",
+    "aiosqlite>=0.20.0",
+    "pgvector>=0.3.6",
+    "redis>=5.2.0",
+
+    # Telegram
+    "python-telegram-bot>=21.6",
+
+    # Utilities
+    "python-dotenv>=1.0.1",
+    "structlog>=24.4.0",
+    "tenacity>=9.0.0",
+    "numpy>=1.26.0",
+    "scikit-learn>=1.5.0",
+    "pydantic[email]>=2.9.0",
+    "nest-asyncio>=1.6.0",
+    "streamlit>=1.40.0",
+    "pandas>=2.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-mock>=3.14.0",
+    "ruff>=0.7.0",
+    "mypy>=1.13.0",
+    "black>=24.10.0",
+    "jupyter>=1.1.1",
+    "ipython>=8.29.0",
+]
+
+[project.scripts]
+whitewill-concierge = "src.concierge.server:run"
+whitewill-offmarket = "src.offmarket.server:run"
+whitewill-demo = "src.demo.app:run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]

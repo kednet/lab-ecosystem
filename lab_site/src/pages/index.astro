@@ -1,0 +1,680 @@
+---
+import Base from '../layouts/Base.astro';
+import BookCard from '../components/BookCard.astro';
+import booksData from '../data/books.json';
+import { getAllTracks, getPublicTracks } from '../data/audio';
+
+const books = booksData.books;
+
+// Популярные — первые 3, на главной покажем сетку
+const featured = books.slice(0, 3);
+
+// Превью аудио: сначала публичные, потом locked — максимум 3
+const publicTracks = getPublicTracks();
+const lockedTracks = getAllTracks().filter((t) => !t.public);
+const audioPreview = [...publicTracks, ...lockedTracks].slice(0, 3);
+---
+<Base
+  title="Лаборатория желаний"
+  description="Библиотека конспектов книг, карта желаний A3 и AI-коуч — всё, чтобы желания стали целями, а цели — жизнью. Саморазвитие с чего начать."
+>
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero__bg" aria-hidden="true">
+      <img class="hero__cover" src="/cover.jpg" alt="" />
+      <div class="hero__scrim"></div>
+    </div>
+    <div class="container hero__inner">
+      <h1 class="hero__title">
+        <em>Сделай</em> из&nbsp;«я&nbsp;хочу»<br />
+        —&nbsp;<span class="hero__title-accent">«Я&nbsp;есть»</span>
+      </h1>
+      <p class="hero__lead">
+        7 из&nbsp;10 женщин не&nbsp;знают, чего хотят на&nbsp;самом деле. Мы&nbsp;помогаем разобраться
+        — с&nbsp;опорой на&nbsp;науку, книги и&nbsp;практику.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="/wish-map/">Собрать карту желаний</a>
+        <a class="btn btn--ghost" href="/library/">Открыть библиотеку</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- БИБЛИОТЕКА + АУДИО — превью -->
+  <section class="section" aria-labelledby="library-title">
+    <div class="container">
+      <p class="section__eyebrow reveal" style="text-align: center;">Конспекты и&nbsp;аудио</p>
+      <h2 class="section__title reveal" id="library-title" style="margin-bottom: 32px;">
+        Уже разобраны<br />для практики
+      </h2>
+
+      <div class="index-preview-grid">
+        <!-- 3 конспекта рядом -->
+        {featured.map((b) => (
+          <article class="book-card book-card--mini reveal" data-slug={b.slug}>
+            <a class="book-card__cover-link" href={`/library/${b.slug}/`} aria-label={`Открыть конспект «${b.title}»`}>
+              {b.cover
+                ? <img class="book-card__cover-img" src={b.cover} alt={`Обложка: ${b.title}`} loading="lazy" />
+                : <div class="book-card__cover-fallback">{b.title.trim().charAt(0).toUpperCase()}</div>
+              }
+            </a>
+            <div class="book-card__body">
+              <p class="book-card__eyebrow">Конспект</p>
+              <h3 class="book-card__title">{b.title}</h3>
+              <div class="book-card__author">{b.author}{b.year ? ` · ${b.year}` : ''}</div>
+              {b.description && <p class="book-card__desc">{b.description}</p>}
+              {b.tags && b.tags.length > 0 && (
+                <div class="book-card__tags">
+                  {b.tags.slice(0, 3).map((t) => <span class="book-card__tag">{t}</span>)}
+                </div>
+              )}
+              <a class="btn btn--primary btn--block" href="/library/">
+                Открыть в&nbsp;библиотеке →
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Аудио-превью: 3 трека рядом -->
+      <div class="audio-preview-grid">
+        {audioPreview.map((t) => (
+          <article
+            class="track-card track-card--mini reveal"
+            data-slug={t.slug}
+            data-locked={t.public ? 'false' : 'true'}
+            style={`--g1: ${t.gradient[0]}; --g2: ${t.gradient[1]};`}
+          >
+            <a class="track-card__cover track-card__cover--link" href={t.public ? `/audio/${t.slug}/` : '/pricing/'} aria-hidden="true" tabindex="-1">
+              <div class="track-card__cover-top">
+                <span class="track-card__brand">ЛАБОРАТОРИЯ ЖЕЛАНИЙ</span>
+              </div>
+              <span class="track-card__emoji">{t.emoji}</span>
+              <div class="track-card__cover-bottom">
+                <span class="track-card__cover-icon">{t.public ? '🎧' : '🔒'}</span>
+                <span class="track-card__cover-title">{t.title}</span>
+              </div>
+              <span class="track-card__play-overlay" aria-hidden="true">{t.public ? '▶' : '🔒'}</span>
+            </a>
+            <div class="track-card__body">
+              <p class="track-card__eyebrow">{t.public ? 'Аудио' : 'Аудио · подписка'}</p>
+              <h3 class="track-card__title">{t.title}</h3>
+              <p class="track-card__desc">{t.description}</p>
+              <div class="track-card__meta">
+                <span>⏱ {t.duration}</span>
+              </div>
+              <a class="btn btn--primary btn--block" href={t.public ? `/audio/${t.slug}/` : '/pricing/'}>
+                {t.public ? 'Слушать →' : 'Оформить подписку →'}
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="preview-cta reveal">
+        <a class="btn btn--primary btn--large" href="/library/">Все книги →</a>
+        <a class="btn btn--ghost btn--large" href="/audio/">Все аудио →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI-ПОМОЩНИКИ — 3 в ряд -->
+  <section class="section" aria-labelledby="ai-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">AI-помощники</p>
+      <h2 class="section__title reveal" id="ai-title">
+        Помощники<br />для трёх задач
+      </h2>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 0 auto 32px;">
+        У&nbsp;нас три AI-помощника: детектор проверит, твоё&nbsp;ли желание, коуч докопается до&nbsp;сути, а&nbsp;помощник по&nbsp;книгам ответит на&nbsp;основе нашей библиотеки.
+      </p>
+
+      <ul class="book-grid" role="list">
+        <li class="book-card reveal">
+          <a class="book-card__link-wrap" href="/detector/" aria-label="Детектор желаний — бесплатный тест">
+            <div class="book-card__cover" style="aspect-ratio: 1/1; background: linear-gradient(135deg, #FECDD3, #E11D48); display: flex; align-items: center; justify-content: center; font-size: 96px;">
+              🎯
+            </div>
+            <div class="book-card__body">
+              <h3 class="book-card__title">🎯 Детектор желаний</h3>
+              <p class="book-card__desc">5 вопросов&nbsp;— 2 минуты. Узнай, твоё желание про «хочу» или про «надо». Бесплатно, без регистрации, мгновенный результат.</p>
+              <span class="book-card__link">Пройти тест →</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="book-card reveal">
+          <a class="book-card__link-wrap" href="/pricing/" aria-label="AI-коуч — для подписчиков">
+            <div class="book-card__cover" style="aspect-ratio: 1/1; background: linear-gradient(135deg, #FFE4E6, #9F1239); display: flex; align-items: center; justify-content: center; font-size: 96px;">
+              💬
+            </div>
+            <div class="book-card__body">
+              <h3 class="book-card__title">💬 AI-коуч</h3>
+              <p class="book-card__desc">Премиум-помощник для подписчиков. Отличит навязанное желание от&nbsp;истинного, докопается до&nbsp;сути, даст следующий шаг. Без эзотерики&nbsp;— по&nbsp;5 модулям и&nbsp;20 вопросам.</p>
+              <span class="book-card__link">Оформить подписку →</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="book-card reveal">
+          <a class="book-card__link-wrap" href="/pricing/" aria-label="AI-помощник по книгам — скоро">
+            <div class="book-card__cover" style="aspect-ratio: 1/1; background: linear-gradient(135deg, #FECDD3, #881337); display: flex; align-items: center; justify-content: center; font-size: 96px;">
+              🤖
+            </div>
+            <div class="book-card__body">
+              <h3 class="book-card__title">🤖 AI-помощник по&nbsp;книгам</h3>
+              <p class="book-card__desc">Спроси&nbsp;— «как начать», «что мешает», «какой следующий шаг». Помощник ответит на&nbsp;основе конспектов и&nbsp;воркбуков нашей библиотеки.</p>
+              <span class="book-card__link">Скоро →</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ЧТО ДАЁТ ПОДПИСКА -->
+  <section class="section section--alt" aria-labelledby="why-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Что внутри</p>
+      <h2 class="section__title reveal" id="why-title">
+        Не&nbsp;просто библиотека&nbsp;—<br />рабочий инструмент
+      </h2>
+
+      <ul class="book-grid" role="list">
+        <li class="book-card">
+          <div class="book-card__body">
+            <h3 class="book-card__title">📚 Конспекты + воркбуки</h3>
+            <p class="book-card__desc">Книги разобраны по&nbsp;полочкам: теория коротко, практика по&nbsp;шагам, PDF&nbsp;— в&nbsp;воркбуке для печати.</p>
+          </div>
+        </li>
+        <li class="book-card">
+          <div class="book-card__body">
+            <h3 class="book-card__title">🗺️ Карта желаний A3</h3>
+            <p class="book-card__desc">6&nbsp;сфер жизни, готовые примеры и&nbsp;свои слова. Скачай в&nbsp;PDF/PNG формате A3, распечатай и&nbsp;вклей фото. Бесплатно&nbsp;— до&nbsp;3&nbsp;сфер, без лимитов&nbsp;— на&nbsp;подписке.</p>
+          </div>
+        </li>
+        <li class="book-card">
+          <div class="book-card__body">
+            <h3 class="book-card__title">🎧 Аудио-практики</h3>
+            <p class="book-card__desc">Треки по&nbsp;1-3&nbsp;минуты: медитации, аффермации, утренние настройки. Послушай перед важным решением или когда «накрыло».</p>
+          </div>
+        </li>
+        <li class="book-card">
+          <a class="book-card__link-wrap" href="/experiments/" aria-label="Эксперименты читателей — истории, удачи и провалы">
+            <div class="book-card__body">
+              <h3 class="book-card__title">🧪 Эксперименты читателей</h3>
+              <p class="book-card__desc">Истории участников: что попробовали из&nbsp;книг и&nbsp;что получилось&nbsp;— без прикрас. Можно завести свой эксперимент: на&nbsp;сайте, в&nbsp;ВК&nbsp;Mini App или в&nbsp;Telegram-боте.</p>
+              <span class="book-card__link">Читать истории →</span>
+            </div>
+          </a>
+        </li>
+        <li class="book-card">
+          <div class="book-card__body">
+            <h3 class="book-card__title">💬 Закрытый чат сообщества</h3>
+            <p class="book-card__desc">Живое общение в&nbsp;Telegram: разборы, поддержка, встречи. Только для&nbsp;подписчиков.</p>
+          </div>
+        </li>
+        <li class="book-card">
+          <a class="book-card__link-wrap" href="/my-experiment/" aria-label="Поделиться своим экспериментом — обратная связь читателей">
+            <div class="book-card__body">
+              <h3 class="book-card__title">📬 Ваш опыт&nbsp;— наш&nbsp;следующий шаг</h3>
+              <p class="book-card__desc">Расскажите, что попробовали и&nbsp;что получилось&nbsp;— 5&nbsp;полей, без регистрации. Лучшие истории попадают в&nbsp;открытую ленту и&nbsp;вдохновляют других читать и&nbsp;действовать.</p>
+              <span class="book-card__link">Поделиться →</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+
+      <div style="text-align: center; margin-top: 48px;">
+        <a class="btn btn--primary btn--large" href="/pricing/">Оформить подписку&nbsp;— 590&nbsp;₽/мес</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПИСЬМА РАЗ В НЕДЕЛЮ — лид-магнит -->
+  <section class="section section--alt" aria-labelledby="newsletter-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Письма раз&nbsp;в&nbsp;неделю</p>
+      <h2 class="section__title reveal" id="newsletter-title">
+        Мини-практика, чтобы&nbsp;желания<br />стали целями
+      </h2>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 0 auto 32px;">
+        Раз&nbsp;в&nbsp;неделю&nbsp;— короткое упражнение на&nbsp;15&nbsp;минут по&nbsp;книге из&nbsp;нашей библиотеки.
+        Без&nbsp;спама, отписка в&nbsp;один&nbsp;клик.
+      </p>
+
+      <form class="newsletter reveal" id="newsletter-form" novalidate>
+        <!-- Honeypot: боты заполняют, люди — нет -->
+        <input class="newsletter__hp" type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <div class="newsletter__row">
+          <label class="newsletter__label" for="newsletter-email">Email</label>
+          <input
+            class="newsletter__input"
+            id="newsletter-email"
+            type="email"
+            inputmode="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+            required
+          />
+        </div>
+
+        <label class="newsletter__consent">
+          <input type="checkbox" id="newsletter-consent" required />
+          <span>
+            Согласен(на) получать письма и&nbsp;на
+            <a href="/privacy/" target="_blank" rel="noopener">обработку email</a>
+          </span>
+        </label>
+
+        <button class="btn btn--primary btn--block newsletter__submit" type="submit">
+          Получать письма
+        </button>
+
+        <p class="newsletter__error" data-role="error" hidden></p>
+      </form>
+
+      <div class="newsletter__success reveal" id="newsletter-success" hidden>
+        <div class="newsletter__success-icon">✓</div>
+        <h3 class="newsletter__success-title">Готово!</h3>
+        <p class="newsletter__success-text">
+          Проверьте почту&nbsp;— первое письмо уже летит.
+          Если его нет во&nbsp;входящих, посмотрите в&nbsp;«Спам» или «Промо».
+        </p>
+      </div>
+
+      <p style="text-align: center; margin-top: 24px; font-size: 13px; color: var(--muted);">
+        Это&nbsp;бесплатно. Письма приходят по&nbsp;воскресеньям.
+      </p>
+    </div>
+  </section>
+
+  <!-- ЧАТ СООБЩЕСТВА — превью -->
+  <section class="section" aria-labelledby="chat-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Общение</p>
+      <h2 class="section__title reveal" id="chat-title">
+        Тёплый чат,&nbsp;где<br />обсуждают книги и&nbsp;желания
+      </h2>
+      <p class="footer__about" style="text-align: center; max-width: 60ch; margin: 0 auto 32px;">
+        Живое общение в&nbsp;Telegram и&nbsp;ВКонтакте. Открытый канал&nbsp;— для&nbsp;всех,
+        закрытый чат подписчиков&nbsp;— для&nbsp;вопросов, разборов и&nbsp;встреч.
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a class="btn btn--primary" href="https://t.me/pulabru" target="_blank" rel="noopener">Открытый Telegram-канал</a>
+        <a class="btn btn--ghost" href="https://vk.com/club237295798" target="_blank" rel="noopener">Сообщество ВКонтакте</a>
+      </div>
+      <p style="text-align: center; margin-top: 24px; font-size: 13px; color: var(--muted);">
+        Закрытый чат подписчиков — после оформления подписки.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { apiFetch, ApiError } from '../lib/api';
+  import { reachGoal, GOALS } from '../lib/metrika';
+
+  const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
+  const successBlock = document.getElementById('newsletter-success') as HTMLElement | null;
+
+  if (form && successBlock) {
+    const input = form.querySelector<HTMLInputElement>('#newsletter-email');
+    const consent = form.querySelector<HTMLInputElement>('#newsletter-consent');
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const errorEl = form.querySelector<HTMLElement>('[data-role="error"]');
+
+    function showError(msg: string) {
+      if (!errorEl) return;
+      errorEl.textContent = msg;
+      errorEl.hidden = false;
+      input?.setAttribute('aria-invalid', 'true');
+    }
+    function clearError() {
+      if (!errorEl) return;
+      errorEl.textContent = '';
+      errorEl.hidden = true;
+      input?.removeAttribute('aria-invalid');
+    }
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      clearError();
+      const email = (input?.value ?? '').trim();
+      if (!email || !email.includes('@') || email.length > 254) {
+        showError('Похоже, email указан неверно');
+        return;
+      }
+      if (!consent?.checked) {
+        showError('Поставьте, пожалуйста, галочку согласия');
+        return;
+      }
+
+      const hpEl = form.querySelector<HTMLInputElement>('input[name="hp"]');
+      const hp = hpEl?.value ?? '';
+
+      if (submitBtn) submitBtn.disabled = true;
+      const originalLabel = submitBtn?.textContent ?? '';
+      if (submitBtn) submitBtn.textContent = 'Отправляем…';
+
+      try {
+        reachGoal(GOALS.newsletterFormSubmitted);
+        await apiFetch('/api/subscribe', {
+          method: 'POST',
+          body: { email, consent: true, hp, source: 'homepage' },
+        });
+        reachGoal(GOALS.newsletterFormSuccess);
+        form.hidden = true;
+        successBlock!.hidden = false;
+        successBlock!.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (err) {
+        const msg = err instanceof ApiError ? err.message : 'Что-то пошло не так. Попробуйте позже.';
+        showError(msg);
+        reachGoal(GOALS.newsletterFormError);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+        }
+      }
+    });
+  }
+</script>
+
+<style>
+  /* Шапка секции «Конспекты и аудио» — eyebrow слева, CTA справа */
+  .section__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .section__head .section__eyebrow { margin: 0; }
+  .section__head-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rose);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: color 0.15s;
+  }
+  .section__head-link:hover { color: var(--rose-deep); }
+
+  /* Сетка превью: 3 книги рядом */
+  .index-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 0 auto;
+  }
+  @media (max-width: 900px) {
+    .index-preview-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Сетка превью: 3 аудио рядом */
+  .audio-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 32px auto 0;
+  }
+  @media (max-width: 900px) {
+    .audio-preview-grid { grid-template-columns: 1fr; }
+  }
+  .audio-preview-grid .track-card--mini { display: flex; flex-direction: column; }
+  .audio-preview-grid .track-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .audio-preview-grid .track-card__body > .btn { margin-top: auto; }
+
+  /* Кнопки «Все книги» / «Все аудио» под сетками */
+  .preview-cta {
+    text-align: center;
+    margin-top: 40px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Карточка = колонка, body растягивается, контент распределяется естественно */
+  .index-preview-grid .book-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .index-preview-grid .book-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  /* Кнопки-CTA внутри book-карточек прибиты к низу */
+  .index-preview-grid .book-card__body > .btn {
+    margin-top: auto;
+  }
+
+  /* Мини-вариант book-card для главной: обложка сверху, кнопка снизу */
+  .book-card--mini .book-card__cover-link {
+    display: block;
+    aspect-ratio: 2 / 3;
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    overflow: hidden;
+  }
+  .book-card--mini .book-card__cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .book-card--mini .book-card__cover-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-3);
+    color: var(--rose);
+    font-family: var(--font-display);
+    font-size: 64px;
+  }
+  .book-card--mini .book-card__eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin: 0 0 6px;
+  }
+
+  /* Мини-вариант track-card для главной: короче, плотнее */
+  .track-card--mini .track-card__cover { aspect-ratio: 1 / 1; }
+  .track-card--mini .track-card__emoji { font-size: 3.5em; }
+  .track-card--mini .track-card__cover-title {
+    font-size: 11px;
+    -webkit-line-clamp: 2;
+  }
+  .track-card--mini .track-card__body { padding: 18px; }
+  .track-card--mini .track-card__title { font-size: 17px; }
+  .track-card--mini .track-card__desc {
+    font-size: 13px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Обложка-ссылка с play-индикатором (фон = как у /audio/ track-card) */
+  .track-card__cover--link {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 14px;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.18), transparent 60%),
+      linear-gradient(135deg, var(--g1, #fecdd3), var(--g2, #e11d48));
+    text-decoration: none;
+    overflow: hidden;
+  }
+  /* Лёгкий тёмный overlay снизу — как в TrackCard */
+  .track-card__cover--link::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.08) 100%);
+    pointer-events: none;
+  }
+  .track-card__play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.18);
+    color: #fff;
+    font-size: 48px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .track-card--mini:hover .track-card__play-overlay { opacity: 1; }
+
+  /* Eyebrow «Аудио» внутри карточки */
+  .track-card__eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin: 0 0 6px;
+  }
+
+  /* === Newsletter (лид-магнит) === */
+  .newsletter {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 28px;
+    background: #ffffff;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 12px 40px -20px rgba(225, 29, 72, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .newsletter__hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .newsletter__row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .newsletter__label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .newsletter__input {
+    width: 100%;
+    padding: 14px 18px;
+    font: inherit;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .newsletter__input::placeholder { color: rgba(107, 58, 74, 0.5); }
+  .newsletter__input:focus {
+    border-color: var(--rose);
+    box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.12);
+  }
+  .newsletter__input[aria-invalid="true"] {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+  }
+  .newsletter__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+  }
+  .newsletter__consent input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    accent-color: var(--rose);
+    cursor: pointer;
+  }
+  .newsletter__consent a { color: var(--rose); text-decoration: underline; }
+  .newsletter__submit { margin-top: 4px; }
+  .newsletter__submit[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .newsletter__error {
+    margin: 0;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #881337;
+    background: #fff1f2;
+    border: 1px solid rgba(225, 29, 72, 0.3);
+    border-radius: 10px;
+  }
+
+  /* Success-блок (показывается после удачного сабмита) */
+  .newsletter__success {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 32px 28px;
+    background: #ffffff;
+    border: 1.5px solid rgba(225, 29, 72, 0.3);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    box-shadow: 0 12px 40px -20px rgba(225, 29, 72, 0.25);
+  }
+  .newsletter__success-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e11d48, #881337);
+    color: #fff;
+    font-size: 30px;
+    line-height: 56px;
+    font-weight: 700;
+  }
+  .newsletter__success-title {
+    margin: 0 0 10px;
+    font-family: var(--font-display);
+    font-size: 26px;
+    color: var(--ink);
+  }
+  .newsletter__success-text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+</style>

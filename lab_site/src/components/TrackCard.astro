@@ -1,0 +1,344 @@
+---
+/**
+ * Карточка аудио-трека.
+ *
+ * Два режима:
+ *  - locked: false — рендерит <audio> + кастомный плеер (play/pause, прогресс, скачать)
+ *  - locked: true  — рендерит CTA «Доступно по подписке» (плейсхолдер для подписного контента)
+ *
+ * Плеер:
+ *  - Нативный <audio preload="none"> (не грузим файл, пока юзер не нажал play)
+ *  - Кастомный play/pause на кнопке с aria-pressed
+ *  - Прогресс-бар обновляется на timeupdate
+ *  - Только один трек играет одновременно (через глобальный audio registry)
+ *  - Кнопка «Скачать» → <a href={file} download>
+ *
+ * Гейтинг locked:
+ *  - Внутри карточки НЕ обрабатываем клик (на уровне index.astro вешается делегированный listener
+ *    на [data-locked="true"] и редиректит на /auth/?next=/audio/ или /pricing/).
+ *  - Здесь ставим только cursor: pointer + визуальный «🔒» badge.
+ */
+import type { AudioTrack } from '../data/audio';
+
+interface Props {
+  track: AudioTrack;
+  /** true — карточка подписная, плеер не показываем */
+  locked: boolean;
+  /** индекс в списке — для staggered animation */
+  index: number;
+}
+
+const { track, locked, index } = Astro.props;
+const g1 = track.gradient[0];
+const g2 = track.gradient[1];
+---
+<article
+  class="track-card reveal"
+  data-slug={track.slug}
+  data-locked={locked ? 'true' : 'false'}
+  data-public={track.public ? 'true' : 'false'}
+  style={`--g1: ${g1}; --g2: ${g2}; transition-delay: ${Math.min(index * 50, 300)}ms;`}
+>
+  <div class="track-card__cover" aria-hidden="true">
+    <div class="track-card__cover-top">
+      <span class="track-card__brand">ЛАБОРАТОРИЯ ЖЕЛАНИЙ</span>
+    </div>
+    <span class="track-card__emoji">{track.emoji}</span>
+    <div class="track-card__cover-bottom">
+      <span class="track-card__cover-icon" aria-hidden="true">🎧</span>
+      <span class="track-card__cover-title">{track.title}</span>
+    </div>
+  </div>
+
+  {locked && (
+    <div class="track-card__lock-badge" title="Доступно по подписке">
+      🔒 Подписка
+    </div>
+  )}
+
+  <div class="track-card__body">
+    <h3 class="track-card__title">{track.title}</h3>
+    <p class="track-card__desc">{track.description}</p>
+
+    <div class="track-card__meta">
+      <span>⏱ {track.duration}</span>
+      {track.publishedAt && <time datetime={track.publishedAt}>· {new Date(track.publishedAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}</time>}
+    </div>
+
+    {track.tags && track.tags.length > 0 && (
+      <div class="track-card__tags">
+        {track.tags.map((tag) => <span class="track-card__tag">#{tag}</span>)}
+      </div>
+    )}
+
+    {!locked ? (
+      <div class="track-card__player" data-player>
+        <audio
+          preload="none"
+          src={track.file}
+          data-audio
+        ></audio>
+        <button
+          type="button"
+          class="track-card__play-btn"
+          data-play
+          aria-label={`Воспроизвести: ${track.title}`}
+        >
+          <svg data-icon-play viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          <svg data-icon-pause viewBox="0 0 24 24" aria-hidden="true" style="display:none;"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+        </button>
+        <div
+          class="track-card__progress"
+          role="progressbar"
+          aria-label="Прогресс воспроизведения"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          data-progress
+        >
+          <div class="track-card__progress-bar" data-progress-bar></div>
+        </div>
+        <span class="track-card__time" data-time>0:00</span>
+        <a
+          class="track-card__download"
+          href={track.file}
+          download
+          aria-label={`Скачать: ${track.title}`}
+          title="Скачать MP3"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" style="fill:currentColor"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+        </a>
+      </div>
+    ) : (
+      <a class="track-card__locked-cta" href="/pricing/">
+        🔓 Открыть по подписке
+      </a>
+    )}
+  </div>
+</article>
+
+<style>
+  .track-card {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .track-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(225, 29, 72, 0.12);
+  }
+  .track-card[data-locked="true"] {
+    cursor: pointer;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .track-card:hover {
+      transform: none;
+    }
+  }
+
+  .track-card__cover {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 14px;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.18), transparent 60%),
+      linear-gradient(135deg, var(--g1, #fecdd3), var(--g2, #e11d48));
+    position: relative;
+    overflow: hidden;
+  }
+  /* Лёгкая «бумажная» текстура поверх градиента — премиум-эффект */
+  .track-card__cover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.08) 100%);
+    pointer-events: none;
+  }
+  .track-card__cover-top {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 1;
+  }
+  .track-card__brand {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.92);
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  }
+  .track-card__emoji {
+    font-size: 4em;
+    line-height: 1;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.2));
+    z-index: 1;
+  }
+  .track-card__cover-bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    z-index: 1;
+  }
+  .track-card__cover-icon {
+    font-size: 14px;
+    line-height: 1;
+    opacity: 0.9;
+  }
+  .track-card__cover-title {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #fff;
+    text-align: center;
+    max-width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .track-card__lock-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(6px);
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--rose-deep);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .track-card__body {
+    padding: 20px;
+  }
+  .track-card__title {
+    font: 600 18px/1.3 var(--font-body);
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  .track-card__desc {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0 0 12px;
+  }
+  .track-card__meta {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .track-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .track-card__tag {
+    background: var(--bg-2);
+    color: var(--rose-deep);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  /* Плеер */
+  .track-card__player {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+  .track-card__play-btn {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--rose);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, transform 0.1s;
+    padding: 0;
+  }
+  .track-card__play-btn:hover {
+    background: var(--rose-deep);
+  }
+  .track-card__play-btn:active {
+    transform: scale(0.95);
+  }
+  .track-card__play-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+  .track-card__progress {
+    flex: 1;
+    height: 4px;
+    background: var(--bg-3);
+    border-radius: 999px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+  }
+  .track-card__progress-bar {
+    height: 100%;
+    background: var(--rose);
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+  .track-card__time {
+    font-size: 12px;
+    color: var(--muted);
+    min-width: 38px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .track-card__download {
+    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.15s;
+  }
+  .track-card__download:hover {
+    color: var(--rose);
+  }
+
+  /* CTA для locked */
+  .track-card__locked-cta {
+    display: block;
+    text-align: center;
+    padding: 12px 16px;
+    background: var(--bg-2);
+    border-radius: 12px;
+    margin-top: 16px;
+    color: var(--rose-deep);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.15s;
+  }
+  .track-card__locked-cta:hover {
+    background: var(--bg-3);
+  }
+</style>

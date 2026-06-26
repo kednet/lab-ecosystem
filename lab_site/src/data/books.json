@@ -1,0 +1,261 @@
+{
+  "books": [
+    {
+      "slug": "osoznannost-penman-uilyams",
+      "title": "Осознанность. Как обрести гармонию в нашем безумном мире",
+      "author": "Марк Уильямс, Денни Пенман",
+      "year": 2014,
+      "description": "Практическое руководство по mindfulness от профессора Оксфорда Марка Уильямса и биолога Денни Пенмана. Простые медитации, микропаузы в течение дня, научная база без эзотерики.",
+      "tags": [
+        "осознанность",
+        "mindfulness",
+        "медитация",
+        "спокойствие",
+        "антистресс"
+      ],
+      "themes": [
+        "осознанность как навык",
+        "автопилот vs присутствие",
+        "медитация каждый день",
+        "эмоциональная устойчивость",
+        "сон и стресс"
+      ],
+      "queries": [
+        "как стать осознанным",
+        "медитация для начинающих",
+        "mindfulness практика",
+        "как уменьшить стресс",
+        "техники присутствия в моменте"
+      ],
+      "cover": "/books/osoznannost-penman-uilyams.jpg?v=2",
+      "has_summary": true,
+      "has_workbook": true,
+      "has_tips": true,
+      "has_buy_links": true,
+      "has_pdf": false,
+      "has_video_reviews": true,
+      "free": true,
+      "source_path": "C:\\Users\\kfigh\\wish_librarian\\output\\library\\osoznannost-penman-uilyams",
+      "prices": {
+        "litres": 240,
+        "book24": 179,
+        "updated_at": "2026-06-20T15:40:56Z"
+      },
+      "affiliate": {
+        "litres_url": "https://www.litres.ru/book/mark-uilyams/osoznannost-kak-obresti-garmoniu-v-nashem-bezumnom-mire-7265037/",
+        "advcake_url": "https://www.litres.ru/book/mark-uilyams/osoznannost-kak-obresti-garmoniu-v-nashem-bezumnom-mire-7265037/?utm_source=advcake&utm_medium=cpa&utm_campaign=affiliate&utm_content=c280b701&advcake_params=&utm_term=&erid=2VfnxyNkZrY&advcake_method=1&m=1&subid=site_2026-06-25_osoznannost-penman-uilyams",
+        "erid": "2VfnxyNkZrY",
+        "advcake_hash": "c280b701",
+        "advertiser": {
+          "name": "ООО ЛИТРЕС",
+          "inn": "7719571260"
+        },
+        "subid": "site_2026-06-25_osoznannost-penman-uilyams",
+        "updated_at": "2026-06-25T23:27:06Z"
+      }
+    },
+    {
+      "slug": "ot-mechty-do-uspeha-trunin-r-a",
+      "title": "От мечты до успеха",
+      "author": "Р.А. Трунин",
+      "year": 2018,
+      "description": "Конкретные практические советы, оригинальные нестандартные идеи и решения, которые действительно работают в реальном мире и актуальны именно в наши дни.",
+      "tags": [
+        "хочунасамомделе",
+        "бросаюцели",
+        "сила воли"
+      ],
+      "themes": [
+        "женская самооценка",
+        "бросаюцели",
+        "внутренний критик",
+        "отложенная жизнь",
+        "мотивация изнутри"
+      ],
+      "queries": [
+        "как добиться успеха",
+        "от мечты к реальности",
+        "мотивация и действия",
+        "деньги и саморазвитие",
+        "отношения и успех"
+      ],
+      "cover": "/books/ot-mechty-do-uspeha-trunin-r-a.jpg",
+      "has_summary": true,
+      "has_workbook": true,
+      "has_tips": true,
+      "has_buy_links": true,
+      "has_pdf": true,
+      "free": true,
+      "source_path": "C:\\Users\\kfigh\\wish_librarian\\output\\library\\Трунин_РА_От_мечты_до_успеха",
+      "prices": {
+        "litres": 49,
+        "book24": 369,
+        "updated_at": "2026-06-20T15:40:56Z"
+      }
+    },
+    {
+      "slug": "teoriya-neveroyatnosti-muzhitskaya",
+      "title": "Теория невероятности",
+      "author": "Татьяна Мужицкая",
+      "year": 2023,
+      "description": "Инженерный подход к чудесам. Пять правил, которые превращают мечты в реальность: сила мысли, закон притяжения, визуализация как репетиция, вера и действие.",
+      "tags": [
+        "силамысли",
+        "законпритяжения",
+        "визуализация",
+        "вераидействие",
+        "микроэксперимент"
+      ],
+      "themes": [
+        "исполнение желаний",
+        "визуализация",
+        "позитивное мышление",
+        "внутреннее состояние",
+        "первый шаг к мечте"
+      ],
+      "queries": [
+        "как мечтать чтобы сбывалось",
+        "закон притяжения как работает",
+        "визуализация желания техника",
+        "как начать действовать",
+        "теория невероятности Мужицкая"
+      ],
+      "cover": "/books/teoriya-neveroyatnosti-muzhitskaya.jpg?v=4",
+      "has_summary": true,
+      "has_workbook": true,
+      "has_tips": true,
+      "has_buy_links": true,
+      "has_pdf": true,
+      "free": true,
+      "source_path": "C:\\Users\\kfigh\\wish_librarian\\output\\library\\Мuzhitskaya_Тeoriya_neveroyatnosti",
+      "prices": {
+        "litres": 449,
+        "book24": null,
+        "updated_at": "2026-06-20T15:40:56Z"
+      },
+      "affiliate": {
+        "litres_url": "https://www.litres.ru/book/tatyana-muzhickaya/teoriya-neveroyatnosti-kak-mechtat-chtoby-sbyvalos-kak-27304463/",
+        "advcake_url": "https://www.litres.ru/book/tatyana-muzhickaya/teoriya-neveroyatnosti-kak-mechtat-chtoby-sbyvalos-kak-27304463/?utm_source=advcake&utm_medium=cpa&utm_campaign=affiliate&utm_content=c280b701&advcake_params=&utm_term=&erid=2VfnxyNkZrY&advcake_method=1&m=1&subid=site_2026-06-25_teoriya-neveroyatnosti-muzhitskaya",
+        "erid": "2VfnxyNkZrY",
+        "advcake_hash": "c280b701",
+        "advertiser": {
+          "name": "ООО ЛИТРЕС",
+          "inn": "7719571260"
+        },
+        "subid": "site_2026-06-25_teoriya-neveroyatnosti-muzhitskaya",
+        "updated_at": "2026-06-25T23:27:06Z"
+      }
+    },
+    {
+      "slug": "k-sebe-nezhno-primachenko",
+      "title": "К себе нежно. Книга о том, как ценить и беречь себя",
+      "author": "Ольга Примаченко",
+      "year": 2020,
+      "description": "Тёплый разговор о самосострадании, границах, эмоциональной гигиене и балансе. Книга-медитация, которая приглашает к внутреннему разговору и помогает услышать собственный голос среди множества других.",
+      "tags": [
+        "самосострадание",
+        "границы",
+        "эмоциональнаягигиена",
+        "баланс",
+        "принятиесебя"
+      ],
+      "themes": [
+        "любовь к себе без эзотерики",
+        "установление здоровых границ",
+        "эмоциональная регуляция",
+        "внутренний критик",
+        "практика заботы о себе"
+      ],
+      "queries": [
+        "к себе нежно о чём",
+        "примаченко книга",
+        "как полюбить себя психология",
+        "осознанность и самосострадание",
+        "книга о заботе о себе"
+      ],
+      "cover": "/books/k-sebe-nezhno-primachenko.jpg?v=4",
+      "has_summary": true,
+      "has_workbook": true,
+      "has_tips": true,
+      "has_buy_links": true,
+      "has_reviews": true,
+      "has_video_reviews": true,
+      "has_pdf": true,
+      "free": true,
+      "source_path": "C:\\Users\\kfigh\\wish_librarian\\output\\library\\Ольга_Примаченко_К_себе_нежно_Книга_о_том_как_ценить_и_беречь_себя_2026",
+      "prices": {
+        "litres": 449,
+        "book24": null,
+        "updated_at": "2026-06-21T19:20:00Z"
+      },
+      "affiliate": {
+        "litres_url": "https://www.litres.ru/book/olga-primachenko/k-sebe-nezhno-kniga-o-tom-kak-cenit-i-berech-sebya-62780292/",
+        "advcake_url": "https://www.litres.ru/book/olga-primachenko/k-sebe-nezhno-kniga-o-tom-kak-cenit-i-berech-sebya-62780292/?utm_source=advcake&utm_medium=cpa&utm_campaign=affiliate&utm_content=c280b701&advcake_params=&utm_term=&erid=2VfnxyNkZrY&advcake_method=1&m=1&subid=site_2026-06-25_k-sebe-nezhno-primachenko",
+        "erid": "2VfnxyNkZrY",
+        "advcake_hash": "c280b701",
+        "advertiser": {
+          "name": "ООО ЛИТРЕС",
+          "inn": "7719571260"
+        },
+        "subid": "site_2026-06-25_k-sebe-nezhno-primachenko",
+        "updated_at": "2026-06-25T23:27:06Z"
+      }
+    },
+    {
+      "slug": "alhimik-koeluo",
+      "title": "Алхимик",
+      "author": "Пауло Коэльо",
+      "year": 1988,
+      "description": "История пастуха Сантьяго, который отправился на поиски сокровищ и нашёл самого себя. Притча о том, что когда ты чего-то по-настоящему хочешь, вся Вселенная помогает тебе достичь этого.",
+      "tags": [
+        "художественная",
+        "алхимик",
+        "коэльо",
+        "путькмечте",
+        "осознанность"
+      ],
+      "themes": [
+        "следовать за мечтой",
+        "преодоление страха",
+        "знаки вселенной",
+        "любовь и отпускание",
+        "самопознание через путь"
+      ],
+      "queries": [
+        "Алхимик Коэльо о чём",
+        "книга про следование мечте",
+        "художественная книга о желаниях",
+        "когда вселенная помогает",
+        "как не бояться идти к мечте"
+      ],
+      "cover": "/books/alhimik-koeluo.jpg",
+      "book_type": "fiction-reflective",
+      "has_summary": true,
+      "has_workbook": false,
+      "has_tips": false,
+      "has_buy_links": true,
+      "has_reviews": true,
+      "has_video_reviews": true,
+      "has_pdf": false,
+      "free": true,
+      "source_path": "C:\\Users\\kfigh\\wish_librarian\\output\\library\\Пауло_Коэльо_Алхимик",
+      "prices": {
+        "litres": 449,
+        "book24": 599,
+        "updated_at": "2026-06-20T15:40:56Z"
+      },
+      "affiliate": {
+        "litres_url": "https://www.litres.ru/book/paulo-koelo/alhimik-122351/",
+        "advcake_url": "https://www.litres.ru/book/paulo-koelo/alhimik-122351/?utm_source=advcake&utm_medium=cpa&utm_campaign=affiliate&utm_content=c280b701&advcake_params=&utm_term=&erid=2VfnxyNkZrY&advcake_method=1&m=1",
+        "erid": "2VfnxyNkZrY",
+        "advcake_hash": "c280b701",
+        "advertiser": {
+          "name": "ООО ЛИТРЕС",
+          "inn": "7719571260"
+        },
+        "updated_at": "2026-06-25T06:55:29Z"
+      }
+    }
+  ],
+  "updated_at": "2026-06-25"
+}

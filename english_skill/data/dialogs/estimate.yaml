@@ -1,0 +1,81 @@
+# Ролевой диалог: Giving an Estimate
+# Категория: negotiation
+
+meta:
+  name: "estimate"
+  display_name: "Giving a Time Estimate"
+  category: "negotiation"
+  level: "B1-B2"
+  estimated_min: 6
+  grammar_focus: ["future-will", "modal-verbs", "conditionals-1st"]
+  vocab_from_glossary: ["This deadline is too tight", "We need more time", "Let's cut scope", "What's the MVP", "I'll need to escalate"]
+
+context:
+  role: "Senior developer estimating a feature"
+  team: "Pulse Lab"
+  setting: "Sprint planning meeting"
+  scenario: |
+    PM is asking for an estimate on a new feature (export to PDF). The deadline is
+    Friday (3 days away). You think it's tight — the feature is bigger than it looks.
+    You need to negotiate scope or timeline.
+
+script:
+  - speaker: "pm"
+    line: "We need to ship the PDF export by Friday. Can you commit to that?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — push back politely]"
+    hint: "Friday is <too tight>. Can we <compromise>?"
+    model_answer: "Friday is tight for that scope. Can we ship a simpler version by Friday and iterate next sprint?"
+    alternatives:
+      - "Honestly, Friday feels too tight. Can we either push the deadline or cut the scope?"
+      - "If we want to do it right, I'd need at least 2 weeks. For Friday, we'd have to cut some features."
+
+  - speaker: "pm"
+    line: "What's the MVP we could ship by Friday?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — propose MVP]"
+    hint: "For the MVP, I'd ship <scope>."
+    model_answer: "For the MVP, I'd ship basic PDF generation with our standard template — no custom styling, no charts. That's doable by Friday."
+    alternatives:
+      - "The MVP would be: PDF export of the dashboard, no custom branding. We can add styling next sprint."
+      - "We could ship basic export without charts and multi-page support. That would fit Friday."
+
+  - speaker: "pm"
+    line: "OK, that works. How about charts and custom styling?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — estimate the next phase]"
+    hint: "I estimate <phase 2> will take <timeframe>."
+    model_answer: "I estimate charts and custom styling will take another 2 weeks after the MVP ships."
+    alternatives:
+      - "For charts, add another week. Custom styling is the biggest — probably 2 more weeks."
+      - "I'd estimate 2-3 weeks for the full feature set, depending on design iterations."
+
+  - speaker: "pm"
+    line: "Great. Can you write this up?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — commit to follow-up]"
+    hint: "Sure, I'll <action> by <time>."
+    model_answer: "Sure, I'll send a doc with the breakdown and timeline by EOD tomorrow."
+    alternatives:
+      - "Yes, I'll create a ticket with the scope and estimates today."
+      - "I'll ping you with the write-up by tomorrow afternoon."
+
+after_dialog:
+  recap_vocab:
+    - "Friday feels tight."
+    - "Can we ship a simpler version?"
+    - "For the MVP, I'd ship ..."
+    - "I estimate <phase 2> will take <timeframe>."
+    - "I'll send a doc by EOD."
+
+  grammar_notes:
+    - "Future will: 'I estimate this will take 2 weeks'"
+    - "Modal verbs: 'can we' / 'could we' (мягкие предложения)"
+    - "Conditional 1st: 'If we ship the MVP, we can iterate later'"
+
+  next_dialog: "push-back"
+  notes: "Estimates ≠ commitments. Use words: 'estimate', 'rough', 'about' вместо 'exactly'."

@@ -1,0 +1,30 @@
+# Сфера: Обучение
+# NB: в каталоге WL нет книг про обучение напрямую.
+#     Связь косвенная через книги про мышление, принятие решений, исполнение желаний.
+
+sphere:
+  id: learning
+  name: Обучение
+  description: Книги, курсы, новые навыки, самообразование
+  icon: 📚
+  color: "#6366f1"
+  order: 7
+
+source_books:
+  - slug: daniel-kaneman-dumay-medlenno-reshay-bystro  # Думай медленно
+    relevant_chapters: []
+    note: "косвенная связь через качество мышления"
+  - slug: muzhitskaya-teoriya-neveroyatnosti  # Теория вероятности — Мужицкая
+    relevant_chapters: []
+    note: "косвенная связь через работу с вероятностями"
+  - slug: grout-kurs-ispolneniya-zhelanii   # Курс исполнения желаний
+    relevant_chapters: []
+    note: "косвенная связь через обучение техникам исполнения"
+
+subsphere_hints:
+  - reading: чтение (книги, статьи, журналы)
+  - courses: курсы (онлайн-школы, ютуб, лекции)
+  - languages: языки (английский, испанский, любой)
+  - skills: новые навыки (рисование, программирование, кузнечное дело)
+  - memory: память (методики, тренажёры, приёмы)
+  - speed-learning: скорочтение, конспектирование, mind-map

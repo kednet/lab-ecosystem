@@ -1,0 +1,41 @@
+# Каналы анонса
+# Используется scripts/post_telegram.py, post_vk.py, send_email.py, notify_admin.py
+
+telegram:
+  public:
+    channel_id: "@pulabru"               # публичный TG-канал «Лаборатория желаний»
+    admin_chat_id: "@kfigh"              # личка админа (для модерации private)
+    parse_mode: "HTML"
+    disable_notification: false
+    rate_limit_per_min: 20               # TG limit 30/min, держим запас
+  private:
+    channel_id: "-1003358741340"         # приватный канал «Лаборатория желаний pulab.ru»
+    requires_moderation: true            # постим только после одобрения в личке
+    # Шаблон поста берётся из content.tg (тот же, что для public)
+
+vk:
+  group_id: 237295798               # pulabru
+  from_group: true                  # пост от имени группы
+  signed: 0                         # без подписи
+  attachments:                      # обложка + ссылка на сайт
+    - cover.jpg
+    - "https://pulab.online/books/{slug}"
+
+email:
+  from: "Лаборатория желаний <noreply@pulab.online>"
+  subject_template: "📚 Новая книга: {title}"
+  list_file: "data/email_list.txt"  # 1 email на строку
+  template: "templates/announcement-email.html"
+  rate_limit_per_min: 30            # SMTP обычное
+
+admin_notify:
+  # Сюда ВСЕГДА шлём отчёт о публикации
+  channel: "telegram"               # только TG
+  include:
+    - slug
+    - title
+    - live_url
+    - duration_sec
+    - channels_posted
+    - channels_failed
+    - preview_path

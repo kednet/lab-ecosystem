@@ -1,0 +1,842 @@
+---
+import Base from '../layouts/Base.astro';
+import { spheres, sphereOrder, spheresById, type SphereId } from '../data/wish-map/spheres';
+import { goldenWishes, wishTypeLabels } from '../data/wish-map/wishes-golden';
+import { breadcrumbLd } from '../lib/seo';
+
+const pageUrl = 'https://app.pulab.ru/wish-map/';
+const pageTitle = 'Карта желаний — собери за 5 минут и распечатай';
+const pageDescription =
+  'Бесплатный онлайн-конструктор карты желаний: 6 сфер жизни, готовые примеры и свои слова. Скачай в PDF/PNG формате A3, распечатай и вклей фото. Без регистрации — 3 сферы бесплатно.';
+---
+<Base
+  title={pageTitle}
+  description={pageDescription}
+  ogImage="/og/wish-map.png"
+  extraJsonLd={[
+    JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: 'Карта желаний — ЛАБОРАТОРИЯ ЖЕЛАНИЙ',
+      applicationCategory: 'LifestyleApplication',
+      applicationSubCategory: 'Goal Setting Tool',
+      operatingSystem: 'Web',
+      url: pageUrl,
+      description: 'Онлайн-конструктор карты желаний. 6 сфер, готовые примеры, скачивание в PDF/PNG формате A3. Бесплатно до 3 сфер.',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'RUB',
+        availability: 'https://schema.org/InStock',
+        description: 'Бесплатно до 3 сфер и 1 желание в каждой',
+      },
+    }),
+    breadcrumbLd([
+      { name: 'Главная', url: '/' },
+      { name: 'Карта желаний', url: '/wish-map/' },
+    ]),
+  ]}
+>
+  <!-- HERO -->
+  <section class="section wish-hero">
+    <div class="container wish-hero__inner">
+      <p class="section__eyebrow reveal">Карта желаний</p>
+      <h1 class="section__title reveal">
+        Собери карту желаний<br />за&nbsp;5&nbsp;минут
+      </h1>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 0 auto 24px;">
+        Выбери сферы жизни, добавь картинки и&nbsp;свои слова.
+        Скачай&nbsp;PDF&nbsp;A3, распечатай и&nbsp;вклей фото.
+      </p>
+      <div class="wish-hero__actions reveal">
+        <a class="btn btn--primary" href="#step-1">Начать собирать</a>
+        <a class="btn btn--ghost" href="/pricing/">Узнать про тарифы</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 1: WHEEL -->
+  <section class="section section--alt" id="step-1" aria-labelledby="step-1-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Шаг 1</p>
+      <h2 class="section__title reveal" id="step-1-title">
+        Выбери сферы
+      </h2>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 0 auto 32px;">
+        Кликни на&nbsp;сектор колеса или на&nbsp;карточку ниже.
+        Можно выбрать все 6&nbsp;сфер сразу.
+      </p>
+
+      <!-- Wheel (desktop) -->
+      <div class="wish-wheel" data-role="wheel-desktop">
+        <svg viewBox="-150 -150 300 300" class="wish-wheel__svg" aria-label="Шесть сфер жизни" role="img">
+          {spheres.map((s, i) => {
+            const startAngle = (i * 60 - 90) * Math.PI / 180;
+            const endAngle = ((i + 1) * 60 - 90) * Math.PI / 180;
+            const x1 = 140 * Math.cos(startAngle);
+            const y1 = 140 * Math.sin(startAngle);
+            const x2 = 140 * Math.cos(endAngle);
+            const y2 = 140 * Math.sin(endAngle);
+            const largeArc = 0;
+            const path = `M 0 0 L ${x1} ${y1} A 140 140 0 ${largeArc} 1 ${x2} ${y2} Z`;
+            const midAngle = ((i * 60 + 30) - 90) * Math.PI / 180;
+            const labelX = 80 * Math.cos(midAngle);
+            const labelY = 80 * Math.sin(midAngle);
+            return (
+              <g
+                class="wish-wheel__sector"
+                data-sphere={s.id}
+                tabindex="0"
+                role="button"
+                aria-label={`Выбрать сферу «${s.name}»`}
+                aria-pressed="false"
+              >
+                <path d={path} fill={s.color} />
+                <text
+                  x={labelX}
+                  y={labelY}
+                  text-anchor="middle"
+                  dominant-baseline="middle"
+                  fill="#fff"
+                  font-size="12"
+                  font-weight="700"
+                  pointer-events="none"
+                >{s.emoji}</text>
+                <text
+                  x={labelX}
+                  y={labelY + 18}
+                  text-anchor="middle"
+                  dominant-baseline="middle"
+                  fill="#fff"
+                  font-size="9"
+                  font-weight="600"
+                  pointer-events="none"
+                >{s.name}</text>
+              </g>
+            );
+          })}
+          <!-- Центральный круг -->
+          <circle cx="0" cy="0" r="38" fill="#fff" />
+          <text
+            x="0"
+            y="-2"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            fill="var(--rose-deep)"
+            font-size="9"
+            font-weight="700"
+          >ТВОЯ КАРТА</text>
+          <text
+            x="0"
+            y="10"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            fill="var(--muted)"
+            font-size="7"
+          >выбрано <tspan data-role="selected-count">0</tspan>/6</text>
+        </svg>
+      </div>
+
+      <!-- Cards (mobile + fallback) -->
+      <ul class="wish-sphere-grid" data-role="sphere-grid" role="list">
+        {spheres.map((s) => (
+          <li
+            class="wish-sphere-card"
+            data-sphere={s.id}
+            data-role="sphere-card"
+            tabindex="0"
+            role="button"
+            aria-label={`Выбрать сферу «${s.name}»`}
+            aria-pressed="false"
+            style={`--sphere-color: ${s.color}; --sphere-from: ${s.gradient[0]}; --sphere-to: ${s.gradient[1]};`}
+          >
+            <div class="wish-sphere-card__emoji" aria-hidden="true">{s.emoji}</div>
+            <div class="wish-sphere-card__body">
+              <h3 class="wish-sphere-card__name">{s.name}</h3>
+              <p class="wish-sphere-card__desc">{s.description}</p>
+            </div>
+            <div class="wish-sphere-card__check" data-role="check" aria-hidden="true">✓</div>
+          </li>
+        ))}
+      </ul>
+
+      <div class="wish-step-cta reveal">
+        <button
+          type="button"
+          class="btn btn--primary btn--large"
+          data-role="to-step-2"
+          disabled
+        >Дальше: добавить желания →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: WISHES -->
+  <section class="section" id="step-2" hidden aria-labelledby="step-2-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Шаг 2</p>
+      <h2 class="section__title reveal" id="step-2-title">
+        Добавь желания
+      </h2>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 0 auto 32px;">
+        По&nbsp;1–3 желания в&nbsp;каждой сфере. Кликни на&nbsp;чип&nbsp;— текст подставится
+        сам, либо напиши своё.
+      </p>
+
+      <div class="wish-forms" data-role="wish-forms"></div>
+
+      <div class="wish-step-cta reveal">
+        <button type="button" class="btn btn--ghost" data-role="back-to-step-1">← Назад к сферам</button>
+        <button
+          type="button"
+          class="btn btn--primary btn--large"
+          data-role="to-step-3"
+        >Дальше: скачать карту →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 3: PREVIEW + EXPORT -->
+  <section class="section section--alt" id="step-3" hidden aria-labelledby="step-3-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Шаг 3</p>
+      <h2 class="section__title reveal" id="step-3-title">
+        Скачай и&nbsp;распечатай
+      </h2>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 0 auto 32px;">
+        A3&nbsp;landscape&nbsp;— стандартный размер. Печатай на&nbsp;плотной бумаге,
+        в&nbsp;пустые квадраты вклей фото.
+      </p>
+
+      <!-- Превью (рендерится клиентом в SVG, обновляется мгновенно) -->
+      <div class="wish-preview-wrap reveal" data-role="preview-wrap">
+        <div class="wish-preview" data-role="preview" aria-label="Превью карты желаний"></div>
+        <p class="wish-preview__hint" data-role="preview-empty">
+          Добавь хотя бы&nbsp;одно желание, чтобы увидеть превью.
+        </p>
+      </div>
+
+      <div class="wish-export reveal" data-role="export">
+        <p class="wish-export__quota" data-role="quota-note">—</p>
+        <div class="wish-export__buttons">
+          <button type="button" class="btn btn--primary btn--large" data-role="download-pdf">
+            <span data-role="download-pdf-label">Скачать карту (PDF, A3)</span>
+          </button>
+          <button type="button" class="btn btn--ghost" data-role="download-png">
+            <span data-role="download-png-label">PNG</span>
+          </button>
+        </div>
+        <div class="wish-contest" data-role="contest" hidden>
+          <label class="wish-contest__opt-in">
+            <input type="checkbox" data-role="contest-toggle" />
+            <span>Участвую в&nbsp;<a href="/blog/kak-uchastvovat-v-konkurse-kart-zhelanij/" target="_blank" rel="noopener">конкурсе карт желаний</a></span>
+          </label>
+          <input
+            type="text"
+            class="wish-contest__referrer"
+            data-role="contest-referrer"
+            placeholder="Реферальный код (необязательно)"
+            maxlength="32"
+            hidden
+          />
+        </div>
+      </div>
+
+      <div class="wish-step-cta reveal">
+        <button type="button" class="btn btn--ghost" data-role="back-to-step-2">← Назад к желаниям</button>
+        <button type="button" class="btn btn--ghost" data-role="reset">Очистить и&nbsp;начать заново</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" aria-labelledby="how-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Как это работает</p>
+      <h2 class="section__title reveal" id="how-title">Три шага до&nbsp;карты</h2>
+      <ul class="book-grid" role="list">
+        <li class="book-card">
+          <div class="book-card__body">
+            <h3 class="book-card__title">1. Выбери сферы</h3>
+            <p class="book-card__desc">Колесо баланса&nbsp;— 6&nbsp;сфер жизни. Выбирай те, в&nbsp;которых хочешь изменений.</p>
+          </div>
+        </li>
+        <li class="book-card">
+          <div class="book-card__body">
+            <h3 class="book-card__title">2. Напиши желания</h3>
+            <p class="book-card__desc">По&nbsp;1–3 желания в&nbsp;сфере. Готовые примеры или свои слова. Сохраняется в&nbsp;черновик автоматически.</p>
+          </div>
+        </li>
+        <li class="book-card">
+          <div class="book-card__body">
+            <h3 class="book-card__title">3. Скачай и&nbsp;распечатай</h3>
+            <p class="book-card__desc">PDF&nbsp;A3 или PNG. Распечатай на&nbsp;плотной бумаге, вклей фото в&nbsp;пустые слоты.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- TEMPLATES (для Pinterest и печати) -->
+  <section class="section section--alt" aria-labelledby="templates-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Скачай и&nbsp;распечатай</p>
+      <h2 class="section__title reveal" id="templates-title">
+        Готовые шаблоны<br />для&nbsp;самостоятельной сборки
+      </h2>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 0 auto 32px;">
+        Не&nbsp;хочешь собирать онлайн? Возьми готовый PDF&nbsp;— распечатай на&nbsp;A3,
+        допиши желания от&nbsp;руки и&nbsp;вклей фото.
+      </p>
+
+      <ul class="templates-grid reveal" role="list">
+        <li class="template-card">
+          <div class="template-card__preview" aria-hidden="true">
+            <div class="template-card__preview-icon">🗺️</div>
+          </div>
+          <h3 class="template-card__title">Карта желаний A3&nbsp;(пустая)</h3>
+          <p class="template-card__desc">
+            Чистый шаблон: 6&nbsp;секторов под&nbsp;сферы жизни, пустые поля для&nbsp;желаний и&nbsp;слотов под&nbsp;фото.
+            Распечатай и&nbsp;заполни от&nbsp;руки.
+          </p>
+          <a class="btn btn--primary" href="/downloads/wish-map-blank-a3.pdf" download>
+            Скачать PDF&nbsp;(A3)
+          </a>
+        </li>
+
+        <li class="template-card">
+          <div class="template-card__preview" aria-hidden="true">
+            <div class="template-card__preview-icon">✍️</div>
+          </div>
+          <h3 class="template-card__title">Список из&nbsp;30&nbsp;истинных желаний</h3>
+          <p class="template-card__desc">
+            Воркбук с&nbsp;вопросами: что я&nbsp;хочу на&nbsp;самом деле, как отличить «надо» от&nbsp;«хочу»,
+            и&nbsp;чем заполнить 6&nbsp;сфер.
+          </p>
+          <a class="btn btn--primary" href="/downloads/30-true-wishes.pdf" download>
+            Скачать PDF
+          </a>
+        </li>
+
+        <li class="template-card">
+          <div class="template-card__preview" aria-hidden="true">
+            <div class="template-card__preview-icon">📌</div>
+          </div>
+          <h3 class="template-card__title">Мини-карта (A4)</h3>
+          <p class="template-card__desc">
+            Упрощённая версия на&nbsp;одном листе A4&nbsp;— для&nbsp;тех, у&nbsp;кого нет принтера
+            на&nbsp;A3&nbsp;или кто хочет начать с&nbsp;малого.
+          </p>
+          <a class="btn btn--primary" href="/downloads/wish-map-mini-a4.pdf" download>
+            Скачать PDF&nbsp;(A4)
+          </a>
+        </li>
+      </ul>
+
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 32px auto 0; font-size: 13px; color: var(--muted);">
+        Все шаблоны бесплатны. Можно печатать сколько угодно раз&nbsp;— для&nbsp;себя, подруг, вечеринок.
+      </p>
+    </div>
+  </section>
+
+  <!-- Modal (gating + contest rules) -->
+  <div class="wish-modal" data-role="modal" hidden role="dialog" aria-modal="true" aria-labelledby="wish-modal-title">
+    <div class="wish-modal__backdrop" data-role="modal-backdrop"></div>
+    <div class="wish-modal__dialog">
+      <button class="wish-modal__close" data-role="modal-close" type="button" aria-label="Закрыть">×</button>
+      <h3 class="wish-modal__title" id="wish-modal-title" data-role="modal-title">—</h3>
+      <p class="wish-modal__text" data-role="modal-text">—</p>
+      <div class="wish-modal__actions" data-role="modal-actions"></div>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { initWishMap } from '../scripts/wish-map';
+  initWishMap();
+</script>
+
+<style>
+  /* HERO */
+  .wish-hero__inner { text-align: center; }
+  .wish-hero__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* WHEEL */
+  .wish-wheel {
+    max-width: 560px;
+    margin: 0 auto 40px;
+  }
+  .wish-wheel__svg { width: 100%; height: auto; display: block; }
+  .wish-wheel__sector {
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+    transform-origin: 0 0;
+  }
+  .wish-wheel__sector:hover { filter: brightness(1.08); }
+  .wish-wheel__sector.is-selected { filter: brightness(1.15) drop-shadow(0 0 6px rgba(225, 29, 72, 0.6)); }
+  .wish-wheel__sector.is-disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* SPHERE CARDS (mobile) */
+  .wish-sphere-grid {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .wish-sphere-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-left: 5px solid var(--sphere-color, var(--rose));
+    border-radius: 16px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .wish-sphere-card:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(225, 29, 72, 0.08); }
+  .wish-sphere-card.is-selected {
+    border-color: var(--sphere-color, var(--rose));
+    background: linear-gradient(135deg, var(--sphere-from, #fff), var(--sphere-to, #fff));
+    color: #fff;
+  }
+  .wish-sphere-card.is-selected .wish-sphere-card__desc { color: rgba(255, 255, 255, 0.85); }
+  .wish-sphere-card.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .wish-sphere-card__emoji { font-size: 32px; flex-shrink: 0; }
+  .wish-sphere-card__body { flex: 1; min-width: 0; }
+  .wish-sphere-card__name {
+    margin: 0 0 4px;
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--rose-deep);
+  }
+  .wish-sphere-card.is-selected .wish-sphere-card__name { color: #fff; }
+  .wish-sphere-card__desc {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .wish-sphere-card__check {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 18px;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .wish-sphere-card.is-selected .wish-sphere-card__check { opacity: 1; }
+
+  /* Mobile: показываем карточки, прячем wheel */
+  @media (max-width: 768px) {
+    .wish-wheel { display: none; }
+    .wish-sphere-grid { display: grid; }
+  }
+
+  /* STEP CTA */
+  .wish-step-cta {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+
+  /* WISH FORM */
+  .wish-form {
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .wish-form > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: background 0.15s;
+  }
+  .wish-form > summary:hover { background: var(--bg); }
+  .wish-form > summary::-webkit-details-marker { display: none; }
+  .wish-form[open] > summary { border-bottom: 1px solid var(--line); }
+  .wish-form__emoji { font-size: 24px; }
+  .wish-form__title {
+    flex: 1;
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--rose-deep);
+    margin: 0;
+  }
+  .wish-form__count {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+    background: var(--bg-2);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .wish-form__body { padding: 20px 22px; display: flex; flex-direction: column; gap: 16px; }
+  .wish-form__hint {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  /* Чипы (и форма ввода) — глобально, потому что кнопки .wish-chip создаются
+     через document.createElement() в src/scripts/wish-map.ts и не имеют data-astro-cid,
+     к которому Astro-скоупинг привязывает селекторы. Без is:global стили не применяются. */
+  .wish-form__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .wish-chip {
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .wish-chip:hover { border-color: var(--rose); background: var(--bg); transform: translateY(-1px); }
+  .wish-chip__type {
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--bg-2);
+    padding: 2px 6px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  .wish-chip__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--rose);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  /* Сфера-зависимый цвет точки */
+  .wish-form__chips[data-sphere="health"]    .wish-chip__num { background: #10b981; }
+  .wish-form__chips[data-sphere="relations"] .wish-chip__num { background: #ec4899; }
+  .wish-form__chips[data-sphere="finance"]   .wish-chip__num { background: #f59e0b; }
+  .wish-form__chips[data-sphere="career"]    .wish-chip__num { background: #3b82f6; }
+  .wish-form__chips[data-sphere="spiritual"] .wish-chip__num { background: #8b5cf6; }
+  .wish-form__chips[data-sphere="rest"]      .wish-chip__num { background: #06b6d4; }
+  .wish-form__inputs { display: flex; flex-direction: column; gap: 10px; }
+  .wish-input {
+    background: var(--bg);
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .wish-input:focus-within {
+    border-color: var(--rose);
+    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
+    background: #fff;
+  }
+  .wish-input__field {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    resize: vertical;
+    outline: none;
+    min-height: 44px;
+  }
+  .wish-input__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+  }
+  .wish-input__count { font-size: 11px; color: var(--muted); }
+  .wish-input__remove {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 22px;
+    line-height: 1;
+    padding: 0 6px;
+  }
+  .wish-input__remove:hover { color: var(--rose); }
+  .wish-form__add {
+    align-self: flex-start;
+    font: inherit;
+    font-size: 13px;
+    color: var(--rose);
+    background: transparent;
+    border: 1.5px dashed var(--line);
+    border-radius: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+  }
+  .wish-form__add:hover { border-color: var(--rose); color: var(--rose-deep); }
+
+  /* PREVIEW */
+  .wish-preview-wrap {
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .wish-preview {
+    max-width: 720px;
+    margin: 0 auto;
+    transition: opacity 0.2s;
+  }
+  .wish-preview svg { width: 100%; height: auto; display: block; }
+  .wish-preview__hint {
+    color: var(--muted);
+    margin: 32px 0 0;
+    font-size: 14px;
+  }
+
+  /* EXPORT */
+  .wish-export {
+    text-align: center;
+  }
+  .wish-export__quota {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 16px;
+  }
+  .wish-export__buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .wish-contest {
+    margin-top: 32px;
+    padding: 20px;
+    background: var(--bg);
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .wish-contest__opt-in {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .wish-contest__opt-in input { width: 18px; height: 18px; accent-color: var(--rose); }
+  .wish-contest__opt-in a { color: var(--rose-deep); text-decoration: underline; }
+  .wish-contest__referrer {
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    font: inherit;
+    font-size: 14px;
+  }
+  .wish-contest__referrer:focus {
+    outline: none;
+    border-color: var(--rose);
+  }
+
+  /* TEMPLATES */
+  .templates-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  @media (min-width: 700px) { .templates-grid { grid-template-columns: repeat(3, 1fr); } }
+  .template-card {
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    padding: 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .template-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(225, 29, 72, 0.12);
+  }
+  .template-card__preview {
+    background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 100%);
+    border-radius: 12px;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+  .template-card__preview-icon { font-size: 56px; line-height: 1; }
+  .template-card__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--rose-deep);
+  }
+  .template-card__desc {
+    margin: 0;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+    flex: 1;
+  }
+  .template-card .btn { margin-top: 4px; }
+
+  /* MODAL */
+  .wish-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .wish-modal[hidden] { display: none; }
+  .wish-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(31, 10, 20, 0.6);
+    backdrop-filter: blur(4px);
+  }
+  .wish-modal__dialog {
+    position: relative;
+    background: #fff;
+    border-radius: 24px;
+    padding: 32px;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  }
+  .wish-modal__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: 0;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 8px;
+  }
+  .wish-modal__close:hover { background: var(--bg); color: var(--rose); }
+  .wish-modal__title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--rose-deep);
+    margin: 0 0 12px;
+  }
+  .wish-modal__text {
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0 0 24px;
+  }
+  .wish-modal__actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .wish-modal__actions .btn { flex: 1; min-width: 140px; }
+</style>
+
+<style is:global>
+  /* Чипы .wish-chip* создаются в src/scripts/wish-map.ts через document.createElement().
+     У созданных в JS нод нет data-astro-cid, поэтому Astro-скоупинг к ним не применим.
+     Этот блок стилизует кнопки-чипы как глобальные (без data-атрибута). */
+  .wish-form__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .wish-chip {
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .wish-chip:hover {
+    border-color: var(--rose);
+    background: var(--bg);
+    transform: translateY(-1px);
+  }
+  .wish-chip__type {
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--bg-2);
+    padding: 2px 6px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  .wish-chip__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--rose);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  /* Цвет номера в зависимости от сферы */
+  .wish-form__chips[data-sphere="health"]    .wish-chip__num { background: #10b981; }
+  .wish-form__chips[data-sphere="relations"] .wish-chip__num { background: #ec4899; }
+  .wish-form__chips[data-sphere="finance"]   .wish-chip__num { background: #f59e0b; }
+  .wish-form__chips[data-sphere="career"]    .wish-chip__num { background: #3b82f6; }
+  .wish-form__chips[data-sphere="spiritual"] .wish-chip__num { background: #8b5cf6; }
+  .wish-form__chips[data-sphere="rest"]      .wish-chip__num { background: #06b6d4; }
+</style>

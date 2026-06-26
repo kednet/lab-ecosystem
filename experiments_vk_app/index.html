@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff1f2">
+  <title>Поделиться экспериментом — ЛАБОРАТОРИЯ ЖЕЛАНИЙ</title>
+  <meta name="description" content="Расскажите, что вы попробовали в жизни — из книги, подкаста или просто ситуации — и что получилось. 5 полей, 2 минуты, без регистрации.">
+
+  <!-- VK Mini App идентификация -->
+  <meta property="vk:app_id" content="54643519">
+
+  <!-- VK Bridge (официальный CDN). В обычном браузере window.vkBridge останется undefined — мы это обрабатываем ниже. -->
+  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+  <script>
+    // === Инициализация VK Bridge и получение user_id ===
+    window.LAB_VK_USER_ID = null;
+    if (window.vkBridge) {
+      vkBridge.send('VKWebAppInit').catch(function () {});
+      vkBridge.send('VKWebAppGetUserInfo').then(function (u) {
+        window.LAB_VK_USER_ID = u && u.id ? u.id : null;
+      }).catch(function () {});
+    }
+  </script>
+
+  <!-- Шрифты: локальные woff2 (fonts.googleapis.com заблокирован в РФ) -->
+  <link rel="preload" href="/fonts/manrope-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/manrope-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-serif-display-400.woff2" as="font" type="font/woff2" crossorigin>
+
+  <style>
+    /* === БАЗА (адаптация Detector-стиля под 1-экранную форму) === */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(180deg, #fff5f5 0%, #ffe4e6 100%);
+      color: #2d1418;
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    button { font-family: inherit; cursor: pointer; }
+    a { color: #881337; }
+    img { max-width: 100%; display: block; }
+
+    /* Контейнер — под VK Mini App viewport (~320-500px) */
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* === Кнопки === */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 2px solid transparent;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      min-height: 48px;
+      line-height: 1.2;
+    }
+    .btn--block { display: flex; width: 100%; }
+    .btn--primary {
+      background: linear-gradient(135deg, #881337 0%, #be185d 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(136, 19, 55, 0.25);
+    }
+    .btn--primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(136, 19, 55, 0.35); color: #ffffff; }
+    .btn--primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn--ghost {
+      background: #ffffff;
+      color: #4c0519;
+      border-color: rgba(136, 19, 55, 0.15);
+    }
+    .btn--ghost:hover { border-color: rgba(136, 19, 55, 0.4); transform: translateY(-1px); }
+
+    /* === ИНТРО === */
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7a3645;
+      margin: 0 0 12px;
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 999px;
+    }
+    .title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 32px;
+      line-height: 1.15;
+      color: #4c0519;
+      margin: 0 0 16px;
+    }
+    .title em { font-style: italic; }
+    .lead {
+      font-size: 16px;
+      color: #2d1418;
+      margin: 0 0 24px;
+      line-height: 1.55;
+    }
+    .features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      font-size: 14px;
+      color: #6b2030;
+    }
+    .features li {
+      background: rgba(255, 255, 255, 0.65);
+      padding: 6px 14px;
+      border-radius: 999px;
+    }
+    .microcopy {
+      margin: 14px 0 0;
+      font-size: 12px;
+      color: #7a3645;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    /* === ПРОГРЕСС === */
+    .progress { margin-bottom: 24px; }
+    .progress__bar {
+      height: 6px;
+      background: rgba(136, 19, 55, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress__fill {
+      height: 100%;
+      background: linear-gradient(90deg, #881337 0%, #be185d 100%);
+      transition: width 0.4s ease;
+      border-radius: 999px;
+      width: 0%;
+    }
+    .progress__label {
+      margin: 8px 0 0;
+      font-size: 13px;
+      color: #7a3645;
+      text-align: center;
+    }
+
+    /* === ШАГИ (поля ввода) === */
+    .step {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .step.is-active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .step__title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 22px;
+      line-height: 1.3;
+      color: #4c0519;
+      margin: 0 0 8px;
+    }
+    .step__hint {
+      font-size: 14px;
+      color: #7a3645;
+      margin: 0 0 20px;
+    }
+    .step__required {
+      color: #881337;
+      font-weight: 700;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .input, .textarea, .select {
+      width: 100%;
+      padding: 12px 16px;
+      font: inherit;
+      font-size: 16px;
+      color: #2d1418;
+      background: #ffffff;
+      border: 1.5px solid rgba(136, 19, 55, 0.15);
+      border-radius: 12px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .input::placeholder, .textarea::placeholder { color: rgba(107, 58, 74, 0.5); }
+    .input:focus, .textarea:focus, .select:focus {
+      border-color: #881337;
+      box-shadow: 0 0 0 4px rgba(136, 19, 55, 0.12);
+    }
+    .input[aria-invalid="true"], .textarea[aria-invalid="true"] {
+      border-color: #dc2626;
+      box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+    }
+    .textarea {
+      resize: vertical;
+      min-height: 110px;
+      line-height: 1.5;
+    }
+    .select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23881337' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 12px;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+    .counter {
+      margin: -4px 0 0;
+      text-align: right;
+      font-size: 12px;
+      color: #7a3645;
+    }
+    .counter--warn { color: #d97706; font-weight: 600; }
+
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #4c0519;
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 12px;
+    }
+    .consent input[type="checkbox"] {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: #881337;
+      cursor: pointer;
+    }
+    .consent--policy {
+      padding-top: 12px;
+      border-top: 1px solid rgba(136, 19, 55, 0.12);
+    }
+
+    .step__nav {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .step__nav .btn { flex: 1; }
+
+    .error {
+      margin: 8px 0 0;
+      padding: 10px 14px;
+      font-size: 13px;
+      line-height: 1.4;
+      color: #881337;
+      background: #fff1f2;
+      border: 1px solid rgba(136, 19, 55, 0.3);
+      border-radius: 10px;
+    }
+
+    /* Honeypot: боты заполняют, люди — нет */
+    .hp {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* === УСПЕХ === */
+    .success {
+      text-align: center;
+      padding: 24px 0 0;
+    }
+    .success__icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #881337, #be185d);
+      color: #fff;
+      font-size: 36px;
+      line-height: 64px;
+      font-weight: 700;
+    }
+    .success__title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 26px;
+      color: #4c0519;
+      margin: 0 0 10px;
+    }
+    .success__text {
+      font-size: 15px;
+      color: #4c0519;
+      margin: 0 0 24px;
+      line-height: 1.55;
+    }
+    .success__id {
+      font-family: 'Manrope', monospace;
+      font-size: 12px;
+      color: #7a3645;
+      background: rgba(255, 255, 255, 0.65);
+      padding: 4px 10px;
+      border-radius: 999px;
+      display: inline-block;
+      margin: 0 0 24px;
+    }
+    .success__buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .success__buttons .btn { flex: 1 1 140px; min-width: 140px; }
+
+    /* === Подвал === */
+    .foot {
+      text-align: center;
+      margin: 32px 0 0;
+      font-size: 12px;
+      color: #7a3645;
+      line-height: 1.5;
+    }
+    .foot a { color: #7a3645; }
+
+    /* Mobile fine-tuning */
+    @media (max-width: 360px) {
+      .title { font-size: 28px; }
+      .step__title { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== ИНТРО ===== -->
+  <section id="exp-intro">
+    <div class="container">
+      <span class="eyebrow">Сообщество читателей · 5 полей</span>
+      <h1 class="title">
+        Поделитесь своим <em>экспериментом</em>
+      </h1>
+      <p class="lead">
+        Попробовали что-то в&nbsp;жизни&nbsp;— из&nbsp;книги, подкаста или просто ситуации&nbsp;— расскажите.
+        Получилось или&nbsp;нет&nbsp;— неважно, важен сам&nbsp;опыт.
+      </p>
+
+      <ul class="features">
+        <li>⏱ 2 минуты</li>
+        <li>🔒 без регистрации</li>
+        <li>📖 лучшие истории&nbsp;— в&nbsp;подборку</li>
+      </ul>
+
+      <button class="btn btn--primary btn--block" id="exp-start-btn" type="button">
+        Поделиться
+      </button>
+
+      <p class="microcopy">
+        Это не&nbsp;диагноз, а&nbsp;повод задуматься. Лучшие истории попадают в&nbsp;ежемесячную подборку.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== ФОРМА (5 шагов на одном экране) ===== -->
+  <section id="exp-form" hidden>
+    <div class="container">
+      <!-- Прогресс -->
+      <div class="progress">
+        <div class="progress__bar">
+          <div class="progress__fill" id="exp-progress-fill"></div>
+        </div>
+        <p class="progress__label" id="exp-progress-label">Шаг 1 из 5</p>
+      </div>
+
+      <form id="exp-form-el" novalidate>
+
+        <!-- Honeypot -->
+        <input class="hp" type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <!-- ШАГ 1: ИМЯ -->
+        <div class="step is-active" data-step="0">
+          <h2 class="step__title">Как вас подписать?</h2>
+          <p class="step__hint">Не&nbsp;обязательно. Можно имя, ник или «участник сообщества».</p>
+          <div class="field">
+            <input
+              class="input"
+              id="exp-name"
+              name="name"
+              type="text"
+              maxlength="60"
+              placeholder="Анна, @olga_lab, или просто оставьте пустым"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <!-- ШАГ 2: ИСТОЧНИК -->
+        <div class="step" data-step="1">
+          <h2 class="step__title">Откуда идея?</h2>
+          <p class="step__hint">Книга, подкаст, разговор, жизненная ситуация&nbsp;— или пропустите.</p>
+          <div class="field">
+            <select class="select" id="exp-source-kind" name="source-kind">
+              <option value="" selected>— Пропустить —</option>
+              <option value="custom">✍️ Свой вариант (ввести ниже)</option>
+            </select>
+            <input
+              class="input"
+              id="exp-source-custom"
+              name="source-custom"
+              type="text"
+              maxlength="200"
+              placeholder="Например: подкаст «Теория игр», разговор с подругой…"
+              style="margin-top: 8px;"
+              hidden
+            />
+          </div>
+        </div>
+
+        <!-- ШАГ 3: ЧТО ПРОБОВАЛИ -->
+        <div class="step" data-step="2">
+          <h2 class="step__title">Что вы пробовали?</h2>
+          <p class="step__hint">
+            Коротко: что именно делали. <span class="step__required">*</span>
+          </p>
+          <div class="field">
+            <textarea
+              class="textarea"
+              id="exp-did"
+              name="did"
+              rows="5"
+              minlength="30"
+              maxlength="1000"
+              required
+              placeholder="Например: попробовала технику «5 почему» из книги Мужицкой на своём желании сменить работу. После 3-го «почему» дошла до «хочу чувствовать, что справляюсь»…"
+            ></textarea>
+            <p class="counter" id="exp-counter-did">0 / 1000</p>
+          </div>
+        </div>
+
+        <!-- ШАГ 4: ЧТО ПОЛУЧИЛОСЬ -->
+        <div class="step" data-step="3">
+          <h2 class="step__title">Что получилось?</h2>
+          <p class="step__hint">
+            Честно: успех, провал, «ничего», «удивило». <span class="step__required">*</span>
+          </p>
+          <div class="field">
+            <textarea
+              class="textarea"
+              id="exp-got"
+              name="got"
+              rows="5"
+              minlength="30"
+              maxlength="1000"
+              required
+              placeholder="Например: поняла, что дело не в работе, а в самооценке. Уже 2 недели работаю с этим по-другому — без смены работы, но состояние изменилось."
+            ></textarea>
+            <p class="counter" id="exp-counter-got">0 / 1000</p>
+          </div>
+        </div>
+
+        <!-- ШАГ 5: СОГЛАСИЕ -->
+        <div class="step" data-step="4">
+          <h2 class="step__title">Можно ли публиковать?</h2>
+          <p class="step__hint">
+            Если «✅ Разрешаю» — история попадёт в&nbsp;ежемесячную подборку и&nbsp;в&nbsp;каналы сообщества (ВК, Telegram).
+            Без согласия — её&nbsp;увижу только&nbsp;я.
+          </p>
+
+          <label class="consent">
+            <input type="checkbox" id="exp-publish" name="publish" />
+            <span><strong>Разрешаю опубликовать</strong> в&nbsp;подборке и&nbsp;в&nbsp;каналах сообщества.</span>
+          </label>
+
+          <label class="consent consent--policy">
+            <input type="checkbox" id="exp-policy" name="policy" required />
+            <span>
+              Согласен(на) на&nbsp;обработку персональных данных. <span class="step__required">*</span>
+            </span>
+          </label>
+        </div>
+
+        <!-- Навигация -->
+        <div class="step__nav">
+          <button class="btn btn--ghost" id="exp-back-btn" type="button" hidden>Назад</button>
+          <button class="btn btn--primary" id="exp-next-btn" type="button">Дальше</button>
+        </div>
+
+        <p class="error" id="exp-error" hidden></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== УСПЕХ ===== -->
+  <section id="exp-success" hidden>
+    <div class="container">
+      <div class="success">
+        <div class="success__icon">✓</div>
+        <h2 class="success__title">Спасибо!</h2>
+        <p class="success__text" id="exp-success-text">
+          История получена.
+        </p>
+        <span class="success__id" id="exp-success-id"></span>
+
+        <div class="success__buttons">
+          <button class="btn btn--ghost" id="exp-share-btn" type="button">Поделиться</button>
+          <a class="btn btn--primary" id="exp-more-btn" href="#" role="button" style="display: none;">
+            Ещё один эксперимент
+          </a>
+        </div>
+      </div>
+
+      <p class="foot">
+        Если захотите — на&nbsp;сайте уже есть <a href="https://app.pulab.online/experiments/" target="_blank" rel="noopener">подборки историй</a> и&nbsp;<a href="https://app.pulab.online/library/" target="_blank" rel="noopener">каталог книг</a>.
+      </p>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // === ЭЛЕМЕНТЫ DOM ===
+      var introSection = document.getElementById('exp-intro');
+      var formSection = document.getElementById('exp-form');
+      var successSection = document.getElementById('exp-success');
+      var startBtn = document.getElementById('exp-start-btn');
+      var formEl = document.getElementById('exp-form-el');
+      var backBtn = document.getElementById('exp-back-btn');
+      var nextBtn = document.getElementById('exp-next-btn');
+      var errorEl = document.getElementById('exp-error');
+      var progressFill = document.getElementById('exp-progress-fill');
+      var progressLabel = document.getElementById('exp-progress-label');
+      var steps = formEl ? formEl.querySelectorAll('.step') : [];
+      var totalSteps = steps.length;
+      var currentStep = 0;
+      var submittedExpId = null;
+
+      // Поля
+      var nameInput = document.getElementById('exp-name');
+      var sourceKindSelect = document.getElementById('exp-source-kind');
+      var sourceCustomInput = document.getElementById('exp-source-custom');
+      var didInput = document.getElementById('exp-did');
+      var gotInput = document.getElementById('exp-got');
+      var publishInput = document.getElementById('exp-publish');
+      var policyInput = document.getElementById('exp-policy');
+      var hpInput = formEl ? formEl.querySelector('input[name="hp"]') : null;
+
+      var counterDid = document.getElementById('exp-counter-did');
+      var counterGot = document.getElementById('exp-counter-got');
+
+      // Кнопки на экране успеха
+      var shareBtn = document.getElementById('exp-share-btn');
+      var moreBtn = document.getElementById('exp-more-btn');
+      var successText = document.getElementById('exp-success-text');
+      var successId = document.getElementById('exp-success-id');
+
+      // === ХЕЛПЕРЫ ===
+      function showError(msg) {
+        if (!errorEl) return;
+        errorEl.textContent = msg;
+        errorEl.hidden = false;
+      }
+      function clearError() {
+        if (!errorEl) return;
+        errorEl.textContent = '';
+        errorEl.hidden = true;
+      }
+      function setProgress(stepIdx) {
+        var pct = Math.round(((stepIdx + 1) / totalSteps) * 100);
+        if (progressFill) progressFill.style.width = pct + '%';
+        if (progressLabel) progressLabel.textContent = 'Шаг ' + (stepIdx + 1) + ' из ' + totalSteps;
+      }
+      function showStep(idx) {
+        if (idx < 0 || idx >= totalSteps) return;
+        currentStep = idx;
+        for (var i = 0; i < steps.length; i++) {
+          if (i === idx) steps[i].classList.add('is-active');
+          else steps[i].classList.remove('is-active');
+        }
+        setProgress(idx);
+        if (backBtn) backBtn.hidden = (idx === 0);
+        if (idx === totalSteps - 1) {
+          if (nextBtn) nextBtn.textContent = 'Отправить историю';
+        } else {
+          if (nextBtn) nextBtn.textContent = 'Дальше';
+        }
+        clearError();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Счётчики символов
+      function updateCounter(input, counter) {
+        if (!input || !counter) return;
+        var len = input.value.length;
+        counter.textContent = len + ' / 1000';
+        if (len > 900) counter.classList.add('counter--warn');
+        else counter.classList.remove('counter--warn');
+      }
+      if (didInput) didInput.addEventListener('input', function () { updateCounter(didInput, counterDid); });
+      if (gotInput) gotInput.addEventListener('input', function () { updateCounter(gotInput, counterGot); });
+
+      // Показ поля «свой вариант» когда выбрано custom
+      if (sourceKindSelect && sourceCustomInput) {
+        sourceKindSelect.addEventListener('change', function () {
+          if (sourceKindSelect.value === 'custom') {
+            sourceCustomInput.hidden = false;
+          } else {
+            sourceCustomInput.hidden = true;
+            sourceCustomInput.value = '';
+          }
+        });
+      }
+
+      // Тактильная обратная связь (мобильный ВК)
+      function taptic() {
+        try {
+          if (window.vkBridge) {
+            vkBridge.send('VKWebAppTapticImpactOccurred', { style: 'light' });
+          }
+        } catch (e) { /* ignore */ }
+      }
+
+      function trackEvent(eventName, params) {
+        try {
+          if (window.vkBridge) {
+            vkBridge.send('VKWebAppTrackEvent', { event_name: eventName, params: params || {} });
+          }
+        } catch (e) { /* ignore */ }
+      }
+
+      // === ВАЛИДАЦИЯ ТЕКУЩЕГО ШАГА ===
+      function validateStep(idx) {
+        if (idx === 0) {
+          // Имя — опционально, проверки нет
+          if (nameInput && nameInput.value.length > 60) {
+            showError('Имя слишком длинное (макс. 60 знаков)');
+            return false;
+          }
+          return true;
+        }
+        if (idx === 1) {
+          // Источник — опционально
+          if (sourceKindSelect && sourceKindSelect.value === 'custom') {
+            if (!sourceCustomInput.value.trim()) {
+              showError('Опишите в одной строке, откуда идея, или выберите «Пропустить»');
+              sourceCustomInput.focus();
+              return false;
+            }
+            if (sourceCustomInput.value.length > 200) {
+              showError('Слишком длинный источник (макс. 200 знаков)');
+              return false;
+            }
+          }
+          return true;
+        }
+        if (idx === 2) {
+          if (!didInput.value.trim() || didInput.value.trim().length < 30) {
+            showError('Расскажите подробнее, что вы пробовали (минимум 30 знаков)');
+            didInput.focus();
+            return false;
+          }
+          if (didInput.value.length > 1000) {
+            showError('Слишком длинный текст (макс. 1000 знаков)');
+            return false;
+          }
+          return true;
+        }
+        if (idx === 3) {
+          if (!gotInput.value.trim() || gotInput.value.trim().length < 30) {
+            showError('Расскажите, что получилось (минимум 30 знаков)');
+            gotInput.focus();
+            return false;
+          }
+          if (gotInput.value.length > 1000) {
+            showError('Слишком длинный текст (макс. 1000 знаков)');
+            return false;
+          }
+          return true;
+        }
+        if (idx === 4) {
+          if (!policyInput.checked) {
+            showError('Нужно согласие на обработку персональных данных');
+            return false;
+          }
+          return true;
+        }
+        return true;
+      }
+
+      // === СБОР PAYLOAD ===
+      function collectPayload() {
+        var name = (nameInput ? nameInput.value.trim() : '');
+        var source = '';
+        var sk = sourceKindSelect ? sourceKindSelect.value : '';
+        if (sk === 'custom') {
+          source = sourceCustomInput ? sourceCustomInput.value.trim() : '';
+        }
+        var did = didInput ? didInput.value.trim() : '';
+        var got = gotInput ? gotInput.value.trim() : '';
+        var allowPublish = publishInput ? publishInput.checked : false;
+        var hp = hpInput ? hpInput.value : '';
+        return {
+          name: name || undefined,
+          source: source || undefined,
+          did: did,
+          got: got,
+          allowPublish: allowPublish,
+          hp: hp,
+        };
+      }
+
+      // === ОТПРАВКА ===
+      async function submitForm() {
+        var payload = collectPayload();
+        if (nextBtn) {
+          nextBtn.disabled = true;
+          nextBtn.textContent = 'Отправляем…';
+        }
+        clearError();
+        trackEvent('experiments_submit_attempt', { allowPublish: payload.allowPublish });
+        try {
+          var resp = await fetch('https://api.pulab.online/api/experiments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          var data = await resp.json().catch(function () { return {}; });
+          if (!resp.ok || data.ok !== true) {
+            var msg = (data && data.message) ? data.message : ('Ошибка сервера: ' + resp.status);
+            showError(msg);
+            trackEvent('experiments_submit_error', { status: resp.status, error: data && data.error });
+            if (nextBtn) {
+              nextBtn.disabled = false;
+              nextBtn.textContent = 'Отправить историю';
+            }
+            return;
+          }
+          submittedExpId = data.id;
+          showSuccess(data);
+          trackEvent('experiments_submit_success', { id: data.id });
+        } catch (e) {
+          showError('Не получилось отправить. Проверьте интернет и попробуйте ещё раз.');
+          trackEvent('experiments_submit_error', { error: 'network' });
+          if (nextBtn) {
+            nextBtn.disabled = false;
+            nextBtn.textContent = 'Отправить историю';
+          }
+        }
+      }
+
+      // === УСПЕХ ===
+      function showSuccess(data) {
+        formSection.hidden = true;
+        successSection.hidden = false;
+        if (successId) successId.textContent = '#' + (data.id || '—');
+        if (successText) {
+          var msg = data.message || 'История получена.';
+          successText.textContent = msg;
+        }
+        if (data.id && moreBtn) {
+          moreBtn.style.display = '';
+          moreBtn.onclick = function (e) {
+            e.preventDefault();
+            restart();
+          };
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function restart() {
+        // Сброс всех полей
+        if (nameInput) nameInput.value = '';
+        if (sourceKindSelect) sourceKindSelect.value = '';
+        if (sourceCustomInput) {
+          sourceCustomInput.value = '';
+          sourceCustomInput.hidden = true;
+        }
+        if (didInput) didInput.value = '';
+        if (gotInput) gotInput.value = '';
+        if (publishInput) publishInput.checked = false;
+        if (policyInput) policyInput.checked = false;
+        if (hpInput) hpInput.value = '';
+        updateCounter(didInput, counterDid);
+        updateCounter(gotInput, counterGot);
+        submittedExpId = null;
+        successSection.hidden = true;
+        formSection.hidden = false;
+        showStep(0);
+        if (nextBtn) {
+          nextBtn.disabled = false;
+          nextBtn.textContent = 'Дальше';
+        }
+      }
+
+      // === ШАРИНГ ===
+      function buildShareText() {
+        var txt = 'Я только что поделилась экспериментом в Лаборатории желаний 🌹\n\n' +
+                  'Хочешь попробовать — расскажи свою историю на https://app.pulab.online/my-experiment/';
+        return txt;
+      }
+      function shareToVk() {
+        var text = buildShareText();
+        if (window.vkBridge) {
+          vkBridge.send('VKWebAppOpenShareSheet', {
+            text: text,
+          }).catch(function () {
+            // fallback — копируем в буфер
+            fallbackCopy(text);
+          });
+        } else {
+          // web fallback
+          window.open('https://vk.com/share.php?url=' + encodeURIComponent('https://app.pulab.online/my-experiment/'), '_blank');
+        }
+      }
+      function fallbackCopy(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            alert('Текст скопирован в буфер обмена');
+          }).catch(function () {
+            prompt('Скопируйте текст:', text);
+          });
+        } else {
+          prompt('Скопируйте текст:', text);
+        }
+      }
+
+      // === ОБРАБОТЧИКИ ===
+      if (startBtn) {
+        startBtn.addEventListener('click', function () {
+          taptic();
+          trackEvent('experiments_form_start');
+          introSection.hidden = true;
+          formSection.hidden = false;
+          showStep(0);
+        });
+      }
+
+      if (backBtn) {
+        backBtn.addEventListener('click', function () {
+          taptic();
+          if (currentStep > 0) showStep(currentStep - 1);
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function () {
+          taptic();
+          if (!validateStep(currentStep)) return;
+          if (currentStep < totalSteps - 1) {
+            showStep(currentStep + 1);
+          } else {
+            submitForm();
+          }
+        });
+      }
+
+      if (shareBtn) {
+        shareBtn.addEventListener('click', function () {
+          taptic();
+          trackEvent('experiments_share_click');
+          shareToVk();
+        });
+      }
+
+      // Enter в textarea — НЕ сабмитим (юзер печатает переносы строк)
+      // Enter в input имени — на Далее (на последнем шаге — submit)
+      if (nameInput) {
+        nameInput.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            if (nextBtn) nextBtn.click();
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

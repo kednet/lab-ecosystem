@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getAllPosts, formatDate } from '../../lib/blog';
+import { itemListLd, breadcrumbLd } from '../../lib/seo';
+
+const posts = getAllPosts();
+---
+<Base
+  title="Блог"
+  description="Статьи о книгах, мышлении и осознанных желаниях. Конспекты, разборы, практические приёмы."
+  extraJsonLd={[
+    itemListLd(
+      'Блог ЛАБОРАТОРИИ ЖЕЛАНИЙ — статьи о саморазвитии',
+      posts.slice(0, 10).map((p) => ({
+        name: p.title,
+        url: `/blog/${p.slug}/`,
+        description: p.excerpt,
+      })),
+    ),
+    breadcrumbLd([
+      { name: 'Главная', url: '/' },
+      { name: 'Блог', url: '/blog/' },
+    ]),
+  ]}
+>
+  <section class="section">
+    <div class="container">
+      <p class="section__eyebrow reveal">Блог</p>
+      <h1 class="section__title reveal">
+        Заметки о&nbsp;книгах и&nbsp;желаниях
+      </h1>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 0 auto 40px;">
+        Без воды и&nbsp;мотивационной шелухи. Только то, что проверено
+        и&nbsp;реально меняет поведение.
+      </p>
+
+      <ul class="post-list" role="list">
+        {posts.map((p) => (
+          <li class="post-card reveal">
+            <a class="post-card__link" href={`/blog/${p.slug}/`}>
+              <div class="post-card__meta">
+                <time datetime={p.date}>{formatDate(p.date)}</time>
+                <span class="post-card__sep">·</span>
+                <span>{p.read_min} мин чтения</span>
+              </div>
+              <h2 class="post-card__title">{p.title}</h2>
+              <p class="post-card__excerpt">{p.excerpt}</p>
+              {p.tags.length > 0 && (
+                <div class="post-card__tags">
+                  {p.tags.map((t) => <span class="post-card__tag">#{t}</span>)}
+                </div>
+              )}
+              <span class="post-card__cta">Читать →</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

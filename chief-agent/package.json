@@ -1,0 +1,23 @@
+{
+  "name": "chief-agent",
+  "version": "2.0.0",
+  "description": "Orchestrator for Lab of Desires agents (13 agents: 4 native + 9 remote via WS)",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "smoke": "bash tests/smoke.sh"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "ws": "^8.18.0"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}

@@ -1,0 +1,285 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Вход"
+  description="Войти в Лабораторию желаний по email. Без паролей — только 6-значный код."
+  noindex
+>
+  <section class="section">
+    <div class="container" style="max-width: 460px;">
+      <p class="section__eyebrow reveal">Вход</p>
+      <h1 class="section__title reveal" style="font-size: 32px;">
+        Войти по&nbsp;email
+      </h1>
+      <p class="footer__about reveal" style="text-align: center; margin: 0 auto 32px; font-size: 15px;">
+        Без паролей. Введёшь email — получишь 6-значный код.
+      </p>
+
+      <!-- ШАГ 1: email -->
+      <form class="auth-card reveal" id="auth-step-email" novalidate>
+        <label class="auth-card__label" for="auth-email">Email</label>
+        <input
+          class="auth-card__input"
+          id="auth-email"
+          type="email"
+          inputmode="email"
+          autocomplete="email"
+          placeholder="you@example.com"
+          required
+        />
+        <button class="btn btn--primary btn--block" type="submit">Получить код</button>
+        <p class="auth-card__error" data-role="error" hidden></p>
+        <p class="auth-card__hint">
+          Код придёт в&nbsp;письме. Если письма нет — проверь Спам.
+        </p>
+      </form>
+
+      <!-- ШАГ 2: код -->
+      <form class="auth-card reveal" id="auth-step-code" hidden>
+        <p class="auth-card__success">
+          ✓ Код отправлен на&nbsp;<strong data-role="email-shown">—</strong>
+        </p>
+        <label class="auth-card__label" for="auth-code">Код из письма</label>
+        <input
+          class="auth-card__input auth-card__input--code"
+          id="auth-code"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          maxlength="6"
+          pattern="[0-9]{6}"
+          placeholder="000000"
+          required
+        />
+        <button class="btn btn--primary btn--block" type="submit">Войти</button>
+        <p class="auth-card__error" data-role="error" hidden></p>
+        <button class="auth-card__resend" type="button" data-role="resend">
+          Не пришёл код? Отправить заново
+        </button>
+        <button class="auth-card__back" type="button" data-role="back">
+          ← Другой email
+        </button>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { requestCode, loginWithCode } from '../lib/auth';
+  import { reachGoal, GOALS } from '../lib/metrika';
+
+  const stepEmail = document.getElementById('auth-step-email') as HTMLFormElement;
+  const stepCode = document.getElementById('auth-step-code') as HTMLFormElement;
+  const emailInput = document.getElementById('auth-email') as HTMLInputElement;
+  const codeInput = document.getElementById('auth-code') as HTMLInputElement;
+  const emailShown = stepCode.querySelector<HTMLElement>('[data-role="email-shown"]')!;
+  const errorEmail = stepEmail.querySelector<HTMLElement>('[data-role="error"]')!;
+  const errorCode = stepCode.querySelector<HTMLElement>('[data-role="error"]')!;
+  const resendBtn = stepCode.querySelector<HTMLButtonElement>('[data-role="resend"]')!;
+  const backBtn = stepCode.querySelector<HTMLButtonElement>('[data-role="back"]')!;
+
+  let currentEmail = '';
+
+  function showError(el: HTMLElement, msg: string) {
+    el.textContent = msg;
+    el.hidden = false;
+  }
+  function hideError(el: HTMLElement) {
+    el.textContent = '';
+    el.hidden = true;
+  }
+
+  function goToCode(email: string) {
+    currentEmail = email;
+    emailShown.textContent = email;
+    stepEmail.hidden = true;
+    stepCode.hidden = false;
+    hideError(errorCode);
+    setTimeout(() => codeInput.focus(), 50);
+  }
+
+  function goToEmail() {
+    stepCode.hidden = true;
+    stepEmail.hidden = false;
+    codeInput.value = '';
+    hideError(errorCode);
+    setTimeout(() => emailInput.focus(), 50);
+  }
+
+  stepEmail.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideError(errorEmail);
+    const email = emailInput.value.trim();
+    if (!email || !email.includes('@')) {
+      showError(errorEmail, 'Похоже, email указан неверно.');
+      return;
+    }
+    const submitBtn = stepEmail.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправляем…';
+    try {
+      const result = await requestCode(email);
+      // В dev-режиме — автозаполнение кода
+      if (result.devCode) {
+        codeInput.value = result.devCode;
+      }
+      reachGoal(GOALS.authCodeRequested);
+      goToCode(email);
+    } catch (err) {
+      const e = err as { message?: string };
+      showError(errorEmail, e.message ?? 'Не удалось отправить код. Попробуй позже.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Получить код';
+    }
+  });
+
+  stepCode.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideError(errorCode);
+    const code = codeInput.value.trim();
+    if (code.length !== 6) {
+      showError(errorCode, 'Код — это 6 цифр.');
+      return;
+    }
+    const submitBtn = stepCode.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Проверяем…';
+    try {
+      await loginWithCode(currentEmail, code);
+      reachGoal(GOALS.authLoginSuccessful);
+      // Успех → редирект на /wish-map/
+      window.location.href = '/wish-map/';
+    } catch (err) {
+      const e = err as { message?: string; extra?: { attemptsRemaining?: number } };
+      let msg = e.message ?? 'Не удалось войти.';
+      if (e.extra?.attemptsRemaining !== undefined && e.extra.attemptsRemaining > 0) {
+        msg += ` Осталось попыток: ${e.extra.attemptsRemaining}.`;
+      }
+      reachGoal(GOALS.authLoginFailed);
+      showError(errorCode, msg);
+      codeInput.select();
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Войти';
+    }
+  });
+
+  resendBtn.addEventListener('click', async () => {
+    hideError(errorCode);
+    resendBtn.disabled = true;
+    resendBtn.textContent = 'Отправляем…';
+    try {
+      const result = await requestCode(currentEmail);
+      if (result.devCode) codeInput.value = result.devCode;
+      reachGoal(GOALS.authCodeRequested);
+      resendBtn.textContent = '✓ Отправлено повторно';
+      setTimeout(() => { resendBtn.textContent = 'Не пришёл код? Отправить заново'; }, 3000);
+    } catch (err) {
+      const e = err as { message?: string };
+      showError(errorCode, e.message ?? 'Не удалось отправить.');
+    } finally {
+      resendBtn.disabled = false;
+    }
+  });
+
+  backBtn.addEventListener('click', goToEmail);
+
+  // Если уже залогинен — сразу на /wish-map/
+  if (localStorage.getItem('lab_token')) {
+    window.location.href = '/wish-map/';
+  }
+</script>
+
+<style>
+  .auth-card {
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .auth-card__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .auth-card__input {
+    width: 100%;
+    padding: 14px 18px;
+    font: inherit;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .auth-card__input:focus {
+    border-color: var(--rose);
+    box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.12);
+  }
+  .auth-card__input--code {
+    font-family: 'Courier New', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    text-align: center;
+    padding: 20px 18px;
+    color: var(--rose-deep);
+  }
+  .auth-card__success {
+    background: rgba(225, 29, 72, 0.08);
+    color: var(--rose-deep);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+  }
+  .auth-card__error {
+    background: rgba(225, 29, 72, 0.1);
+    color: var(--rose-deep);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .auth-card__hint {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    margin: 0;
+  }
+  .auth-card__resend {
+    font: inherit;
+    font-size: 13px;
+    color: var(--rose);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 4px;
+    text-align: center;
+    text-decoration: underline;
+  }
+  .auth-card__resend:hover { color: var(--rose-deep); }
+  .auth-card__resend:disabled { opacity: 0.5; cursor: not-allowed; }
+  .auth-card__back {
+    font: inherit;
+    font-size: 13px;
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 4px;
+    text-align: center;
+  }
+  .auth-card__back:hover { color: var(--rose); }
+</style>

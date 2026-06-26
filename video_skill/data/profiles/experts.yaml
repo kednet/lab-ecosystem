@@ -1,0 +1,54 @@
+# Профиль: Экспертный хаб (заглушка)
+# Phase 1: минимально валидный YAML, дорабатывается при первом использовании
+
+name: experts
+display_name: "Экспертный хаб"
+description: "Экспертные обзоры книг и подкастов. Мини-интервью, разборы, цитаты."
+
+defaults:
+  platform: reels
+  tone: confident
+  goal: engagement
+  duration: 60
+  voice: filipp
+  speed: 0.98
+  music_mood: ambient
+
+voice_tones:
+  - confident
+  - inspiring
+  - neutral
+  - educational
+
+branding:
+  watermark: "@experts_hub"
+  watermark_handle: "experts_hub"
+  cta_default: "Полный обзор — на сайте"
+  cta_url: "https://experts.pulab.ru"  # нужно уточнить
+  accent_color: "#F59E0B"  # золотой
+  palette:
+    primary: "#F59E0B"
+    text: "#1F0A14"
+    bg: "#FFFBEB"
+
+hashtags_base:
+  - "#экспертныйхаб"
+  - "#обзоркниг"
+  - "#цитаты"
+  - "#эксперты"
+
+cta_profiles:
+  confident:
+    - "Экспертный разбор — ссылка в закрепе"
+    - "Не соглашайся на поверхностные обзоры, есть глубже"
+  inspiring:
+    - "Вдохновил автор? Полный обзор в закрепе"
+    - "Кидай тому, кому это нужно — в закрепе"
+
+source_domains:
+  - "Экспертные обзоры, нон-фикшн, интервью"
+  - "Цитаты известных авторов и практиков"
+
+output:
+  filename_template: "{slug}-experts"
+  state_subdir: "experts"

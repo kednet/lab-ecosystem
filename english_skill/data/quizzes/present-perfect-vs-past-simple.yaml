@@ -1,0 +1,127 @@
+# Mini-quiz: Present Perfect vs Past Simple
+# Самая частая проблема B1 — разводим чётко: опыт vs история
+# 10 вопросов: 6 multiple_choice + 4 open
+
+meta:
+  name: "present-perfect-vs-past-simple"
+  display_name: "Present Perfect vs Past Simple"
+  level: "B1-B2"
+  estimated_min: 5
+  description: "Choose the correct form. Focus on 'I've done' vs 'I did'."
+  grammar_point: "present-perfect-vs-past-simple"
+  prerequisites: ["present-simple", "past-simple", "present-perfect"]
+
+questions:
+  - id: 1
+    type: "multiple_choice"
+    prompt: "I ___ to London three times in my life."
+    options: ["went", "have been", "have gone", "had been"]
+    correct: "have been"
+    explanation: |
+      Опыт в жизни → Present Perfect ('have been' = посетил и вернулся).
+      'have been' = был (опыт). 'have gone' = уехал (и сейчас там).
+    grammar_point: "present-perfect-experience"
+
+  - id: 2
+    type: "open"
+    prompt: "She ___ (already / eat) lunch when I called her."
+    correct_answer: "had already eaten"
+    acceptable_answers: ["had already eaten", "already ate", "had already ate"]
+    explanation: |
+      Действие, завершившееся ДО другого действия в прошлом → Past Perfect ('had eaten').
+      'when I called' = точка в прошлом, до этого уже произошло.
+    grammar_point: "past-perfect-vs-past-simple"
+
+  - id: 3
+    type: "multiple_choice"
+    prompt: "We ___ in this company since 2018."
+    options: ["work", "worked", "have worked", "are working"]
+    correct: "have worked"
+    explanation: |
+      Действие началось в прошлом (since 2018) и продолжается до сих пор → Present Perfect.
+    grammar_point: "present-perfect-continues-to-present"
+
+  - id: 4
+    type: "open"
+    prompt: "I ___ (ship) three hotfixes this week."
+    correct_answer: "have shipped"
+    acceptable_answers: ["have shipped", "I've shipped", "i have shipped"]
+    explanation: |
+      'this week' (текущий период, не закончен) + результат в настоящем → Present Perfect.
+    grammar_point: "present-perfect-recent-events"
+
+  - id: 5
+    type: "multiple_choice"
+    prompt: "She ___ to Berlin in 2020."
+    options: ["went", "has gone", "has been", "had gone"]
+    correct: "went"
+    explanation: |
+      Конкретное время в прошлом (in 2020) → Past Simple.
+      НЕ 'has gone' — это означало бы, что она уехала и до сих пор там.
+    grammar_point: "past-simple-concrete-time"
+
+  - id: 6
+    type: "multiple_choice"
+    prompt: "___ you ever ___ a memory leak?"
+    options: ["Did / debugged", "Have / debugged", "Did / debug", "Have / debug"]
+    correct: "Have / debugged"
+    explanation: |
+      'ever' (когда-либо) + опыт → Present Perfect.
+      'Did you debug' = Past Simple, но с 'ever' это ошибка.
+    grammar_point: "present-perfect-experience-ever"
+
+  - id: 7
+    type: "open"
+    prompt: "I ___ (never / try) TypeScript before."
+    correct_answer: "had never tried"
+    acceptable_answers: ["had never tried", "have never tried", "never tried"]
+    explanation: |
+      'before' (в прошлом) + 'never' → Past Perfect или Present Perfect (зависит от контекста).
+      Если речь идёт о прошлом опыте до другого события → Past Perfect.
+      Если просто жизненный опыт → Present Perfect.
+      Допускаем оба варианта.
+    grammar_point: "past-perfect-experience"
+
+  - id: 8
+    type: "multiple_choice"
+    prompt: "We ___ the release on Monday. (Past Simple / Past event with day)"
+    options: ["have shipped", "shipped", "had shipped", "ship"]
+    correct: "shipped"
+    explanation: |
+      Конкретный день (on Monday) → Past Simple.
+      'have shipped' было бы без 'on Monday' — про опыт за период.
+    grammar_point: "past-simple-concrete-day"
+
+  - id: 9
+    type: "open"
+    prompt: "The build ___ (already / fail) three times today."
+    correct_answer: "has already failed"
+    acceptable_answers: ["has already failed", "has failed", "have already failed"]
+    explanation: |
+      'today' (текущий день) + результат сейчас важен → Present Perfect.
+      'three times today' = результат за сегодня.
+    grammar_point: "present-perfect-repeated-events-today"
+
+  - id: 10
+    type: "multiple_choice"
+    prompt: "I can't find my keys. ___ you ___ them?"
+    options: ["Did / see", "Have / seen", "Had / seen", "Were / seeing"]
+    correct: "Have / seen"
+    explanation: |
+      Результат сейчас важен (не могу найти) + действие в неопределённом прошлом → Present Perfect.
+      'Did you see' = Past Simple, но это означало бы 'когда именно?'
+    grammar_point: "present-perfect-result-now"
+
+after_quiz:
+  recap: |
+    **Present Perfect** = опыт / результат сейчас / действие с since-for:
+    - ever, never, three times, since 2018, for 3 years, already, just, yet, so far, recently, today (с результатом)
+
+    **Past Simple** = конкретное время в прошлом:
+    - yesterday, last week, in 2020, ago, on Monday, when I was...
+
+    **Главный приём:** Есть точная дата/время → Past Simple. Нет даты, важен результат → Present Perfect.
+
+  next_tense: "present-continuous"
+  recommended_review: "references/tenses-12-table.md#present-perfect-vs-past-simple"
+  related_lesson: "Week 3 Day 1 (curriculum.yaml)"

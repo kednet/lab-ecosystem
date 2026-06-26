@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lab.online/schemas/expert/v1",
+  "title": "Expert",
+  "description": "JSON-LD Schema.org Person для карточки эксперта",
+  "type": "object",
+  "properties": {
+    "@context": {"const": "https://schema.org"},
+    "@type": {"const": "Person"},
+    "name": {"type": "string", "description": "Полное имя"},
+    "alternateName": {"type": "string", "description": "Ник / псевдоним"},
+    "jobTitle": {"type": "string", "description": "Должность / роль"},
+    "description": {"type": "string", "description": "Краткое био 1-2 предложения"},
+    "url": {"type": "string", "format": "uri", "description": "Личный сайт"},
+    "image": {"type": "string", "format": "uri", "description": "URL аватара"},
+    "email": {"type": "string", "format": "email", "description": "Публичный email"},
+    "telephone": {"type": "string", "description": "Телефон (если публичный)"},
+    "sameAs": {
+      "type": "array",
+      "description": "Ссылки на соцсети и профили",
+      "items": {"type": "string", "format": "uri"}
+    },
+    "knowsAbout": {
+      "type": "array",
+      "description": "Темы / навыки",
+      "items": {"type": "string"}
+    },
+    "alumniOf": {
+      "type": "array",
+      "description": "ВУЗы",
+      "items": {
+        "type": "object",
+        "properties": {
+          "@type": {"const": "EducationalOrganization"},
+          "name": {"type": "string"}
+        }
+      }
+    },
+    "worksFor": {
+      "type": "object",
+      "description": "Текущее место работы",
+      "properties": {
+        "@type": {"const": "Organization"},
+        "name": {"type": "string"},
+        "url": {"type": "string", "format": "uri"}
+      }
+    },
+    "memberOf": {
+      "type": "array",
+      "description": "Профессиональные ассоциации",
+      "items": {
+        "type": "object",
+        "properties": {
+          "@type": {"const": "Organization"},
+          "name": {"type": "string"}
+        }
+      }
+    },
+    "award": {
+      "type": "array",
+      "description": "Награды / сертификаты",
+      "items": {"type": "string"}
+    },
+    "hasOccupation": {
+      "type": "object",
+      "description": "Профессия по SOC/HISCO",
+      "properties": {
+        "@type": {"const": "Occupation"},
+        "name": {"type": "string"},
+        "occupationLocation": {
+          "type": "object",
+          "properties": {
+            "@type": {"const": "City"},
+            "name": {"type": "string"}
+          }
+        }
+      }
+    },
+    "address": {
+      "type": "object",
+      "description": "Адрес (если публичный)",
+      "properties": {
+        "@type": {"const": "PostalAddress"},
+        "addressLocality": {"type": "string"},
+        "addressRegion": {"type": "string"},
+        "addressCountry": {"type": "string"}
+      }
+    }
+  },
+  "required": ["@context", "@type", "name", "jobTitle", "url"]
+}

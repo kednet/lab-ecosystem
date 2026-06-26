@@ -1,0 +1,39 @@
+name: koob_oko
+display: Koob.ru (legacy oko.koob.ru)
+host_patterns:
+  - "^https?://oko\\.koob\\.ru/"
+encoding: utf-8
+strategy: hybrid
+selectors:
+  title:
+    - "css:h1.book-title"
+    - "css:h1.entry-title"
+    - "css:h1"
+  author:
+    - "css:a[href*='/author/']"
+    - "css:.book-author a"
+    - "css:.author-name"
+    - "css:span[itemprop='author']"
+  year:
+    - "css:span.book-year"
+    - "css:.year"
+    - "regex_in:title:\\b(19|20)\\d{2}\\b"
+  cover:
+    - "css:.book-cover img"
+    - "css:img.cover"
+    - "css:img[itemprop='image']"
+    - "css:.entry-content img:first-of-type"
+  short_description:
+    - "css:.book-annotation"
+    - "css:.book-about"
+    - "css:.annotation"
+  key_ideas:
+    - "css:.entry-content ul li"
+    - "css:.book-about ul li"
+  quotes:
+    - "css:blockquote"
+    - "regex_in:full:«[^»]{30,500}»"
+  chapters:
+    - "css:ol > li"
+    - "css:ul > li"
+    - "regex_in:full:Глава\\s+\\d+[.:)]?\\s+[^\\n]{2,200}"

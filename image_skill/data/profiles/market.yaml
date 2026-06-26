@@ -1,0 +1,43 @@
+# image_skill — профиль «Wish Market» (заглушка)
+
+name: market
+display_name: "Wish Market"
+description: "Маркет желаний + VK Mini App + конкурс (запуск 1.08.2026)"
+
+defaults:
+  format: wb
+  style: flat
+  mood: warm
+  aspect: "3:4"
+  seed: null
+
+branding:
+  watermark: "@wishmarket"
+  accent_color: "#10B981"
+  palette:
+    primary: "#10B981"
+    primary_deep: "#065F46"
+    primary_soft: "#A7F3D0"
+    bg: "#ECFDF5"
+    text: "#1F2937"
+
+prompt_styles:
+  flat: "flat e-commerce design, product card style"
+  photo: "realistic product photography"
+  "3d": "3D render, wish crystal, glowing"
+
+prompt_moods:
+  warm: "welcoming, wishful, hopeful"
+  bold: "exciting, marketplace energy"
+  mystic: "crystal ball, magic, wishful thinking"
+
+hashtags_base: ["#wishmarket", "#маркетжеланий", "#vkminiapp"]
+
+negative_prompts:
+  - "text on image"
+  - "watermark"
+  - "low quality"
+
+output:
+  state_subdir: "market"
+  filename_template: "{slug}-market-{format}"

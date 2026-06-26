@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /unlock/
+Disallow: /checkout/
+
+Sitemap: https://app.pulab.ru/sitemap.xml
+Host: https://app.pulab.ru

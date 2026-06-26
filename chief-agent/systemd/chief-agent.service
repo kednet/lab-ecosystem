@@ -1,0 +1,43 @@
+[Unit]
+Description=Chief Agent — orchestrator for Lab of Desires (13 agents)
+Documentation=https://app.pulab.online/chief/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# User=root required: Chief spawns Python venvs in /opt/wl, /opt/publisher_skill, etc.
+# In Phase 2 we'll add capabilities/cgroups for finer-grained sandboxing.
+User=root
+Group=root
+
+WorkingDirectory=/opt/chief-agent
+EnvironmentFile=/opt/chief-agent/.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node --enable-source-maps src/index.js
+
+# Restarts
+Restart=always
+RestartSec=5
+StartLimitInterval=60
+StartLimitBurst=5
+
+# Filesystem sandbox (limited — Chief must read /opt/<agent>/).
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/opt/chief-agent /var/log/chief-agent
+NoNewPrivileges=false
+
+# Resource limits
+MemoryHigh=500M
+MemoryMax=800M
+CPUQuota=50%
+
+# Logging → journald
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=chief-agent
+
+[Install]
+WantedBy=multi-user.target

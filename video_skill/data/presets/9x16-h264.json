@@ -1,0 +1,13 @@
+{
+  "_comment": "Export preset для ffmpeg — Video Creator Skill v1.0. Phase 2: используется в mix_video.py. Phase 1: ЗАГЛУШКА.",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "vcodec": "libx264",
+  "crf": 23,
+  "preset": "medium",
+  "acodec": "aac",
+  "ab": "128k",
+  "pix_fmt": "yuv420p",
+  "faststart": true
+}

@@ -1,0 +1,29 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "{{NAME}}",
+  "alternateName": "{{ALIAS}}",
+  "description": "{{BIO}}",
+  "image": "{{PHOTO_URL}}",
+  "jobTitle": "{{JOB_TITLE}}",
+  "worksFor": {
+    "@type": "Organization",
+    "@id": "https://lab.com/#organization",
+    "name": "Лаборатория желаний"
+  },
+  "url": "{{PROFILE_URL}}",
+  "sameAs": [
+    "{{VK}}",
+    "{{TELEGRAM}}",
+    "{{YOUTUBE}}",
+    "{{PERSONAL_SITE}}"
+  ],
+  "knowsAbout": [
+    "{{SKILL_1}}",
+    "{{SKILL_2}}",
+    "{{SKILL_3}}"
+  ],
+  "alumniOf": [
+    {"@type": "EducationalOrganization", "name": "{{UNIVERSITY}}"}
+  ]
+}

@@ -1,0 +1,87 @@
+# Ролевой диалог: Daily Standup
+# Категория: team-rituals
+# Уровень: B1
+# Цель: тренировка standup-фраз (Past Simple + Present Continuous + will)
+# Это ПОЛНЫЙ ЭТАЛОН формата. Остальные 11 диалогов — по этому шаблону.
+
+meta:
+  name: "standup"
+  display_name: "Daily Standup"
+  category: "team-rituals"
+  level: "B1"
+  estimated_min: 5
+  grammar_focus: ["past-simple", "present-continuous", "future-will"]
+  vocab_from_glossary: ["Yesterday I worked on", "Today I'm planning to", "I'm blocked on", "No blockers from my side", "Quick update"]
+
+context:
+  role: "Backend developer on a 5-person team"
+  team: "Pulse Lab — fintech project, microservices architecture"
+  setting: "Daily 15-minute team standup, video call"
+  scenario: |
+    It's your turn to speak at standup. The team uses a "yesterday / today / blockers" format.
+    Yesterday you finished the auth migration and pushed it to staging. Today you're planning
+    to review Maria's PR and start on the new endpoint. You have one blocker: the design
+    review for the new endpoint hasn't happened yet.
+
+script:
+  - speaker: "facilitator"
+    line: "Good morning, team! Who's next?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — say: Good morning, team. Yesterday I...]"
+    hint: "Good morning, everyone. Yesterday I <verb in Past Simple> the <task>."
+    model_answer: "Good morning, everyone. Yesterday I finished the auth migration and pushed the first version to staging."
+    alternatives:
+      - "Morning, team. Yesterday I worked on the auth refactor."
+      - "Hi all. Yesterday I shipped the hotfix and started on the new endpoint."
+      - "Hey everyone. Yesterday I migrated the auth module to v3 and ran the smoke tests."
+
+  - speaker: "facilitator"
+    line: "What are you planning for today?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — say: Today I'm planning to...]"
+    hint: "Today I'm planning to <verb> the <task>."
+    model_answer: "Today I'm planning to review the PR from Maria, then start on the new endpoint."
+    alternatives:
+      - "Today I'm going to review Maria's PR and then dig into the new endpoint."
+      - "Today I'll continue with the auth tests, and after that I'll pick up the new endpoint."
+
+  - speaker: "facilitator"
+    line: "Any blockers?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — say: I'm blocked on... / No blockers]"
+    hint: "I'm blocked on <dependency>. OR: No blockers from my side."
+    model_answer: "I'm blocked on the design review for the new endpoint — I need feedback before I can start."
+    alternatives:
+      - "Yes, one blocker: I'm waiting on the design spec for the new endpoint."
+      - "No blockers from my side. I'm good to go."
+
+  - speaker: "facilitator"
+    line: "Got it. Anything else?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — quick closing remark]"
+    hint: "That's it from me. / Nope, that's it."
+    model_answer: "That's it from me. Over to you, Tom."
+    alternatives:
+      - "Nope, that's it. Thanks."
+      - "Nothing else from my side."
+
+after_dialog:
+  recap_vocab:
+    - "Good morning, everyone."
+    - "Yesterday I finished / worked on / shipped ..."
+    - "Today I'm planning to / going to / I'll ..."
+    - "I'm blocked on ..."
+    - "No blockers from my side."
+    - "That's it from me."
+
+  grammar_notes:
+    - "Past Simple: 'Yesterday I finished...' (конкретное время — yesterday)"
+    - "Present Continuous / Future: 'Today I'm planning to...' / 'Today I'll...'"
+    - "Present Continuous (action right now): 'I'm blocked on...'"
+
+  next_dialog: "one-on-one"
+  notes: "Standup — самый частый формат в IT. 80% митингов в команде. Отработай до автоматизма."

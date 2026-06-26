@@ -1,0 +1,30 @@
+# Сфера: Отдых
+# NB: в каталоге WL нет книг про отдых напрямую.
+#     Связь косвенная через книги про исполнение желаний (в т.ч. путешествия, материальное).
+
+sphere:
+  id: rest
+  name: Отдых
+  description: Путешествия, хобби, развлечения, восстановление
+  icon: 🏖️
+  color: "#06b6d4"
+  order: 6
+
+source_books:
+  - slug: grout-kurs-ispolneniya-zhelanii  # Курс исполнения желаний
+    relevant_chapters: []
+    note: "косвенная связь через материальные желания"
+  - slug: lillen-kak-zagadyvat-zhelaniya-chtoby-oni-ispolnyalis
+    relevant_chapters: []
+    note: "косвенная связь через загадывание желаний"
+  - slug: goddard-chuvstvo-eto-sekret
+    relevant_chapters: []
+    note: "косвенная связь через эмоциональное восстановление"
+
+subsphere_hints:
+  - travel: путешествия (поездки, маршруты, копить на конкретное)
+  - hobby: хобби (новое начать, старое возродить, углубить)
+  - digital-detox: цифровой детокс (без телефона утром, раз в неделю)
+  - nature: природа (выходные, прогулки, походы)
+  - entertainment: развлечения (книги, фильмы, театр, игры)
+  - recovery: восстановление (выходной, отпуск, ритуалы)

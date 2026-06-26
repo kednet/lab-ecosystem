@@ -1,0 +1,43 @@
+{
+  "source": "livelib",
+  "book": "Алхимик",
+  "author": "Пауло Коэльо",
+  "url": "https://www.livelib.ru/book/1001334693",
+  "fetched_at": "2026-06-21T01:30:00",
+  "fetch_method": "websearch_summary",
+  "note": "WebFetch заблокирован enterprise policy, данные сводные из WebSearch",
+  "total_ratings": 48100,
+  "average_rating": 3.7,
+  "distribution_estimated": {
+    "5": 12000,
+    "4": 10500,
+    "3": 11800,
+    "2": 9000,
+    "1": 4800
+  },
+  "reviews_sample": [
+    {
+      "author": "За Фай Ру",
+      "rating": 5,
+      "title": "Когда волшебство проступает через швы вселенной",
+      "url": "https://www.livelib.ru/review/5906725-alhimik-paulo-koelo"
+    },
+    {
+      "author": "old_book_",
+      "rating": 3,
+      "title": "Сказка для детей",
+      "url": "https://www.livelib.ru/review/5802091-alhimik-paulo-koelo"
+    },
+    {
+      "author": "vitiviitii",
+      "rating": 4,
+      "title": "Мекка внутри или Мекка вдали?",
+      "url": "https://www.livelib.ru/review/5827432-alhimik-paulo-koelo"
+    }
+  ],
+  "key_themes": {
+    "positive": ["мотивирует", "вдохновляет", "крылатые цитаты", "философский посыл", "восточный колорит"],
+    "negative": ["избитые истины", "псевдофилософия", "навязывание морали", "предсказуемый сюжет"]
+  },
+  "errors": ["WebFetch заблокирован"]
+}

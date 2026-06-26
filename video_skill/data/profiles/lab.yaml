@@ -1,0 +1,99 @@
+# Профиль: Лаборатория желаний
+# Полный профиль (Phase 1) — заполнен по брендбуку 2026-06-16
+#
+# Источник палитры/бренд-токенов: lab-brand-decisions-2026-06-16
+# Источник голосов: audio_skill/data/voices.yaml
+# Источник CTA: детектор-страница /detector/ (лид-магнит №1)
+#
+# Используется в cmd_script.py: build_prompt() + render_markdown()
+# Phase 2: watermark + accent_color пойдут в ffmpeg drawtext / подложку
+
+name: lab
+display_name: "Лаборатория желаний"
+description: "Женщины 35-44 (приоритет), общая ЦА 25-55. Ниша саморазвития/исполнения желаний/трансерфинга. Сегмент B — выгорели от марафонов и эзотерики, ищут научную опору + тепло."
+
+# === Дефолты (Phase 1) ===
+defaults:
+  platform: reels             # IG Reels = основной канал (90 сек max)
+  tone: soulful                # дефолтный тон — тёплая подача
+  goal: engagement             # дефолтная цель — вовлечение
+  duration: 30                 # 30 сек — оптимально для Reels
+  voice: alena                 # Yandex SpeechKit: женский, душевный
+  speed: 0.95
+  music_mood: ambient          # тихий эмбиент на фоне
+
+# === Разрешённые тона для этого профиля ===
+voice_tones:
+  - soulful
+  - bold
+  - inspiring
+  - warm
+  - calm
+
+# === Брендинг (Phase 2: drawtext + accent) ===
+branding:
+  watermark: "@pulab_ru"        # в правом нижнем углу видео
+  watermark_handle: "pulab_ru"
+  cta_default: "Хочешь разобраться — ссылка в закрепе 🔗"
+  cta_url: "https://app.pulab.ru/detector/"   # лид-магнит №1
+  accent_color: "#E11D48"       # rose — главный акцент
+  palette:
+    primary: "#E11D48"          # rose (главный)
+    primary_deep: "#881337"     # rose-deep (заголовки)
+    primary_soft: "#FDA4AF"     # rose-soft (hover)
+    text: "#1F0A14"             # ink
+    text_muted: "#6B3A4A"       # muted
+    bg: "#FFF1F2"               # bg-1
+    bg_2: "#FFE4E6"             # bg-2
+    bg_3: "#FECDD3"             # bg-3
+
+  # 5 контентных градиентов (для обложек/фреймов)
+  gradients:
+    transformation: ["#FECDD3", "#E11D48"]   # Coral Pink — Канеман, Трунин
+    wishes: ["#FFE4E6", "#9F1239"]           # Blush Mauve — Андреева, Франкл
+    practice: ["#FED7AA", "#EA580C"]          # Sunset Glow — workbook
+    calm: ["#E9D5FF", "#9333EA"]              # Lavender Mist — медитация
+    energy: ["#FEF3C7", "#F59E0B"]            # Warm Gold — мотивация
+
+# === Базовые хештеги (Phase 1: merge с теми что LLM добавит) ===
+hashtags_base:
+  - "#лабжеланий"
+  - "#pulabru"
+  - "#желаниясбываются"
+  - "#книгажеланий"
+
+# === CTA-варианты по тону (Phase 1: используется в render_markdown) ===
+cta_profiles:
+  soulful:
+    - "Если откликнулось — закрепила для тебя 💗"
+    - "Тёплое в закрепе, загляни когда будет настрой"
+    - "Сохрани и вернись, когда понадобится поддержка"
+  bold:
+    - "Это изменит твоё лето — ссылка в закрепе"
+    - "Сохраняй и пробуй сегодня, не откладывай"
+    - "Кидай подругам, которым это нужно"
+  inspiring:
+    - "Вдохновило? Подруги оценят — кидай им"
+    - "Сохрани и пересмотри утром за кофе"
+    - "Верь в себя — доказательства в закрепе"
+  warm:
+    - "Тихо про тебя. Закрепи, не потеряй"
+    - "Держи в тепле, вернись когда нужно"
+    - "Ламповое в закрепе, специально для тебя"
+  calm:
+    - "Не торопись. Ответы — в закрепе"
+    - "Тихо, нежно, в закрепе"
+    - "Дай себе время — всё в закрепе"
+
+# === Подсказки для LLM (Phase 1: инъекция в промпт) ===
+source_domains:
+  - "Self-help, трансерфинг, карта желаний, психология 35+"
+  - "RU-женщины 25-55, сегмент B (35-44 приоритет)"
+  - "Книги: Франкл, Канеман, Трунин, Мужицкая, Андреева, Литвак"
+  - "Темы: навязанные vs истинные желания, ресурс, самоценность, отпускание контроля"
+
+# === Параметры вывода ===
+output:
+  filename_template: "{slug}-lab"     # чтобы не пересекаться с wl/coach/etc
+  state_subdir: "lab"                 # state/lab/<slug>.json
+  og_image_template: "og-video-profile.svg.j2"  # Phase 4

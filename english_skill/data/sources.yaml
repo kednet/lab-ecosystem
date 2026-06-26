@@ -1,0 +1,212 @@
+# Аудио-каталог English Skill v1.0
+# Phase 1: только ссылки + transcript_url (если есть) + comprehension questions
+# Phase 2: авто-парсинг новых эпизодов BBC/VOA
+
+meta:
+  total_sources: 10
+  level: "B1-B2"
+  audience: "IT professionals"
+  last_updated: "2026-06-25"
+
+# === BBC Learning English (4 источника) ===
+
+sources:
+  - id: "bbc-6min-job-titles"
+    title: "Job titles: what's the difference?"
+    source: "BBC Learning English — 6 Minute English"
+    url: "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english/ep-210701"
+    transcript_url: "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english/ep-210701"
+    duration_min: 6
+    level: "B1"
+    weeks: [1, 2]
+    why: "Vocabulary about roles and responsibilities — основа для IT-команд."
+    vocab: ["job title", "position", "role", "responsibility", "report to", "deal with", "in charge of"]
+    comprehension_questions:
+      - q: "What's the difference between 'job title' and 'position'?"
+        type: "open"
+        sample_answer: "Job title is the official name (e.g. 'Senior Developer'). Position is more general (e.g. 'a managerial position')."
+      - q: "Which phrase means 'to be in charge of'?"
+        type: "multiple_choice"
+        options: ["to deal with", "to be responsible for", "to report to", "to work on"]
+        answer: "to be responsible for"
+      - q: "What phrase would you use to introduce your manager in a meeting?"
+        type: "open"
+        sample_answer: "I report to Maria. / My manager is Maria. / Maria is responsible for the backend team."
+
+  - id: "bbc-podcast-working-from-home"
+    title: "Working from home: tips and tricks"
+    source: "BBC Learning English — The English We Speak"
+    url: "https://www.bbc.co.uk/learningenglish/english/features/the-english-we-speak/ep-200513"
+    transcript_url: "https://www.bbc.co.uk/learningenglish/english/features/the-english-we-speak/ep-200513"
+    duration_min: 4
+    level: "B1"
+    weeks: [1, 3]
+    why: "Remote work vocabulary + Present Simple/Past Simple в бытовых ситуациях."
+    vocab: ["remote work", "WFH", "commute", "distraction", "focus mode", "home office"]
+    comprehension_questions:
+      - q: "What are the three main tips for working from home mentioned in the episode?"
+        type: "open"
+        sample_answer: "1) Have a dedicated workspace. 2) Stick to a routine. 3) Take breaks."
+      - q: "What does 'WFH' stand for?"
+        type: "open"
+        sample_answer: "Working from home."
+      - q: "How does the speaker describe 'focus mode'?"
+        type: "open"
+        sample_answer: "Focus mode is when you turn off notifications and work without interruptions for a set period (e.g. 25 minutes)."
+
+  - id: "bbc-6min-meetings"
+    title: "Meetings: how to make them useful"
+    source: "BBC Learning English — 6 Minute English"
+    url: "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english/ep-190626"
+    transcript_url: "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english/ep-190626"
+    duration_min: 6
+    level: "B1-B2"
+    weeks: [5, 6]
+    why: "Vocabulary about meetings — sync up, take it offline, parking lot."
+    vocab: ["meeting", "agenda", "action items", "take it offline", "parking lot", "sync up", "follow up"]
+    comprehension_questions:
+      - q: "What is a 'parking lot' in meetings?"
+        type: "open"
+        sample_answer: "A list of topics to discuss later, separately, because they're not the main focus of the current meeting."
+      - q: "What does 'take it offline' mean?"
+        type: "multiple_choice"
+        options: ["Disconnect from internet", "Discuss it separately", "Cancel the discussion", "Take notes"]
+        answer: "Discuss it separately"
+
+  - id: "bbc-idioms-time"
+    title: "Idioms about time"
+    source: "BBC Learning English — The English We Speak"
+    url: "https://www.bbc.co.uk/learningenglish/english/features/the-english-we-speak"
+    transcript_url: "https://www.bbc.co.uk/learningenglish/english/features/the-english-we-speak"
+    duration_min: 4
+    level: "B1-B2"
+    weeks: [7, 8]
+    why: "Идиомы о времени — для Past Continuous/Past Perfect контекста."
+    vocab: ["in the nick of time", "time flies", "downtime", "on time", "behind the times", "race against time"]
+    comprehension_questions:
+      - q: "What does 'in the nick of time' mean?"
+        type: "open"
+        sample_answer: "Just in time — at the last possible moment before something bad happens."
+      - q: "If a system has 'downtime', what does it mean?"
+        type: "open"
+        sample_answer: "The system is not working — it's offline or unavailable."
+
+# === VOA Learning English (3 источника) ===
+
+  - id: "voa-everyday-grammar-routines"
+    title: "Everyday Grammar: Routines and habits"
+    source: "VOA Learning English — Everyday Grammar"
+    url: "https://learningenglish.voanews.com/z/4921"
+    transcript_url: "https://learningenglish.voanews.com/a/everyday-grammar-routines/4861123.html"
+    duration_min: 5
+    level: "B1"
+    weeks: [1, 4]
+    why: "Present Simple + frequency adverbs (always, usually, often) — база Week 1-4."
+    vocab: ["routine", "habit", "frequency", "always", "usually", "often", "sometimes", "rarely", "never"]
+    comprehension_questions:
+      - q: "What's the difference between 'routine' and 'habit'?"
+        type: "open"
+        sample_answer: "A routine is a set of actions you do regularly (e.g., morning routine). A habit is a single behavior you do often, sometimes unconsciously."
+      - q: "Where do frequency adverbs go in negative sentences with Present Simple?"
+        type: "open"
+        sample_answer: "Before the main verb: 'I usually don't work on weekends.' Or with 'be': 'I'm usually not late.'"
+
+  - id: "voa-health-sleep"
+    title: "Health Report: How sleep affects your work"
+    source: "VOA Learning English — Health Report"
+    url: "https://learningenglish.voanews.com/z/4901"
+    transcript_url: "https://learningenglish.voanews.com/a/health-report-sleep/4672893.html"
+    duration_min: 5
+    level: "B1-B2"
+    weeks: [6]
+    why: "Vocabulary о well-being + Future (will) в рекомендациях."
+    vocab: ["sleep", "fatigue", "productivity", "focus", "recommend", "suggest", "advise"]
+    comprehension_questions:
+      - q: "Why is sleep important for productivity according to the episode?"
+        type: "open"
+        sample_answer: "Lack of sleep reduces focus, slows reaction time, and increases mistakes. Good sleep improves memory and decision-making."
+      - q: "How many hours of sleep do experts recommend?"
+        type: "open"
+        sample_answer: "7-9 hours per night for adults."
+
+  - id: "voa-education-report"
+    title: "Education Report: Online learning"
+    source: "VOA Learning English — Education Report"
+    url: "https://learningenglish.voanews.com/z/4879"
+    transcript_url: "https://learningenglish.voanews.com/a/education-report-online-learning/51234567.html"
+    duration_min: 6
+    level: "B1-B2"
+    weeks: [8, 9]
+    why: "Past Perfect в нарративах + Conditionals в дискуссиях об образовании."
+    vocab: ["online learning", "remote education", "enroll", "course", "certificate", "skill"]
+    comprehension_questions:
+      - q: "What are the benefits of online learning mentioned?"
+        type: "open"
+        sample_answer: "Flexibility, lower cost, ability to learn at your own pace, access to global teachers."
+      - q: "If you ___ (have) more time, what course would you take?"
+        type: "open"
+        sample_answer: "If I had more time, I would take a course on machine learning / public speaking / TypeScript."
+
+# === IT-подкасты (3 источника) ===
+
+  - id: "code-review-podcast"
+    title: "Code review etiquette"
+    source: "Soft Skills Engineering (podcast)"
+    url: "https://softskills.audio/"
+    transcript_url: null  # подкаст без транскрипта
+    duration_min: 30
+    level: "B2"
+    weeks: [10]
+    why: "Реальный IT-контекст для Conditionals (1st/2nd) + деловой тон."
+    vocab: ["code review", "pull request", "PR", "nitpick", "blocking comment", "approve", "request changes"]
+    comprehension_questions:
+      - q: "What's a 'nitpick' in code review?"
+        type: "open"
+        sample_answer: "A small, non-blocking comment about style or minor improvement (e.g., 'nit: add a space here'). Not critical, but nice to fix."
+      - q: "What's the difference between 'approve' and 'request changes' in PR review?"
+        type: "open"
+        sample_answer: "Approve = the PR is ready to merge. Request changes = there are issues that must be fixed before merging."
+
+  - id: "developer-voices-standup"
+    title: "Standup vs status meeting"
+    source: "Developer Voices (podcast)"
+    url: "https://www.developervoices.com/"
+    transcript_url: null
+    duration_min: 35
+    level: "B2"
+    weeks: [11]
+    why: "Real engineering team culture + Passive Voice в IT-процессах."
+    vocab: ["standup", "status meeting", "sync", "blocker", "async", "ceremony", "agile"]
+    comprehension_questions:
+      - q: "What's the main difference between a standup and a status meeting?"
+        type: "open"
+        sample_answer: "A standup is a short (15-min) daily sync for the team to share blockers and coordinate. A status meeting is a longer meeting where one person reports progress to stakeholders."
+
+  - id: "soft-skills-engineering"
+    title: "Soft skills in engineering"
+    source: "Soft Skills Engineering (podcast)"
+    url: "https://softskills.audio/"
+    transcript_url: null
+    duration_min: 28
+    level: "B2"
+    weeks: [12]
+    why: "Reported Speech в пересказе историй + деловой контекст."
+    vocab: ["soft skills", "communication", "feedback", "conflict", "negotiation", "leadership"]
+    comprehension_questions:
+      - q: "Why are soft skills important for engineers?"
+        type: "open"
+        sample_answer: "Because most engineering work is collaborative — code reviews, design discussions, conflict resolution, and stakeholder communication all require soft skills. Technical skills alone are not enough."
+
+# === Алиасы и дополнительные подсказки ===
+
+week_recommendation_hint: |
+  Для каждой недели используются 1-2 источника.
+  Каждый эпизод можно слушать несколько раз:
+    - 1-й раз: общий смысл
+    - 2-й раз: выписывать vocab
+    - 3-й раз: отвечать на comprehension questions устно
+
+listening_practice_tip: |
+  После прослушивания отвечай на вопросы ВСЛУХ.
+  Не подглядывай в sample_answer — сначала попробуй сам(а).
+  Потом сверься и исправь ошибки.

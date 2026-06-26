@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/kfigh/expert-reviews-hub/**)",
+      "Bash(python scripts/parse_livelib.py --help)"
+    ]
+  }
+}

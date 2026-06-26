@@ -1,0 +1,335 @@
+---
+/**
+ * Страница аудио-трека «Теория невероятности — мини-эксперимент».
+ * Пилот «community-first»: показывает CTA-блок «Расскажи свой опыт» под плеером.
+ *
+ * Источник: audio_skill/tmp/library/muzhitskaya-teoriya-neveroyatnosti-full.mp3 (147 сек / 3.4 МБ)
+ * Источник текста: audio_skill/data/library/muzhitskaya-teoriya-neveroyatnosti.yaml
+ * Шаблон страницы: audio_skill/templates/audio-page-astro.astro (адаптирован под lab_site)
+ */
+import Base from '../../layouts/Base.astro';
+import { audioTracks, getTrackBySlug } from '../../data/audio';
+import ShareButtons from '../../components/ShareButtons.astro';
+
+const slug = 'muzhitskaya-teoriya-neveroyatnosti';
+const track = getTrackBySlug(slug);
+
+if (!track) {
+  throw new Error(`Трек "${slug}" не найден в audio.ts`);
+}
+
+const pageUrl = `https://app.pulab.ru/audio/${slug}/`;
+const pageTitle = `${track.title} — аудио-практика | Лаборатория желаний`;
+const pageDescription = track.description;
+const g1 = track.gradient[0];
+const g2 = track.gradient[1];
+
+// Schema.org AudioObject — для SEO (см. audio-page-astro.astro в audio_skill)
+const audioLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'AudioObject',
+  name: track.title,
+  description: pageDescription,
+  contentUrl: `https://app.pulab.ru${track.file}`,
+  encodingFormat: 'audio/mpeg',
+  duration: 'PT2M27S',
+  inLanguage: 'ru-RU',
+  isAccessibleForFree: true,
+  author: { '@type': 'Organization', name: 'ЛАБОРАТОРИЯ ЖЕЛАНИЙ' },
+});
+---
+<Base
+  title={pageTitle}
+  description={pageDescription}
+  pageUrl={pageUrl}
+  extraJsonLd={audioLd}
+>
+  <article class="audio-page">
+    <header class="audio-page__header" style={`--g1: ${g1}; --g2: ${g2};`}>
+      <p class="audio-page__eyebrow">Аудио-практика · Пилот</p>
+      <h1 class="audio-page__title">{track.title}</h1>
+      <p class="audio-page__desc">{pageDescription}</p>
+      <div class="audio-page__share">
+        <ShareButtons url={pageUrl} title={pageTitle} description={pageDescription} />
+      </div>
+    </header>
+
+    <!-- Плеер (как в TrackCard, но на всю ширину) -->
+    <section class="audio-page__player">
+      <div class="audio-page__player-card">
+        <div class="audio-page__player-cover" aria-hidden="true">
+          <span class="audio-page__player-emoji">{track.emoji}</span>
+        </div>
+        <div class="audio-page__player-body">
+          <audio
+            id={`audio-${track.slug}`}
+            src={track.file}
+            preload="metadata"
+            controls
+            controlsList="nodownload"
+          >
+            Ваш браузер не поддерживает HTML5 audio.
+            <a href={track.file}>Скачайте MP3</a>.
+          </audio>
+          <div class="audio-page__player-meta">
+            <span>🎙 Голос: {track.voice === 'alena' ? 'Алёна' : track.voice === 'ermil' ? 'Ермил' : track.voice}</span>
+            <span>🎵 Фон: {track.background ?? '—'}</span>
+            <span>⏱ {track.duration}</span>
+          </div>
+          <div class="audio-page__player-actions">
+            <a href={track.file} download class="audio-page__btn-download">
+              Скачать MP3
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Микро-CTA (только если track.has_micro_cta = true) -->
+    {track.has_micro_cta && (
+      <section class="audio-cta">
+        <h2 class="audio-cta__title">🧪 Какой эксперимент проведёте вы?</h2>
+        <p class="audio-cta__lead">
+          Этот трек — приглашение к 24-часовому эксперименту.
+          Послушали? Выберите одно маленькое действие в сторону своего желания и попробуйте сегодня вечером.
+        </p>
+        <p class="audio-cta__lead">
+          Вечером запишите, что заметили: что получилось, что удивило, что не вышло —
+          и расскажите нам.
+        </p>
+        <a href={`/my-experiment/?from=audio-${track.slug}`} class="audio-cta__btn">
+          Рассказать свой опыт →
+        </a>
+        <p class="audio-cta__hint">
+          Форма займёт 2 минуты. Анонимно, без регистрации.
+        </p>
+      </section>
+    )}
+
+    <!-- О чём этот трек -->
+    <section class="audio-page__about">
+      <h2>О чём эта практика</h2>
+      <p>
+        Пять правил Татьяны Мужицкой из книги «Теория невероятности» —
+        коротко и в голос: сила мысли, закон притяжения, визуализация как репетиция,
+        действие без веры и вера без действия. В конце — открытый вопрос
+        специально для тебя.
+      </p>
+      <p class="audio-page__about-source">
+        Источник: <a href="/library/teoriya-neveroyatnosti-muzhitskaya/">конспект книги «Теория невероятности»</a> ·
+        <a href="/audio/">все аудио-практики</a>
+      </p>
+    </section>
+  </article>
+</Base>
+
+<script>
+  // Один audio-плеер на странице — простой init.
+  (function () {
+    const audio = document.querySelector('audio');
+    if (!audio) return;
+    // Preload только metadata, play — по клику
+    audio.preload = 'metadata';
+  })();
+</script>
+
+<style>
+  .audio-page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 16px 80px;
+  }
+
+  .audio-page__header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .audio-page__eyebrow {
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: #6b7280;
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+
+  .audio-page__title {
+    font-size: 36px;
+    line-height: 1.2;
+    margin: 0 0 16px;
+    background: linear-gradient(135deg, var(--g1, #FFE4E6) 0%, var(--g2, #9F1239) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+  }
+
+  .audio-page__desc {
+    font-size: 17px;
+    line-height: 1.55;
+    color: #4b5563;
+    max-width: 600px;
+    margin: 0 auto 24px;
+  }
+
+  .audio-page__share {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Плеер */
+  .audio-page__player {
+    margin: 0 0 48px;
+  }
+
+  .audio-page__player-card {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid #f3f4f6;
+  }
+
+  @media (max-width: 640px) {
+    .audio-page__player-card {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .audio-page__player-cover {
+    background: linear-gradient(135deg, var(--g1, #FFE4E6) 0%, var(--g2, #9F1239) 100%);
+    border-radius: 12px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .audio-page__player-emoji {
+    font-size: 80px;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+  }
+
+  .audio-page__player-body audio {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .audio-page__player-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 16px;
+  }
+
+  .audio-page__player-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  .audio-page__btn-download {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #f3f4f6;
+    color: #1f2937;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.15s;
+  }
+
+  .audio-page__btn-download:hover {
+    background: #e5e7eb;
+  }
+
+  /* CTA — главный блок пилота */
+  .audio-cta {
+    background: linear-gradient(135deg, var(--g1, #FFE4E6) 0%, var(--g2, #9F1239) 100%);
+    color: white;
+    border-radius: 20px;
+    padding: 36px 32px;
+    margin: 0 0 48px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(159, 18, 57, 0.18);
+  }
+
+  .audio-cta__title {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 0 0 16px;
+    line-height: 1.3;
+  }
+
+  .audio-cta__lead {
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0 0 14px;
+    opacity: 0.96;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .audio-cta__btn {
+    display: inline-block;
+    background: white;
+    color: #9F1239;
+    padding: 16px 32px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 700;
+    margin: 20px 0 8px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .audio-cta__btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .audio-cta__hint {
+    font-size: 13px;
+    opacity: 0.85;
+    margin: 8px 0 0;
+  }
+
+  /* О чём */
+  .audio-page__about {
+    background: #f9fafb;
+    border-radius: 16px;
+    padding: 28px 24px;
+    border-left: 4px solid #9F1239;
+  }
+
+  .audio-page__about h2 {
+    font-size: 20px;
+    margin: 0 0 12px;
+    color: #1f2937;
+  }
+
+  .audio-page__about p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4b5563;
+    margin: 0 0 12px;
+  }
+
+  .audio-page__about-source {
+    font-size: 14px;
+    color: #6b7280;
+  }
+
+  .audio-page__about-source a {
+    color: #9F1239;
+    text-decoration: underline;
+  }
+</style>

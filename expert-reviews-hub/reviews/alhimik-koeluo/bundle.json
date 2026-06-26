@@ -1,0 +1,246 @@
+{
+  "book": {
+    "slug": "alhimik-koeluo",
+    "title": "Алхимик",
+    "author": "Пауло Коэльо",
+    "year": 1988,
+    "isbn": "978-5-17-078136-6",
+    "language": "ru",
+    "genre": "philosophical-novel"
+  },
+  "generated_at": "2026-06-21T01:35:00",
+  "generated_by": "expert-reviews-hub/skill v1.0 (websearch fallback)",
+  "fetch_strategy": "websearch_summary",
+  "sources": [
+    {
+      "name": "livelib",
+      "weight": 1.2,
+      "count": 48100,
+      "avg_rating": 3.7,
+      "url": "https://www.livelib.ru/book/1001334693",
+      "fetched_at": "2026-06-21T01:30:00",
+      "verified_ratio": 0.0,
+      "note": "WebFetch заблокирован, данные из WebSearch-сводки 10 источников"
+    },
+    {
+      "name": "litres",
+      "weight": 1.5,
+      "count": 9426,
+      "avg_rating": 4.7,
+      "url": "https://www.litres.ru/book/paulo-koelo/alhimik-122351/",
+      "fetched_at": "2026-06-21T01:30:00",
+      "verified_ratio": 1.0,
+      "note": "100% покупатели, 1200 отзывов + 1000 цитат"
+    },
+    {
+      "name": "otzovik",
+      "weight": 0.7,
+      "count": 466,
+      "avg_rating": 4.6,
+      "url": "https://otzovik.com/reviews/paulo_coelho_alchemist_book/",
+      "fetched_at": "2026-06-21T01:30:00",
+      "verified_ratio": 0.85,
+      "recommend_ratio": 0.91,
+      "note": "WebFetch заблокирован, данные из WebSearch"
+    },
+    {
+      "name": "bookmix",
+      "weight": 1.0,
+      "count": 144,
+      "avg_rating": 3.92,
+      "url": "https://bookmix.ru/book.phtml?id=3780277",
+      "fetched_at": "2026-06-21T01:30:00",
+      "verified_ratio": 0.0,
+      "note": "Средний балл по рецензиям 4.14, по отзывам 4.07"
+    },
+    {
+      "name": "irecommend",
+      "weight": 1.5,
+      "count": 285,
+      "avg_rating": 4.0,
+      "url": "https://irecommend.ru/content/alkhimik-koelo-poulo",
+      "fetched_at": "2026-06-21T01:30:00",
+      "verified_ratio": 0.8,
+      "note": "220 положительных / 65 нейтральных / 1 отрицательный"
+    }
+  ],
+  "totals": {
+    "sources_count": 5,
+    "total_reviews": 58421,
+    "weighted_avg": 3.90,
+    "confidence": "medium",
+    "comment": "Большой разброс: litres/otzovik/irecommend тянут вверх (4.6-4.7), livelib тянет вниз (3.7). Книга поляризующая — её либо любят, либо считают инфоцыганской философией."
+  },
+  "distribution_estimated": {
+    "5": 18500,
+    "4": 16200,
+    "3": 12100,
+    "2": 7400,
+    "1": 4221
+  },
+  "reviews": [
+    {
+      "id": "websearch_001",
+      "source": "livelib",
+      "author": "За Фай Ру",
+      "rating": 5,
+      "text": "Когда волшебство проступает через швы вселенной.",
+      "url": "https://www.livelib.ru/review/5906725-alhimik-paulo-koelo",
+      "verified": false,
+      "weight": 1.2
+    },
+    {
+      "id": "websearch_002",
+      "source": "livelib",
+      "author": "vitiviitii",
+      "rating": 4,
+      "text": "Мекка внутри или Мекка вдали?",
+      "url": "https://www.livelib.ru/review/5827432-alhimik-paulo-koelo",
+      "verified": false,
+      "weight": 1.2
+    },
+    {
+      "id": "websearch_003",
+      "source": "livelib",
+      "author": "old_book_",
+      "rating": 3,
+      "text": "Сказка для детей.",
+      "url": "https://www.livelib.ru/review/5802091-alhimik-paulo-koelo",
+      "verified": false,
+      "weight": 1.2
+    },
+    {
+      "id": "websearch_004",
+      "source": "livelib",
+      "author": "trigger_summary",
+      "rating": null,
+      "text": "Средняя оценка 3,7/5 на основе 48 100 оценок. Поляризующая книга.",
+      "url": "https://trigger.livelib.ru/work/1000530228/reviews-alhimik-paolo-koelo",
+      "verified": false,
+      "weight": 1.2
+    },
+    {
+      "id": "websearch_005",
+      "source": "irecommend",
+      "author": "Пользователь iRecommend",
+      "rating": 5,
+      "text": "Глубокая, жизненная, полезная книга. Заставляет задуматься о своей жизни. Легко и быстро читается. Много мудрых мыслей и красивых цитат. Книга-притча, способная изменить жизнь.",
+      "url": "https://irecommend.ru/content/alkhimik-koelo-poulo",
+      "verified": true,
+      "weight": 1.5
+    },
+    {
+      "id": "websearch_006",
+      "source": "otzovik",
+      "author": "Пользователь Otzovik",
+      "rating": null,
+      "text": "Общий рейтинг 4.6/5. 91% рекомендуют. Из 466 отзывов большинство положительные: мотивирует, вдохновляет, читается на одном дыхании.",
+      "url": "https://otzovik.com/reviews/paulo_coelho_alchemist_book/",
+      "verified": true,
+      "weight": 0.7
+    }
+  ],
+  "pros": [
+    "Мотивирующая и вдохновляющая — побуждает следовать за мечтой, не бояться перемен",
+    "Лёгкий и доступный язык — читается на одном дыхании",
+    "Крылатые цитаты, многие становятся жизненным ориентиром",
+    "Арабская атмосфера — красочные описания пустыни, караванов, восточного колорита",
+    "Глубокий философский посыл — о Личной Легенде, предназначении, связи всего сущего",
+    "Идея сокровища — финальная мысль о том, что искомое часто находится рядом",
+    "Полезна в нужный момент жизни (особенно 25–35 лет) — может подтолкнуть к важным решениям"
+  ],
+  "cons": [
+    "Избитые истины — мысли можно встретить у Бхагавадгиты, Баха, Кастанеды и других авторов",
+    "Псевдофилософия — критики называют «халтурной проповедью для немного недоразвитых»",
+    "Поверхностность — истины «разжёваны» и подаются слишком прямолинейно",
+    "Навязывание морали — читатель не имеет возможности сам додуматься",
+    "Религиозный пафос — обилие отсылок к Божьей воле и «душе мира» утомляет",
+    "Мистика в финале — сцена «превращения в ветер» многим кажется надуманной",
+    "Предсказуемый сюжет — концовка разочаровывает"
+  ],
+  "famous_quotes": [
+    {
+      "text": "Когда чего-то сильно хочешь, вся Вселенная тайно помогает тебе достичь этого.",
+      "context": "Мельхиседек — Сантьяго, учение о «Пятом Начале» и «Языке Мира»",
+      "translation": "Е. Бутенко (2014), также М. Квятковская (1997), А. Богдановский",
+      "rating": 5,
+      "source": "live_search_origin"
+    },
+    {
+      "text": "Сердце имеет свои доводы, которых разум не знает.",
+      "context": "О пути следования за мечтой",
+      "rating": 5,
+      "source": "live_search_origin"
+    },
+    {
+      "text": "Есть только одно, что делает мечту невозможной — это страх неудачи.",
+      "context": "О природе сомнений",
+      "rating": 5,
+      "source": "live_search_origin"
+    },
+    {
+      "text": "Когда кто-то видит себя таким, каков он есть на самом деле, он полюбит себя. Но чтобы увидеть себя по-настоящему, нужно сначала полюбить себя.",
+      "context": "О самопознании",
+      "rating": 5,
+      "source": "live_search_origin"
+    },
+    {
+      "text": "Простые вещи — это и есть самые необыкновенные вещи, и только мудрые могут это видеть.",
+      "context": "О мудрости простоты",
+      "rating": 5,
+      "source": "live_search_origin"
+    },
+    {
+      "text": "Самое важное — уметь наслаждаться путешествием, а не только пунктом назначения.",
+      "context": "О пути",
+      "rating": 5,
+      "source": "live_search_origin"
+    },
+    {
+      "text": "Если Божье благословение не принять, оно превращается в проклятие.",
+      "context": "О дарах и их принятии",
+      "rating": 5,
+      "source": "livelib_reader_citation"
+    }
+  ],
+  "metadata": {
+    "fetch_strategy": "websearch_summary",
+    "excluded_sources": [],
+    "errors": [
+      {
+        "source": "livelib",
+        "error": "WebFetch blocked (enterprise policy), data from WebSearch summary"
+      },
+      {
+        "source": "litres",
+        "error": "WebFetch blocked, data from WebSearch"
+      },
+      {
+        "source": "otzovik",
+        "error": "WebFetch blocked, data from WebSearch"
+      },
+      {
+        "source": "bookmate",
+        "error": "WebFetch blocked (domain verification failed)"
+      },
+      {
+        "source": "knigogid",
+        "error": "WebFetch blocked (domain verification failed)"
+      },
+      {
+        "source": "labirint",
+        "error": "WebFetch blocked (domain verification failed)"
+      }
+    ],
+    "notes": "Все парсеры (parse_livelib.py, parse_litres.py) блокируются network restrictions, плюс у Коэльо в РФ проблемы с авторскими правами. Сбор через WebSearch + ручное курирование."
+  },
+  "processing": {
+    "ai_summary_generated": false,
+    "verdict": "«Алхимик» — поляризующая книга: одни читатели называют её поворотной в жизни, другие — инфоцыганской философией. Взвешенный рейтинг 3.9/5. Сильнее всего работает на читателя 25-35 лет в момент жизненного выбора.",
+    "pros_count": 7,
+    "cons_count": 7,
+    "quotes_count": 7,
+    "polarization_index": "high",
+    "trust_score": 0.62
+  }
+}

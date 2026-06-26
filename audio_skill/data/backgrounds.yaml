@@ -1,0 +1,155 @@
+# Каталог фоновых треков для Audio Skill
+# Источник: C:/Users/kfigh/audio_skill/data/backgrounds/*.mp3
+# Распределение по жанрам аудио, проверено пользователем 2026-06-11
+#
+# Правила подбора:
+# - bowls_*  → аффирмации, ритуалы (тёплые, поддерживающие)
+# - tide_*   → медитации, дыхательные техники (успокаивающие)
+# - ambient_*→ глубокие практики, работа с тенью (плотные, обволакивающие)
+# - sea_*    → утренние ритуалы, вдохновение (свежие, мотивирующие)
+# - cosmic_* → визуализации, путешествия (просторные, вдохновляющие)
+#
+# Громкости (volume_db): голос = 0 dB, фон ниже на указанное число.
+# По умолчанию -22 dB (фон едва слышен за голосом).
+
+backgrounds:
+  # === BOWLS (поющие чаши) — аффирмации, ритуалы ===
+  bowls_warm:
+    file: data/backgrounds/bowl_frequencies_a.mp3
+    description: Поющие чаши, чёткие тона. Для аффирмаций «золотые правила», «разрешение себе», «утреннее намерение».
+    duration_sec: 282
+    volume_db: -22
+    fade_in: 4s
+    fade_out: 6s
+    suitable_for: [affirmation, rules, ritual, morning]
+    mood: [warm, clear, supportive]
+    default_for:
+      - zolotye-pravila-ispolneniya-zhelaniy
+      - razreshenie-sebe
+      - utrennee-namerenie
+
+  bowls_deep:
+    file: data/backgrounds/bowl_gravity.mp3
+    description: Поющие чаши с низкими частотами. Для более глубоких аффирмаций и ритуалов благодарности.
+    duration_sec: 304
+    volume_db: -24
+    fade_in: 5s
+    fade_out: 7s
+    suitable_for: [affirmation, gratitude, deep_ritual]
+    mood: [grounded, low, ceremonial]
+    default_for:
+      - blagodarnost-vecherom
+      - malenkie-shagi
+
+  bowls_soft:
+    file: data/backgrounds/bowl_frequencies_b.mp3
+    description: Поющие чаши, мягкий вариант B. Универсальный fallback.
+    duration_sec: 330
+    volume_db: -22
+    fade_in: 4s
+    fade_out: 6s
+    suitable_for: [affirmation, fallback, anytime]
+    mood: [soft, neutral, safe]
+
+  # === TIDE (прилив) — медитации, дыхательные техники ===
+  tide_calm:
+    file: data/backgrounds/quiet_tidal_halo_a.mp3
+    description: Тихое море, мягкий прилив. Для медитаций Годдарда, техники «зачем», прощения.
+    duration_sec: 238
+    volume_db: -20
+    fade_in: 5s
+    fade_out: 7s
+    suitable_for: [meditation, goddard, forgiveness, deep_relax]
+    mood: [calm, vast, accepting]
+    default_for:
+      - chuvstvo-ispolnennogo-zhelaniya
+      - tekhnika-zachem
+      - proshchenie-sebya
+
+  tide_distant:
+    file: data/backgrounds/quiet_tidal_halo_b.mp3
+    description: Тихое море, более отдалённый звук. Для длинных медитаций.
+    duration_sec: 212
+    volume_db: -22
+    fade_in: 6s
+    fade_out: 8s
+    suitable_for: [meditation, long_session, distant]
+    mood: [distant, contemplative, infinite]
+
+  # === AMBIENT (лабораторный эмбиент) — глубокие практики, работа с тенью ===
+  ambient_drone:  # УНИВЕРСАЛЬНЫЙ (выбор пользователя)
+    file: data/backgrounds/laboratory_bloom_a.mp3
+    description: Лабораторный эмбиент — тёплый, рассеянный. Пользователь подтвердил как универсальный fallback.
+    duration_sec: 219
+    volume_db: -22
+    fade_in: 5s
+    fade_out: 7s
+    suitable_for: [anything, universal, fallback, affirmation, meditation, ritual]
+    mood: [neutral, warm, diffused]
+    is_universal: true
+    default_for:
+      # Назначается всем трекам по умолчанию, если жанр не подходит ни под одну другую категорию
+      - "*"
+
+  ambient_deep:
+    file: data/backgrounds/laboratory_bloom_b.mp3
+    description: Лабораторный эмбиент, версия B. Для глубоких практик, работы с критиком, детскими установками.
+    duration_sec: 304
+    volume_db: -24
+    fade_in: 6s
+    fade_out: 8s
+    suitable_for: [deep_practice, shadow_work, internal_critic, childhood]
+    mood: [deep, contemplative, safe_dark]
+    default_for:
+      - rabota-s-vnutrennim-kritikom
+      - detskie-ustanovki-pro-dengi
+
+  # === SEA (море + мантра) — утренние ритуалы, вдохновение ===
+  sea_mantra:
+    file: data/backgrounds/seawarm_mantra_a.mp3
+    description: Море + мантра. Для утренних ритуалов и вдохновляющих аффирмаций.
+    duration_sec: 306
+    volume_db: -22
+    fade_in: 5s
+    fade_out: 7s
+    suitable_for: [morning, inspiration, ritual, energy]
+    mood: [fresh, flowing, motivating]
+    default_for:
+      - utrennee-namerenie
+
+  sea_warm:
+    file: data/backgrounds/seawarm_mantra_b.mp3
+    description: Море, тёплый вариант. Для вечерних ритуалов благодарности.
+    duration_sec: 298
+    volume_db: -23
+    fade_in: 5s
+    fade_out: 7s
+    suitable_for: [evening, gratitude, soft_ritual]
+    mood: [warm, gentle, closing]
+
+  # === CANDLE (свеча + море) — гибрид для медитаций на свечу и визуализаций ===
+  candle_glow:
+    file: data/backgrounds/candle_sea.mp3
+    description: Свеча + море. Гибрид для медитаций на свечу, визуализаций, ритуалов благодарности.
+    duration_sec: 268
+    volume_db: -21
+    fade_in: 4s
+    fade_out: 6s
+    suitable_for: [meditation, candle, visualization, gratitude]
+    mood: [warm, focused, intimate]
+    default_for:
+      - proshchenie-sebya  # альтернатива tide_calm
+      - blagodarnost-vecherom
+
+  # === SILENCE (без фона) — уроки, инструкции, контент с конкретикой ===
+  silence:
+    file: null
+    description: Без фона. Только голос. Для уроков, инструкций, контента с конкретикой.
+    volume_db: 0
+    fade_in: 0
+    fade_out: 0
+    suitable_for: [lesson, instruction, technique_explained]
+    mood: []
+    default_for:
+      - tekhnika-100-zhelaniy
+      - tekhnika-zachem

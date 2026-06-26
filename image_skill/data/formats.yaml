@@ -1,0 +1,51 @@
+# image_skill — format registry
+# Формат = (widthRatio, heightRatio) для YandexART (1..8 каждый).
+# Базовая сетка: 8 × 64px. Phase 1: 512×512 max.
+
+formats:
+  vk_post:
+    label: "Пост ВКонтакте"
+    aspect: "1:1"
+    width_ratio: 8
+    height_ratio: 8
+    target_size: [1080, 1080]
+    safe_zones: { top: 80, bottom: 80, left: 60, right: 60 }
+    use_case: "Посты в ленту сообщества pulabru"
+
+  vk_story:
+    label: "История ВКонтакте"
+    aspect: "9:16"          # целевой aspect (ВК сторис)
+    width_ratio: 5
+    height_ratio: 8         # YandexART лимит [1..8], aspect 5:8 = 1.6 vs 9:16 = 1.78
+    # ↑ YandexART вернёт ~640×1024 JPEG. Pillow Lanczos upscale до 1080×1920 = +68% по стороне
+    # Это лучший компромисс — Lanczos дотянет пропорции с минимальным мылом.
+    target_size: [1080, 1920]
+    safe_zones: { top: 200, bottom: 250, left: 50, right: 50 }
+    use_case: "Сторис (вертикальный полноэкранный формат)"
+
+  pinterest:
+    label: "Карточка Pinterest"
+    aspect: "2:3"
+    width_ratio: 4
+    height_ratio: 6
+    target_size: [1000, 1500]
+    safe_zones: { top: 80, bottom: 80, left: 40, right: 40 }
+    use_case: "Карточки книг, цитат, аудио-превью"
+
+  wb:
+    label: "Карточка WB/Ozon"
+    aspect: "3:4"
+    width_ratio: 6
+    height_ratio: 8
+    target_size: [900, 1200]
+    safe_zones: { top: 80, bottom: 100, left: 50, right: 50 }
+    use_case: "Инфографика маркетплейсов (карточки товаров)"
+
+  og:
+    label: "OG-image для статьи"
+    aspect: "2:1"
+    width_ratio: 6
+    height_ratio: 3
+    target_size: [1200, 630]
+    safe_zones: { top: 60, bottom: 60, left: 80, right: 80 }
+    use_case: "Превью статьи в соцсетях (Open Graph)"

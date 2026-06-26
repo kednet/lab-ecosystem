@@ -1,0 +1,91 @@
+meta:
+  name: "past-perfect"
+  display_name: "Past Perfect"
+  level: "B2"
+  estimated_min: 6
+  description: "Действие, завершившееся ДО другого действия в прошлом. I had finished before..."
+  grammar_point: "past-perfect"
+  prerequisites: ["past-simple", "past-continuous"]
+
+questions:
+  - id: 1
+    type: "multiple_choice"
+    prompt: "I ___ the PR before the build failed."
+    options: ["merged", "have merged", "had merged", "was merging"]
+    correct: "had merged"
+    explanation: "Действие раньше другого (before the build failed) → Past Perfect."
+
+  - id: 2
+    type: "open"
+    prompt: "She ___ (already / finish) the migration by Friday."
+    correct_answer: "had already finished"
+    acceptable_answers: ["had already finished", "already finished"]
+    explanation: "By + время (by Friday) → Past Perfect. Already = уже."
+
+  - id: 3
+    type: "multiple_choice"
+    prompt: "When I arrived, the team ___ the problem."
+    options: ["fixed", "had fixed", "has fixed", "was fixing"]
+    correct: "had fixed"
+    explanation: "By the time I arrived (прошлое) → Past Perfect (они починили раньше)."
+
+  - id: 4
+    type: "multiple_choice"
+    prompt: "He said he ___ the report."
+    options: ["finished", "has finished", "had finished", "finishes"]
+    correct: "had finished"
+    explanation: "Reported speech: Past Simple (said) + Past Perfect (had finished)."
+
+  - id: 5
+    type: "open"
+    prompt: "We ___ (never / see) such a bug before."
+    correct_answer: "had never seen"
+    acceptable_answers: ["had never seen", "never saw"]
+    explanation: "'Never... before' в прошлом → Past Perfect (опыт до этого момента)."
+
+  - id: 6
+    type: "multiple_choice"
+    prompt: "After she ___ the tests, she deployed the code."
+    options: ["wrote", "has written", "had written", "writes"]
+    correct: "had written"
+    explanation: "After + Past Perfect (сначала написала), потом Past Simple (задеплоила)."
+
+  - id: 7
+    type: "open"
+    prompt: "By the time we ___ (start) the meeting, the team had already joined."
+    correct_answer: "had started"
+    acceptable_answers: ["had started"]
+    explanation: "By the time + Past Perfect (мы начали раньше)."
+
+  - id: 8
+    type: "multiple_choice"
+    prompt: "I ___ my keys before I left the office."
+    options: ["lost", "have lost", "had lost", "lose"]
+    correct: "had lost"
+    explanation: "Past Perfect (потерял раньше) + Past Simple (вышел)."
+
+  - id: 9
+    type: "multiple_choice"
+    prompt: "She told me that she ___ v3."
+    options: ["shipped", "has shipped", "had shipped", "ships"]
+    correct: "had shipped"
+    explanation: "Reported speech: Past Simple (told) → Past Perfect (had shipped)."
+
+  - id: 10
+    type: "open"
+    prompt: "By 5 PM, we ___ (ship) three releases."
+    correct_answer: "had shipped"
+    acceptable_answers: ["had shipped", "shipped"]
+    explanation: "By + время → Past Perfect (результат к этому моменту)."
+
+after_quiz:
+  recap: |
+    **Past Perfect:**
+    - Все местоимения: had + V3
+    - Сокращение: I'd, he'd, she'd, we'd, they'd
+    - Когда: действие, завершившееся ДО другого действия в прошлом
+    - Маркеры: before, after, already, by the time, when, by yesterday, never... before
+
+  next_tense: "conditionals-1-2"
+  recommended_review: "references/tenses-12-table.md#past-perfect"
+  related_lesson: "Week 8 (curriculum.yaml)"

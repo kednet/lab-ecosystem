@@ -1,0 +1,140 @@
+---
+import Base from '../layouts/Base.astro';
+import { legal } from '../data/legal';
+
+const url = new URL(Astro.request.url);
+const plan = url.searchParams.get('plan') ?? 'month';
+
+const planMeta: Record<string, { name: string; price: string; }> = {
+  month: { name: 'Месяц',  price: '590 ₽/мес' },
+  year:  { name: 'Год',    price: '4 990 ₽/год' },
+};
+
+const current = planMeta[plan] ?? planMeta.month;
+
+// Реквизиты для чека (54-ФЗ) — берём из data/legal
+const receiver = legal.paymentReceiverName || 'ИП / Самозанятый';
+---
+<Base
+  title="Оформление подписки"
+  description="Оплата подписки Лаборатории желаний через ЮKassa — карты российских и зарубежных банков, СБП, ЮMoney. Чек приходит на e-mail автоматически."
+  noindex
+>
+  <section class="section">
+    <div class="container" style="max-width: 640px;">
+      <p class="section__eyebrow reveal">Оформление</p>
+      <h1 class="section__title reveal">Почти готово ✨<br />осталось оплатить</h1>
+
+      <div class="checkout-card reveal">
+        <div class="checkout-card__row">
+          <span>Тариф</span>
+          <strong>{current.name}</strong>
+        </div>
+        <div class="checkout-card__row">
+          <span>Стоимость</span>
+          <strong>{current.price}</strong>
+        </div>
+        <div class="checkout-card__divider"></div>
+
+        <form id="pay-form" class="pay-form" novalidate>
+          <label class="pay-form__label" for="pay-email">Email для входа в клуб</label>
+          <input
+            type="email"
+            id="pay-email"
+            name="email"
+            class="pay-form__input"
+            placeholder="вы@example.com"
+            required
+            autocomplete="email"
+          />
+          <p class="pay-form__hint">На этот адрес мы пришлём ссылку для входа после оплаты.</p>
+
+          <label class="pay-form__consent">
+            <input type="checkbox" id="pay-consent" required />
+            <span>Согласен(на) с&nbsp;<a href="/offer/" target="_blank" rel="noopener">офертой</a> и&nbsp;<a href="/privacy/" target="_blank" rel="noopener">обработкой персональных данных</a>.</span>
+          </label>
+
+          <!-- Honeypot -->
+          <input type="text" name="hp" id="pay-hp" class="pay-form__hp" tabindex="-1" autocomplete="off" />
+
+          <button type="submit" id="pay-submit" class="btn btn--primary btn--block">
+            Оплатить через ЮKassa
+          </button>
+
+          <p id="pay-error" class="pay-form__error" hidden></p>
+        </form>
+
+        <div class="checkout-card__divider"></div>
+
+        <p class="checkout-card__alt">
+          Оплата: карты российских и&nbsp;зарубежных банков, СБП, ЮMoney.<br />
+          Чек придёт на&nbsp;e-mail автоматически.<br />
+          Получатель: {receiver}.
+        </p>
+        <a class="btn btn--ghost btn--block" href="/pricing/">← Назад к тарифам</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+  (function initPayForm() {
+    var form = document.getElementById('pay-form');
+    if (!form) return;
+    var emailEl = document.getElementById('pay-email');
+    var consentEl = document.getElementById('pay-consent');
+    var submitEl = document.getElementById('pay-submit');
+    var errorEl = document.getElementById('pay-error');
+    var hpEl = document.getElementById('pay-hp');
+
+    function showError(msg) {
+      errorEl.textContent = msg;
+      errorEl.hidden = false;
+    }
+    function clearError() {
+      errorEl.textContent = '';
+      errorEl.hidden = true;
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      clearError();
+
+      var email = (emailEl.value || '').trim();
+      if (!email) { showError('Введите email'); emailEl.focus(); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Похоже, email указан неверно'); emailEl.focus(); return; }
+      if (!consentEl.checked) { showError('Поставьте галочку согласия с офертой'); return; }
+
+      var plan = new URL(location.href).searchParams.get('plan') || 'month';
+
+      submitEl.disabled = true;
+      submitEl.textContent = 'Создаём платёж…';
+
+      try {
+        var r = await fetch('/api/pay/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ plan: plan, email: email, consent: true, hp: (hpEl && hpEl.value) || '' }),
+        });
+        var j = await r.json().catch(function () { return {}; });
+
+        if (!j || !j.ok) {
+          showError((j && j.message) || 'Не удалось создать платёж. Попробуйте позже.');
+          submitEl.disabled = false;
+          submitEl.textContent = 'Оплатить через ЮKassa';
+          return;
+        }
+
+        // Метрика
+        window.labReachGoal('pay_create_success', { plan: plan });
+
+        // Редирект в ЮKassa (или mockUrl → /pay/success/)
+        window.location = j.redirectUrl;
+      } catch (err) {
+        showError('Сетевая ошибка. Попробуйте ещё раз.');
+        submitEl.disabled = false;
+        submitEl.textContent = 'Оплатить через ЮKassa';
+      }
+    });
+  })();
+</script>

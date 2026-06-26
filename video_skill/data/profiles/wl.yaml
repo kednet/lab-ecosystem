@@ -1,0 +1,55 @@
+# Профиль: WishLibrarian (заглушка)
+# Phase 1: минимально валидный YAML, дорабатывается при первом использовании
+# Phase 4: заполнить palette/watermark/cta по факту
+
+name: wl
+display_name: "WishLibrarian"
+description: "ИИ-агент обработки книг в конспекты. Промо новых книг, объясняйки по конспектам."
+
+defaults:
+  platform: tiktok
+  tone: inspiring
+  goal: subscribe
+  duration: 30
+  voice: filipp
+  speed: 1.00
+  music_mood: ambient
+
+voice_tones:
+  - inspiring
+  - educational
+  - confident
+  - neutral
+
+branding:
+  watermark: "@wishlibrarian"
+  watermark_handle: "wishlibrarian"
+  cta_default: "Полный конспект — в боте @wishlibrarian_bot"
+  cta_url: "https://t.me/wishlibrarian_bot"
+  accent_color: "#3B82F6"  # синий (нужно уточнить)
+  palette:
+    primary: "#3B82F6"
+    text: "#0F172A"
+    bg: "#F8FAFC"
+
+hashtags_base:
+  - "#wishlibrarian"
+  - "#конспекты"
+  - "#книги"
+  - "#саморазвитие"
+
+cta_profiles:
+  inspiring:
+    - "Полный конспект в боте — ссылка в закрепе"
+    - "Книга-в-60-секунд: продолжение в Telegram"
+  educational:
+    - "Все 20 книг в боте, загляни"
+    - "Структурированный разбор — в Telegram"
+
+source_domains:
+  - "Self-help, бизнес-книги, психология, нон-фикшн"
+  - "Краткие пересказы, 5-7 ключевых идей"
+
+output:
+  filename_template: "{slug}-wl"
+  state_subdir: "wl"

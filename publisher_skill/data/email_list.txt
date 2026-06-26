@@ -1,0 +1,5 @@
+.
+# Email-list
+# 1 email на строку, строки с # игнорируются
+# Используется scripts/send_email.py
+info@pulab.ru

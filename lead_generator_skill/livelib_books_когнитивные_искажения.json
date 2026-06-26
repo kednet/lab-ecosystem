@@ -1,0 +1,49 @@
+{
+  "source": "livelib.ru",
+  "query": "когнитивные искажения",
+  "min_rating": null,
+  "collected_at": "2026-06-13T13:40:23.637878+00:00",
+  "count": 5,
+  "books": [
+    {
+      "title": "Энциклопедия логических ошибок: Заблуждения, манипуляции, когнитивные искажения и другие враги здравого смысла",
+      "book_id": "1012428338",
+      "url": "https://www.livelib.ru/book/1012428338-entsiklopediya-logicheskih-oshibok-zabluzhdeniya-manipulyatsii-kognitivnye-iskazheniya-i-drugie-vragi-zdravogo-smysla-immanuil-tolstoevskij",
+      "author": "Иммануил Толстоевский",
+      "author_id": "2870612",
+      "author_url": "https://www.livelib.ru/author/2870612"
+    },
+    {
+      "title": "Твой мозг врет. Когнитивные искажения в повседневной жизни. Как распознавать ловушки мышления.",
+      "book_id": "1016266036",
+      "url": "https://www.livelib.ru/book/1016266036-tvoj-mozg-vret-kognitivnye-iskazheniya-vpovsednevnoj-zhizni-kak-raspoznavat-lovushki-myshleniya-kaj-vektor",
+      "author": "Кай Вектор",
+      "author_id": "2999536",
+      "author_url": "https://www.livelib.ru/author/2999536"
+    },
+    {
+      "title": "Слепые зоны между нами. Как преодолеть неосознанные когнитивные искажения",
+      "book_id": "1007889925",
+      "url": "https://www.livelib.ru/book/1007889925-slepye-zony-mezhdu-nami-kak-preodolet-neosoznannye-kognitivnye-iskazheniya-tsipurskij-gleb",
+      "author": "Ципурский Глеб",
+      "author_id": "2153506",
+      "author_url": "https://www.livelib.ru/author/2153506"
+    },
+    {
+      "title": "Твой мозг врет. Когнитивные искажения в&nbsp;повседневной жизни. Как распознавать ловушки мышления.",
+      "book_id": "1016293390",
+      "url": "https://www.livelib.ru/book/1016293390-tvoj-mozg-vret-kognitivnye-iskazheniya-vpovsednevnoj-zhizni-kak-raspoznavat-lovushki-myshleniya-kaj-vektor",
+      "author": "Кай Вектор",
+      "author_id": "2999536",
+      "author_url": "https://www.livelib.ru/author/2999536"
+    },
+    {
+      "title": "Глупость и когнитивные искажения",
+      "book_id": "1007026399",
+      "url": "https://www.livelib.ru/book/1007026399-glupost-i-kognitivnye-iskazheniya-kollektiv-avtorov",
+      "author": "Кай Вектор",
+      "author_id": "2999536",
+      "author_url": "https://www.livelib.ru/author/2999536"
+    }
+  ]
+}

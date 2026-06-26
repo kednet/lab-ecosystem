@@ -1,0 +1,57 @@
+# Каталог голосов Yandex SpeechKit
+# Источник: https://cloud.yandex.ru/services/speechkit
+# Premium ru-RU голоса — лучшее качество для медитаций
+
+voices:
+  alena:
+    yandex_id: alena
+    description: Женский, тёплый, средний темп. Дефолт для аффирмаций.
+    gender: female
+    default_rate: 0.9
+    default_pitch: 0
+    sample_url: https://cloud.yandex.ru/services/speechkit#demo
+    suitable_for: [affirmation, meditation, light_lessons]
+
+  jane:
+    yandex_id: jane
+    description: Женский, премиум, мягкий, медитативный. Лучший для сна и глубоких медитаций.
+    gender: female
+    default_rate: 0.85
+    default_pitch: 0
+    premium: true
+    cost_per_1k_chars: 0.60  # ₽
+    suitable_for: [meditation, sleep, deep_relax]
+
+  filipp:
+    yandex_id: filipp
+    description: Мужской, премиум, бархатный. Для утренних аффирмаций и мотивации.
+    gender: male
+    default_rate: 0.9
+    default_pitch: 0
+    premium: true
+    cost_per_1k_chars: 0.60
+    suitable_for: [affirmation, motivation, morning]
+
+  ermil:
+    yandex_id: ermil
+    description: Мужской, нейтральный, чёткая дикция. Для уроков и обучения.
+    gender: male
+    default_rate: 1.0
+    default_pitch: 0
+    suitable_for: [lesson, lecture, instruction]
+
+  marina:
+    yandex_id: marina
+    description: Женский, молодёжный, энергичный. Для вдохновляющих историй.
+    gender: female
+    default_rate: 0.95
+    default_pitch: 0
+    suitable_for: [inspiration, story, energy]
+
+  madirus:
+    yandex_id: madirus
+    description: Мужской, глубокий, спокойный. Для длинных медитаций.
+    gender: male
+    default_rate: 0.85
+    default_pitch: 0
+    suitable_for: [meditation, deep_relax, sleep]

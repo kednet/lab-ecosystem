@@ -1,0 +1,92 @@
+# Ролевой диалог: Sprint Retrospective
+# Категория: ceremonies
+
+meta:
+  name: "retro"
+  display_name: "Sprint Retrospective"
+  category: "ceremonies"
+  level: "B1-B2"
+  estimated_min: 6
+  grammar_focus: ["past-simple", "present-perfect", "modal-verbs"]
+  vocab_from_glossary: ["What went well", "What didn't go well", "I take ownership", "Good catch", "Action item", "Can we do this differently"]
+
+context:
+  role: "Team member at sprint retro"
+  team: "Pulse Lab, 5 people"
+  setting: "End-of-sprint retrospective, 1-hour meeting, structured format"
+  scenario: |
+    The team is doing a retro. Format: what went well, what didn't, what to improve.
+    You need to contribute: highlight a win (you shipped a critical feature), mention a
+    problem (deploy process was too slow), suggest an improvement (add automated rollback).
+
+script:
+  - speaker: "facilitator"
+    line: "OK, let's start with what went well. Anyone?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — share a win]"
+    hint: "<One thing> went well: <what happened>."
+    model_answer: "One thing that went well: we shipped the auth refactor on schedule. That was a big win for the team."
+    alternatives:
+      - "Good win: I closed 5 PRs this sprint, including the critical memory leak fix."
+      - "I'll highlight the on-call rotation — much smoother this sprint, no escalations."
+
+  - speaker: "facilitator"
+    line: "Great! What didn't go well?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — share a problem]"
+    hint: "<Issue> was <problem>. It caused <impact>."
+    model_answer: "The deploy process was a bottleneck. We had 2 deploys that took over 2 hours because of manual steps. It really slowed down our iteration."
+    alternatives:
+      - "The migration to v3 took longer than expected. We underestimated the testing time."
+      - "Communication was unclear — I worked on a feature that turned out to be duplicate work."
+
+  - speaker: "facilitator"
+    line: "Anyone have ideas to improve?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — suggest improvement + commit]"
+    hint: "I suggest <improvement>. I'll <action> to <verb>."
+    model_answer: "I suggest we automate the rollback step in our deploy pipeline. I'll create a ticket for that this week."
+    alternatives:
+      - "I'd love to see us adopt trunk-based development. It would reduce merge conflicts significantly."
+      - "Can we pair-program on the next big migration? I think it would reduce the time and knowledge gaps."
+
+  - speaker: "colleague"
+    line: "I agree. Let's add an action item for that."
+
+  - speaker: "user"
+    line: "[YOUR TURN — commit to action item]"
+    hint: "I'll <action>. I'll report back <when>."
+    model_answer: "I'll own that action item and create a ticket by tomorrow. I'll report back next sprint."
+    alternatives:
+      - "I'll take that. I'll draft the proposal and share it in #engineering by Friday."
+      - "I'll own it. Will send the proposal by EOD Wednesday."
+
+  - speaker: "facilitator"
+    line: "Anything else? ... OK, that's a wrap!"
+
+  - speaker: "user"
+    line: "[YOUR TURN — closing]"
+    hint: "Thanks, everyone. <closing remark>."
+    model_answer: "Thanks, everyone. Great sprint overall — see you next time."
+    alternatives:
+      - "Thanks, team. Productive retro — good discussion."
+      - "Thanks all. Looking forward to next sprint!"
+
+after_dialog:
+  recap_vocab:
+    - "One thing that went well: ..."
+    - "The <X> was a bottleneck."
+    - "I suggest we <verb>."
+    - "I'll own that action item."
+    - "I'll report back next sprint."
+    - "Thanks, everyone."
+
+  grammar_notes:
+    - "Past Simple: 'We shipped the auth refactor on schedule' (завершённое действие)"
+    - "Modal verbs (could / would / should): 'I would love to see' / 'we should automate'"
+
+  next_dialog: "one-on-one"
+  notes: "Retro — место для честного фидбэка. Главное — конкретика, не абстракции."

@@ -1,0 +1,96 @@
+meta:
+  name: "future-will-going"
+  display_name: "Future: will vs going to"
+  level: "B1-B2"
+  estimated_min: 6
+  description: "Спонтанные решения (will) vs планы (going to). I'll deploy / I'm going to ship."
+  grammar_point: "future-will-going"
+  prerequisites: ["present-simple", "present-continuous"]
+
+questions:
+  - id: 1
+    type: "multiple_choice"
+    prompt: "I think it ___ rain tomorrow. (opinion)"
+    options: ["will", "is going to", "rains", "is raining"]
+    correct: "will"
+    explanation: "Мнение/предсказание (без доказательств) → will."
+
+  - id: 2
+    type: "open"
+    prompt: "I ___ (cut) a release tomorrow morning. (planned, in calendar)"
+    correct_answer: "am going to cut"
+    acceptable_answers: ["am going to cut", "will cut", "'m going to cut"]
+    explanation: "В календаре → going to. Но 'will cut' тоже допустимо (предсказание)."
+
+  - id: 3
+    type: "multiple_choice"
+    prompt: "Look at those errors! The build ___ fail."
+    options: ["will", "is going to", "fails", "is failing"]
+    correct: "is going to"
+    explanation: "Look = видимые признаки → going to (предсказание на основе фактов)."
+
+  - id: 4
+    type: "open"
+    prompt: "The phone is ringing! I ___ get it. (spontaneous decision)"
+    correct_answer: "will get"
+    acceptable_answers: ["will get", "'ll get"]
+    explanation: "Решение в момент речи → will."
+
+  - id: 5
+    type: "multiple_choice"
+    prompt: "We're ___ to deploy v3 on Friday. (planned)"
+    options: ["will", "going", "about", "going to"]
+    correct: "going to"
+    explanation: "План в календаре → going to. 'We are going to deploy.'"
+
+  - id: 6
+    type: "multiple_choice"
+    prompt: "I promise I ___ send you the report by 5 PM."
+    options: ["am going to", "will", "send", "am sending"]
+    correct: "will"
+    explanation: "Обещание → will. 'I will' = I promise."
+
+  - id: 7
+    type: "open"
+    prompt: "What time ___ you ___ tomorrow? (asking about plans)"
+    correct_answer: "are you meeting"
+    acceptable_answers: ["are you meeting", "will you meet"]
+    explanation: "Запланированное (tomorrow) → Present Continuous. Но will допустимо."
+
+  - id: 8
+    type: "multiple_choice"
+    prompt: "Don't worry, I ___ fix it. (decision right now)"
+    options: ["am going to", "will", "fix", "am fixing"]
+    correct: "will"
+    explanation: "Решение в момент речи ('Don't worry' = слышим проблему, решаем) → will."
+
+  - id: 9
+    type: "open"
+    prompt: "She ___ (start) at Google next month. (planned, accepted offer)"
+    correct_answer: "is starting"
+    acceptable_answers: ["is starting", "is going to start"]
+    explanation: "Запланированное (next month, confirmed) → Present Continuous. going to тоже допустимо."
+
+  - id: 10
+    type: "multiple_choice"
+    prompt: "If we don't deploy today, we ___ miss the deadline."
+    options: ["will", "are going to", "would", "are missing"]
+    correct: "will"
+    explanation: "1st Conditional: If + Present Simple, will + V."
+
+after_quiz:
+  recap: |
+    **will:**
+    - Спонтанные решения ('The phone is ringing. I'll get it.')
+    - Предсказания без доказательств ('I think it'll rain')
+    - Обещания ('I promise I'll send it')
+
+    **going to:**
+    - Планы в календаре ('I'm going to deploy tomorrow')
+    - Предсказания на основе признаков ('Look at the errors! It's going to fail.')
+
+    **Conditional 1st:** If + Present, will + V.
+
+  next_tense: "past-continuous"
+  recommended_review: "references/tenses-12-table.md#future-will"
+  related_lesson: "Week 6 (curriculum.yaml)"

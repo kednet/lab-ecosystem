@@ -1,0 +1,83 @@
+# Ролевой диалог: 1:1 с менеджером
+# Категория: team-rituals (1:1 — еженедельная встреча с руководителем)
+
+meta:
+  name: "one-on-one"
+  display_name: "1:1 with Manager"
+  category: "team-rituals"
+  level: "B1-B2"
+  estimated_min: 7
+  grammar_focus: ["past-simple", "present-perfect", "present-continuous"]
+  vocab_from_glossary: ["Quick update", "How's the ramp-up going", "I need help with", "I'm blocked on", "Let me follow up on that"]
+
+context:
+  role: "Backend developer, 3 months on the team"
+  team: "Pulse Lab — fintech"
+  setting: "Weekly 30-minute 1:1 with your manager, video call, semi-formal"
+  scenario: |
+    Your manager wants to know: how's your ramp-up going? Any blockers? What do you want
+    to focus on next quarter? You: ramp-up is going well, you've shipped 3 features,
+    but you're blocked on the auth refactor design. You want to grow into more
+    architecture work.
+
+script:
+  - speaker: "manager"
+    line: "Hey! How's it going this week?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — quick status update]"
+    hint: "Pretty good, thanks. I <verb in Past Simple> <task> this week."
+    model_answer: "Pretty good, thanks. I shipped the user dashboard this week, so that was a big win."
+    alternatives:
+      - "Going well! I finished the migration script and pushed it to staging."
+      - "Good week overall. I closed 3 PRs and started on the new endpoint."
+
+  - speaker: "manager"
+    line: "Nice! Any blockers?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — talk about blockers]"
+    hint: "One blocker: I'm waiting on <something>."
+    model_answer: "One blocker: I'm waiting on the design review for the auth refactor — I can't start without that feedback."
+    alternatives:
+      - "Yeah, I'm blocked on the auth design. Can you help me prioritize that review?"
+      - "I'm blocked on getting access to the production database. Can we escalate that?"
+
+  - speaker: "manager"
+    line: "Got it. What do you want to focus on next quarter?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — talk about growth goals]"
+    hint: "I'd like to <verb> / I'm interested in <topic>."
+    model_answer: "I'd like to get more involved in architecture decisions. I want to grow from feature work to system design."
+    alternatives:
+      - "I'm interested in learning more about Kubernetes. Can I pair with you on the deployment setup?"
+      - "I'd like to mentor a junior developer next quarter. I feel ready for that."
+
+  - speaker: "manager"
+    line: "Great goals. Anything else on your mind?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — wrap up]"
+    hint: "That's it for now. Thanks for the time!"
+    model_answer: "That's it for now. Thanks for the time — really appreciate the support."
+    alternatives:
+      - "Nope, that's all. Thanks!"
+      - "Nothing else. Talk next week!"
+
+after_dialog:
+  recap_vocab:
+    - "Pretty good, thanks."
+    - "One blocker: I'm waiting on ..."
+    - "I'd like to ..."
+    - "I'm interested in ..."
+    - "Can I pair with you on ...?"
+    - "Thanks for the time."
+
+  grammar_notes:
+    - "Past Simple: 'I shipped the dashboard this week.' (конкретный результат)"
+    - "Present Perfect: 'I've been on the team for 3 months.' (опыт с since/for)"
+    - "'I'd like to' = мягкая просьба/желание (не 'I want to')"
+
+  next_dialog: "code-review"
+  notes: "1:1 — это ЛУЧШИЙ момент для career talk и личных вопросов. Менеджер за это платит."

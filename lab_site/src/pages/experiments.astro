@@ -1,0 +1,365 @@
+---
+import Base from '../layouts/Base.astro';
+import { breadcrumbLd } from '../lib/seo';
+
+/**
+ * /experiments/ — лента «Эксперименты читателей».
+ *
+ * Стратегия community-first (2026-06-18): истории участников сообщества
+ * становятся главным контентом. Лаборатория — равноправный участник, не «админ».
+ *
+ * Источник данных (с 2026-06-19): GET /api/experiments/public — только status='approved'.
+ * Список обновляется вручную через /admin/experiments/ (PATCH /api/experiments/:id).
+ *
+ * Связь с архитектурой:
+ *   - Дополнение к /library/, не замена (там — конспекты от Лаборатории)
+ *   - Источник идей: книги, подкасты, разговоры, жизненные ситуации (community-first)
+ */
+
+const pageTitle = 'Эксперименты читателей';
+const pageDescription =
+  'Истории людей, которые прочитали книги Лаборатории и попробовали идеи в жизни. Удачи, провалы, честные наблюдения — без «успешного успеха».';
+
+const breadcrumb = breadcrumbLd([
+  { name: 'Главная', url: '/' },
+  { name: 'Эксперименты читателей', url: '/experiments/' },
+]);
+
+// Загружаем одобренные истории на этапе SSR.
+// Если API упал / пуст — показываем заглушку.
+type PublicItem = {
+  id: string;
+  name: string;
+  source: string;
+  did: string;
+  got: string;
+  ts: string;
+};
+
+let items: PublicItem[] = [];
+let apiOk = true;
+try {
+  const apiBase = (typeof process !== 'undefined' && process.env?.LAB_API_URL)
+    || 'https://api.pulab.ru';
+  const resp = await fetch(`${apiBase}/api/experiments/public?limit=50`, {
+    headers: { 'Accept': 'application/json' },
+  });
+  if (resp.ok) {
+    const data = await resp.json() as { ok: boolean; items?: PublicItem[] };
+    if (data.ok && Array.isArray(data.items)) {
+      items = data.items;
+    }
+  } else {
+    apiOk = false;
+  }
+} catch {
+  apiOk = false;
+}
+
+// Форматирование даты: «19 июня 2026»
+const fmtDate = (iso: string): string => {
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+  } catch {
+    return iso.slice(0, 10);
+  }
+};
+---
+<Base
+  title={pageTitle}
+  description={pageDescription}
+  ogImage="/og-default.png"
+  extraJsonLd={breadcrumb}
+  vkAppId={54643519}
+>
+  <!-- HERO -->
+  <section class="section experiments-hero">
+    <div class="container" style="max-width: 720px; text-align: center;">
+      <p class="section__eyebrow reveal">Сообщество · честные эксперименты</p>
+      <h1 class="section__title reveal" style="font-size: 38px; line-height: 1.15;">
+        Не&nbsp;просто читаем&nbsp;—<br />пробуем в&nbsp;жизни
+      </h1>
+      <p class="footer__about reveal" style="margin: 20px auto 28px; max-width: 58ch; font-size: 17px;">
+        Идеи из&nbsp;книг&nbsp;— это только начало. Главное&nbsp;— что получается
+        (и&nbsp;что не&nbsp;получается), когда пробуешь их&nbsp;на&nbsp;себе.
+        Здесь&nbsp;— истории участников сообщества. Без прикрас.
+      </p>
+      <div class="reveal" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a class="btn btn--primary" href="/my-experiment/">Поделиться своим</a>
+        <a class="btn btn--ghost" href="/library/">Книги Лаборатории</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEED: реальные одобренные истории (если есть) -->
+  {items.length > 0 && (
+    <section class="section">
+      <div class="container" style="max-width: 720px;">
+        <h2 class="section__title reveal" style="font-size: 26px; text-align: center; margin-bottom: 28px;">
+          Истории участников
+        </h2>
+        <div class="experiments-feed">
+          {items.map((it) => (
+            <article class="exp-card reveal" data-id={it.id}>
+              <header class="exp-card__head">
+                <div class="exp-card__author">
+                  <span class="exp-card__name">{it.name}</span>
+                  <span class="exp-card__date">· {fmtDate(it.ts)}</span>
+                </div>
+                {it.source && (
+                  <span class="exp-card__source">💡 {it.source}</span>
+                )}
+              </header>
+              <div class="exp-card__body">
+                <div class="exp-card__col">
+                  <h3 class="exp-card__col-title">🧪 Что пробовали</h3>
+                  <p class="exp-card__text">{it.did}</p>
+                </div>
+                <div class="exp-card__col">
+                  <h3 class="exp-card__col-title">📝 Что получилось</h3>
+                  <p class="exp-card__text">{it.got}</p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- PLACEHOLDER: только если историй нет И API жив -->
+  {items.length === 0 && apiOk && (
+    <section class="section section--alt">
+      <div class="container" style="max-width: 720px;">
+        <div class="experiments-placeholder reveal">
+          <p class="experiments-placeholder__eyebrow">Скоро здесь</p>
+          <h2 class="experiments-placeholder__title">
+            Лента подборок по&nbsp;месяцам
+          </h2>
+          <p class="experiments-placeholder__text">
+            Первая подборка&nbsp;— <strong>«Эксперименты августа 2026»</strong>&nbsp;— выйдет,
+            когда накопится 5–7&nbsp;историй от&nbsp;участников.
+            А&nbsp;пока&nbsp;— можно стать одной из&nbsp;первых.
+          </p>
+
+          <div class="experiments-placeholder__hint">
+            <p><strong>Как попасть в&nbsp;подборку:</strong></p>
+            <ol>
+              <li>Прочитайте конспект в&nbsp;<a href="/library/">библиотеке</a></li>
+              <li>Попробуйте одну идею из&nbsp;книги в&nbsp;течение 7&nbsp;дней</li>
+              <li>Заполните короткую форму&nbsp;— <a href="/my-experiment/">/my-experiment/</a></li>
+              <li>Лучшие истории попадут в&nbsp;ежемесячную подборку на&nbsp;этой странице</li>
+            </ol>
+          </div>
+
+          <p class="experiments-placeholder__note">
+            <em>Если эксперимент не&nbsp;сработал&nbsp;— это тоже ценно.
+            Хештег <code>#мой-провал</code> в&nbsp;чатах сообщества.</em>
+          </p>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- COMMUNITY CHANNELS -->
+  <section class="section">
+    <div class="container" style="max-width: 720px; text-align: center;">
+      <h2 class="section__title reveal" style="font-size: 26px;">Где делиться опытом</h2>
+      <div class="experiments-channels reveal">
+        <a class="experiments-channel" href="https://vk.com/app54643519" target="_blank" rel="noopener noreferrer" aria-label="Поделиться опытом во ВКонтакте — открыть Мини-приложение «Эксперименты»">
+          <span class="experiments-channel__name">ВКонтакте</span>
+          <span class="experiments-channel__hint">Мини-приложение «Эксперименты»</span>
+        </a>
+        <a class="experiments-channel" href="https://t.me/wishlab_channel" target="_blank" rel="noopener noreferrer">
+          <span class="experiments-channel__name">Telegram</span>
+          <span class="experiments-channel__hint">чат для обсуждений</span>
+        </a>
+        <a class="experiments-channel" href="/my-experiment/">
+          <span class="experiments-channel__name">Форма на сайте</span>
+          <span class="experiments-channel__hint">5 полей · без регистрации</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .experiments-placeholder {
+    background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+    border: 1px dashed rgba(136, 19, 55, 0.25);
+    border-radius: 18px;
+    padding: 36px 32px;
+    text-align: left;
+  }
+
+  .experiments-placeholder__eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 12px;
+    color: #9f1239;
+    margin: 0 0 8px;
+    font-weight: 600;
+  }
+
+  .experiments-placeholder__title {
+    font-family: var(--font-display), 'DM Serif Display', serif;
+    font-size: 26px;
+    line-height: 1.2;
+    color: #881337;
+    margin: 0 0 16px;
+  }
+
+  .experiments-placeholder__text {
+    color: #3f2a1e;
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0 0 24px;
+  }
+
+  .experiments-placeholder__hint {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+
+  .experiments-placeholder__hint p {
+    margin: 0 0 8px;
+    color: #1f0a14;
+    font-size: 15px;
+  }
+
+  .experiments-placeholder__hint ol {
+    margin: 0;
+    padding-left: 20px;
+    color: #3f2a1e;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .experiments-placeholder__hint a {
+    color: #881337;
+    font-weight: 500;
+  }
+
+  .experiments-placeholder__note {
+    margin: 0;
+    font-size: 14px;
+    color: #6b3a4a;
+  }
+
+  .experiments-placeholder__note code {
+    background: rgba(136, 19, 55, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #881337;
+  }
+
+  .experiments-channels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  .experiments-channel {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 18px 20px;
+    background: #fff1f2;
+    border: 1px solid rgba(225, 29, 72, 0.18);
+    border-radius: 14px;
+    text-decoration: none;
+    transition: all 0.18s ease;
+  }
+
+  .experiments-channel:hover {
+    background: #ffe4e6;
+    border-color: rgba(225, 29, 72, 0.35);
+    transform: translateY(-1px);
+  }
+
+  .experiments-channel__name {
+    font-weight: 600;
+    font-size: 16px;
+    color: #881337;
+  }
+
+  .experiments-channel__hint {
+    font-size: 13px;
+    color: #6b3a4a;
+  }
+
+  /* === Лента одобренных историй === */
+  .experiments-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .exp-card {
+    background: #ffffff;
+    border: 1.5px solid rgba(225, 29, 72, 0.18);
+    border-radius: 16px;
+    padding: 22px 24px;
+    box-shadow: 0 6px 24px -16px rgba(136, 19, 55, 0.18);
+  }
+  .exp-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(136, 19, 55, 0.10);
+  }
+  .exp-card__author {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+  .exp-card__name {
+    font-weight: 700;
+    font-size: 15px;
+    color: #4c0519;
+  }
+  .exp-card__date {
+    font-size: 13px;
+    color: #7a3645;
+  }
+  .exp-card__source {
+    font-size: 12px;
+    color: #7a3645;
+    background: rgba(255, 241, 242, 0.7);
+    padding: 3px 10px;
+    border-radius: 999px;
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .exp-card__body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 540px) {
+    .exp-card__body { grid-template-columns: 1fr; gap: 14px; }
+  }
+  .exp-card__col-title {
+    font-family: var(--font-display), 'DM Serif Display', serif;
+    font-size: 16px;
+    color: #881337;
+    margin: 0 0 6px;
+  }
+  .exp-card__text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #2d1418;
+    white-space: pre-wrap;
+  }
+</style>

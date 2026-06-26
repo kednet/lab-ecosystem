@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; padding: 0; background: #fff; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  #anim { display: block; }
+</style>
+<script src="lottie.min.js"></script>
+</head>
+<body>
+<div id="anim"></div>
+<script>
+  // Drop your Lottie JSON at this path or replace inline below
+  fetch('animation_data.json')
+    .then(r => r.json())
+    .then(data => {
+      // Auto-size container to match animation
+      const anim = lottie.loadAnimation({
+        container: document.getElementById('anim'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        animationData: data
+      });
+      anim.addEventListener('DOMLoaded', () => {
+        const w = data.w || 512;
+        const h = data.h || 512;
+        // scale to fit screen if too big
+        const maxDim = Math.min(window.innerWidth - 40, window.innerHeight - 40, 600);
+        const scale = Math.min(1, maxDim / Math.max(w, h));
+        document.getElementById('anim').style.width = (w * scale) + 'px';
+        document.getElementById('anim').style.height = (h * scale) + 'px';
+      });
+      window._anim = anim;
+      window._ready = true;
+    })
+    .catch(err => {
+      document.body.innerHTML = '<pre style="color:red;padding:20px">Failed to load animation_data.json\n' + err.message + '</pre>';
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+name: labirint
+display: Лабиринт (labirint.ru)
+host_patterns:
+  - "^https?://(www\\.)?labirint\\.ru/"
+encoding: utf-8
+strategy: hybrid
+selectors:
+  title:
+    - "css:h1"
+    - "css:.product-title"
+    - "@og:title"
+  author:
+    - "css:.product-author a"
+    - "css:a[href*='/authors/']"
+    - "css:.product-meta a[href*='/author']"
+  year:
+    - "css:.product-pubhouse"   # содержит "Издательство, год"
+    - "regex_in:full:\\b(19|20)\\d{2}\\b"
+  cover:
+    - "css:.product-cover img"
+    - "css:img.product-img"
+    - "@og:image"
+  short_description:
+    - "css:.product-description p"
+    - "css:.product-about p"
+    - "@content:meta[name=description]"
+  isbn:
+    - "css:.product-attr:has-text('ISBN') .attr-value"
+  page_count:
+    - "css:.product-attr:has-text('страниц') .attr-value"

@@ -1,0 +1,89 @@
+# Ролевой диалог: Incident Communication
+# Категория: ceremonies / incident-response
+
+meta:
+  name: "incident"
+  display_name: "Incident Communication"
+  category: "ceremonies"
+  level: "B2"
+  estimated_min: 8
+  grammar_focus: ["past-continuous", "past-simple", "past-perfect", "present-perfect"]
+  vocab_from_glossary: ["We're investigating", "Production is down", "Root cause", "Regression", "Service is restored", "All hands on deck"]
+
+context:
+  role: "Incident commander during a production outage"
+  team: "Pulse Lab"
+  setting: "Incident Slack channel, status updates every 15 minutes"
+  scenario: |
+    A critical bug in the new release is causing production outages. You're the
+    incident commander. You need to give updates: what's happening, what you've
+    tried, what's the impact, when will it be fixed.
+
+script:
+  - speaker: "alert"
+    line: "[PagerDuty alert]: Production error rate spike — 50% of requests failing"
+
+  - speaker: "user"
+    line: "[YOUR TURN — first acknowledgment in #incident channel]"
+    hint: "We're <status>. <initial assessment>."
+    model_answer: "We're investigating. Initial assessment: looks like a regression from today's deploy. Rolling back now."
+    alternatives:
+      - "We're paged. Investigating now — initial signs point to the new release."
+      - "We're on it. Looks like a deploy issue — checking the diff now."
+
+  - speaker: "user"
+    line: "[YOUR TURN — first status update, 10 min later]"
+    hint: "Update: <what you tried>, <result>."
+    model_answer: "Update: We've rolled back to v2.0. Error rate is dropping — now at 5%. Continuing to monitor."
+    alternatives:
+      - "Update: rollback completed. Some users still seeing errors due to caching. Should clear in 5 minutes."
+      - "Update: rollback successful. We're seeing recovery — error rate down from 50% to 8%. Monitoring for full recovery."
+
+  - speaker: "colleague"
+    line: "What's the root cause?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — explain root cause using Past Perfect / Past Simple]"
+    hint: "Root cause: <what happened>. The bug <was caused by>."
+    model_answer: "Root cause: a database migration script had failed silently in staging. We had assumed it succeeded, but it had not — when prod traffic hit, the new code couldn't find the expected schema."
+    alternatives:
+      - "Root cause: the new auth code was trying to read from a column that the migration had skipped. We're fixing the migration script."
+      - "Root cause: a feature flag wasn't properly enabled in prod. The code path was correct but the config was wrong."
+
+  - speaker: "user"
+    line: "[YOUR TURN — final update, all green]"
+    hint: "Service is restored. <next steps>."
+    model_answer: "Service is restored. Error rate is back to 0.1%. We'll write up a post-mortem by tomorrow and add monitoring for migration failures."
+    alternatives:
+      - "We're all green. Post-mortem scheduled for tomorrow at 10 AM. Will share the doc in this channel."
+      - "All clear. We'll review what went wrong tomorrow and put safeguards in place."
+
+  - speaker: "manager"
+    line: "Great work, team. Customer impact?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — summarize impact using Past Simple]"
+    hint: "Impact: <duration>, <users affected>."
+    model_answer: "Customer impact: 30 minutes of degraded service. Approximately 15% of users were affected. No data loss."
+    alternatives:
+      - "Downtime was 25 minutes. About 20% of users hit errors during peak. No data was lost."
+      - "Service was degraded for 35 minutes. Roughly 1 in 5 users experienced errors."
+
+after_dialog:
+  recap_vocab:
+    - "We're investigating."
+    - "Initial assessment: ..."
+    - "We've rolled back."
+    - "Root cause: ..."
+    - "Service is restored."
+    - "Customer impact: ..."
+    - "Post-mortem by tomorrow."
+
+  grammar_notes:
+    - "Past Simple: 'We rolled back' (конкретное действие в прошлом)"
+    - "Past Continuous: 'When prod traffic hit, we were still monitoring'"
+    - "Past Perfect: 'We had assumed it succeeded, but it had not' (= прошлое в прошлом)"
+    - "Present Perfect: 'We've rolled back' (результат сейчас актуален)"
+
+  next_dialog: "retro"
+  notes: "Incident communication = calm + clear + specific. Никаких эмоций."

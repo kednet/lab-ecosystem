@@ -1,0 +1,161 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const url = new URL(Astro.request.url);
+const needToken = url.searchParams.get('need_token') === '1';
+const expired = url.searchParams.get('expired') === '1';
+---
+<Base
+  title="Клуб — личный кабинет"
+  description="Закрытый раздел для подписчиков Лаборатории желаний."
+  noindex
+>
+  <section class="section">
+    <div class="container" style="max-width: 720px;">
+      <p class="section__eyebrow reveal">Клуб</p>
+      <h1 class="section__title reveal">Добро пожаловать<br />в&nbsp;Лабораторию ✨</h1>
+
+      {needToken && (
+        <div class="checkout-card reveal" style="border-color:rgba(225,29,72,0.3);">
+          <p class="checkout-card__notice">
+            Ссылка для&nbsp;входа не&nbsp;найдена или&nbsp;уже использована. Откройте последнее письмо от&nbsp;info@pulab.ru и&nbsp;нажмите кнопку «Войти в&nbsp;клуб» там.
+          </p>
+          <a class="btn btn--primary btn--block" href="/pricing/">Оформить подписку</a>
+        </div>
+      )}
+
+      {expired && (
+        <div class="checkout-card reveal" style="border-color:rgba(225,29,72,0.3);">
+          <p class="checkout-card__notice">
+            Срок подписки истёк. Продлите, чтобы&nbsp;сохранить доступ к&nbsp;закрытым материалам.
+          </p>
+          <a class="btn btn--primary btn--block" href="/pricing/">Продлить</a>
+        </div>
+      )}
+
+      <div id="members-content" class="members-content" hidden>
+        <div class="checkout-card reveal">
+          <p class="members-content__email" id="members-email"></p>
+          <div class="members-content__plan" id="members-plan"></div>
+          <div class="checkout-card__divider"></div>
+
+          <h2 class="members-content__h2">Что входит в&nbsp;ваш тариф</h2>
+          <ul class="members-content__features" id="members-features"></ul>
+
+          <div class="checkout-card__divider"></div>
+          <button id="members-logout" class="btn btn--ghost btn--block" type="button">Выйти</button>
+        </div>
+      </div>
+
+      <div id="members-loading" class="members-loading reveal">
+        <p class="checkout-card__alt">Проверяем доступ…</p>
+      </div>
+
+      <div id="members-noaccess" class="checkout-card reveal" hidden>
+        <p class="checkout-card__notice">
+          Похоже, у&nbsp;вас пока нет активной подписки. Оформите её, чтобы&nbsp;получить доступ к&nbsp;AI-помощнику, закрытому чату и&nbsp;другим материалам.
+        </p>
+        <a class="btn btn--primary btn--block" href="/pricing/">К тарифам</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+  (function initMembers() {
+    var content = document.getElementById('members-content');
+    var loading = document.getElementById('members-loading');
+    var noaccess = document.getElementById('members-noaccess');
+    var emailEl = document.getElementById('members-email');
+    var planEl = document.getElementById('members-plan');
+    var featuresEl = document.getElementById('members-features');
+    var logoutBtn = document.getElementById('members-logout');
+
+    // Если пришли по ?need_token=1 или ?expired=1 — сразу показываем сообщение
+    var url = new URL(location.href);
+    if (url.searchParams.get('need_token') === '1' || url.searchParams.get('expired') === '1') {
+      loading.hidden = true;
+      // Карточки с уведомлением уже показаны Astro
+      // Скрываем остальные блоки
+      return;
+    }
+
+    fetch('/api/members/me', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        loading.hidden = true;
+        if (!j || !j.authenticated || !j.subscription || !j.subscription.active) {
+          noaccess.hidden = false;
+          return;
+        }
+        var sub = j.subscription;
+        var validDate = new Date(sub.validUntil).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+        emailEl.textContent = 'Вы вошли как ' + (j.email || '');
+        planEl.innerHTML =
+          '<div class="members-content__plan-name">Тариф: <strong>' + sub.planName + '</strong></div>' +
+          '<div class="members-content__plan-until">Доступ активен до&nbsp;<strong>' + validDate + '</strong></div>';
+
+        // ────────────────────────────────────────────────
+        // Синхронизация с localStorage: чтобы /audio/, PDF-гейт на /library/[slug].astro
+        // и другие места, которые читают lab_user через getUser()/isPremium(),
+        // увидели активную подписку. Без этого две системы авторизации расходятся.
+        // (см. [[feedback-two-auth-systems]] — это быстрый фикс, не миграция)
+        // ────────────────────────────────────────────────
+        try {
+          var existingToken = localStorage.getItem('lab_token') || ('mem_' + btoa(j.email || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 24));
+          var labUser = {
+            email: j.email,
+            userId: j.email, // упрощённо: userId = email (для гейтинга этого хватает)
+            plan: sub.plan, // 'month' | 'year' (pay-db.ts Plan)
+            subscriptionStatus: 'active',
+            subscriptionExpiresAt: sub.validUntilIso || new Date(sub.validUntil).toISOString(),
+            generationsLimit: 5,
+            wishesLimit: 6,
+          };
+          localStorage.setItem('lab_token', existingToken);
+          localStorage.setItem('lab_user', JSON.stringify(labUser));
+          // Уведомляем другие компоненты (HeaderAuth, и т.д.)
+          window.dispatchEvent(new CustomEvent('lab-auth-changed'));
+        } catch (e) {
+          console.warn('[members] localStorage sync failed:', e);
+        }
+
+        var features = sub.plan === 'year'
+          ? [
+              'Всё из «Месяца»',
+              'Ранний доступ к новинкам библиотеки',
+              'Закрытые разборы с экспертами',
+            ]
+          : [
+              'Все открытые конспекты',
+              'Воркбуки и советы',
+              'AI-помощники',
+              'Закрытый чат сообщества',
+              'Участие в ежемесячном розыгрыше Premium-доступов',
+              'Книжный клуб',
+            ];
+        featuresEl.innerHTML = features.map(function (f) {
+          return '<li><span class="pricing-card__check" aria-hidden="true">✓</span>' + f + '</li>';
+        }).join('');
+
+        content.hidden = false;
+
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', function () {
+            // Чистим обе системы, чтобы аудио/PDF-гейт снова блокировались
+            try {
+              localStorage.removeItem('lab_token');
+              localStorage.removeItem('lab_user');
+              window.dispatchEvent(new CustomEvent('lab-auth-changed'));
+            } catch (e) { /* ignore */ }
+            fetch('/api/members/logout', { method: 'POST', credentials: 'same-origin' })
+              .then(function () { window.location = '/pricing/'; });
+          });
+        }
+      })
+      .catch(function () {
+        loading.hidden = true;
+        noaccess.hidden = false;
+      });
+  })();
+</script>

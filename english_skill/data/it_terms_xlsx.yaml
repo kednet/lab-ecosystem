@@ -1,0 +1,1535 @@
+meta:
+  source: Списание недостач по Амазон_05.2026.xlsx
+  total_phrases: 244
+  total_groups: 12
+  imported_at: '2026-06-25'
+  note: Импортировано из рабочего словаря. Базовые термины для B1 — must-know.
+groups:
+- name: core_dev
+  title: ⚡ Базовая лексика разработчика
+  description: 'Самые частотные слова для B1: глаголы, наречия, существительные из
+    IT-контекста.'
+  phrases:
+  - phrase: software
+    translation_ru: программное обеспечение (ПО)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: hardware
+    translation_ru: аппаратное обеспечение, оборудование
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: data
+    translation_ru: данные, информация
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: freeware
+    translation_ru: бесплатное ПО
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: open source
+    translation_ru: ПО с открытым исходным кодом
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: code, source code
+    translation_ru: код (в смысле исходный код программы или в смысле код/номер ошибки
+      или статуса, например, HTTP code — код HTTP статуса)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: coding, programming
+    translation_ru: программирование, разработка ПО
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: develop
+    translation_ru: разрабатывать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: create
+    translation_ru: создавать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: remove, delete, drop
+    translation_ru: удалять
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: compile
+    translation_ru: компилировать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: compress
+    translation_ru: сжимать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: archive
+    translation_ru: архивировать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: issue
+    translation_ru: проблема, вопрос, требующий решения
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: decrypt
+    translation_ru: расшифровать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: verify
+    translation_ru: проверить, верифицировать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: prepare
+    translation_ru: подготовить (например, данные на отправку)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: send
+    translation_ru: отправить (например, send request — отправить запрос)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: get
+    translation_ru: получить (например, get name — получить имя)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: disable
+    translation_ru: деактивировать, отключить
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: enable
+    translation_ru: активировать, включить
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: change
+    translation_ru: изменить (например, change timezone — изменить временную зону)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: utility
+    translation_ru: утилита
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: tool
+    translation_ru: инструмент
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: from scratch
+    translation_ru: с нуля (например, создавать проект с нуля)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: above
+    translation_ru: выше (выше в тексте, например)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: below
+    translation_ru: ниже (ниже в тексте, например)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: under
+    translation_ru: под (например, under the hood — под капотом)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: after
+    translation_ru: после
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: before
+    translation_ru: до
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: already
+    translation_ru: уже
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: yet
+    translation_ru: пока что
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: capabilities
+    translation_ru: возможности
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: example
+    translation_ru: пример (for example — например)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: first
+    translation_ru: первый
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: last
+    translation_ru: последний
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: middle
+    translation_ru: середина, средний
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: search
+    translation_ru: поиск, искать, найти
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: find
+    translation_ru: искать, найти
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: run, execute
+    translation_ru: запустить, выполнить
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: date
+    translation_ru: дата
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: time
+    translation_ru: время
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: current
+    translation_ru: текущий (например, current date — текущая дата)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: parent
+    translation_ru: родитель, родительский
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: child
+    translation_ru: ребёнок, дочерний
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: use
+    translation_ru: использовать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: fast
+    translation_ru: быстрый
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: slow
+    translation_ru: медленный
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: report
+    translation_ru: отчёт
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: documentation
+    translation_ru: документация
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: useful
+    translation_ru: полезный
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: work
+    translation_ru: работа, работать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: deprecated
+    translation_ru: устаревший
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: automatic
+    translation_ru: автоматический
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: default
+    translation_ru: по умолчанию
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: dynamic
+    translation_ru: динамический
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: invalid
+    translation_ru: недействительный, недопустимый
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: английский
+    translation_ru: русский
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: network
+    translation_ru: сеть
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: hostname
+    translation_ru: имя хоста (компьютера/сервера) в сети
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: domain
+    translation_ru: домен (например, yandex.ru)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: download
+    translation_ru: загружать что-то из сети/Интернет
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: upload
+    translation_ru: выгружать что-то (например, на сервер)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: port
+    translation_ru: порт, чаще всего на сервере, порт 80 — стандартный порт протокола
+      HTTP
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: request
+    translation_ru: запрос
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: connect
+    translation_ru: соединяться, подключаться (например, к серверу)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: disconnect
+    translation_ru: отсоединиться, отключиться (например, от сервера)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: connection
+    translation_ru: соединение
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: login
+    translation_ru: вход, войти, пройти аутентификацию (например, на сервере)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: logout
+    translation_ru: выход, выйти (например, с сервера)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: gateway
+    translation_ru: шлюз
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: hyperlink
+    translation_ru: гиперссылка (например, ссылка на веб-странице)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: router
+    translation_ru: роутер, маршрутизатор (от слова route, маршут)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: redirect
+    translation_ru: перенаправить
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: английский
+    translation_ru: русский
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: boot
+    translation_ru: загрузка, загрузить (например, загрузить ОС Linux)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: reboot
+    translation_ru: перезагрузить
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: shutdown
+    translation_ru: выключить
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: uninstall
+    translation_ru: удалить установленное
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: update
+    translation_ru: обновить (например, приложение)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: terminal
+    translation_ru: командный терминал
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: command
+    translation_ru: команда
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: shell
+    translation_ru: командная оболочка
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: partition
+    translation_ru: раздел диска
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: root
+    translation_ru: корень (обычно имеют в виду корневого пользователя ОС с максимальными
+      правами)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: английский
+    translation_ru: русский
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: laptop
+    translation_ru: ноутбук
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: mouse
+    translation_ru: мышь
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: monitor, screen
+    translation_ru: монитор, экран
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: device
+    translation_ru: устройство
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: CPU, Central Processing Unit
+    translation_ru: процессор
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: disk
+    translation_ru: диск
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: английский
+    translation_ru: русский
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: user
+    translation_ru: пользователь
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: account
+    translation_ru: аккаунт, учётная запись
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: group
+    translation_ru: группа (например, пользователей)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: allow
+    translation_ru: разрешить (например, доступ пользователю или группе)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: deny
+    translation_ru: запретить (например, доступ пользователю или группе)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: английский
+    translation_ru: русский
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: copy
+    translation_ru: копировать (например, текст или файл)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: cut
+    translation_ru: вырезать (например, текст или файл)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: paste
+    translation_ru: вставлять (например, текст или файл)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: save
+    translation_ru: сохранить
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: text
+    translation_ru: текст
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: bold
+    translation_ru: жирный
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: italic
+    translation_ru: курсив
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: underline
+    translation_ru: подчеркивание
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: image, picture
+    translation_ru: изображение
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: figure
+    translation_ru: рисунок
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: show
+    translation_ru: показать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: hide
+    translation_ru: скрыть
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: английский
+    translation_ru: русский
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: storage
+    translation_ru: хранилище
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: row
+    translation_ru: строка
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: column
+    translation_ru: колонка
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: select
+    translation_ru: выбрать (например, данные из БД)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: insert
+    translation_ru: вставить (например, данные в БД)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: drop, delete, remove
+    translation_ru: удалить, убрать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: split
+    translation_ru: разделить (например, строку по символу запятой)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: limit
+    translation_ru: ограничение
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: английский
+    translation_ru: русский
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: data type
+    translation_ru: тип данных
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: expression
+    translation_ru: выражение
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: quotes
+    translation_ru: кавычки, символы кавычек
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: constant
+    translation_ru: константа
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: char, symbol
+    translation_ru: символ, знак
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: number
+    translation_ru: число
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: append
+    translation_ru: добавить, присоединить (например, элемент в конец списка)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: open
+    translation_ru: открыть (например, файл)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: read
+    translation_ru: прочесть (например, из файла или из сети)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: write
+    translation_ru: записать (например, в файл или в сеть)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: value
+    translation_ru: значение
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: queue
+    translation_ru: очередь
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: parameter
+    translation_ru: параметр
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: argument
+    translation_ru: аргумент
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: property
+    translation_ru: свойство
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: package
+    translation_ru: пакет
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: import
+    translation_ru: импорт (например, кода из библиотеки)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: return
+    translation_ru: возврат, вернуть (например, возврат значения из функции)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: exit
+    translation_ru: выход, выйти (например, выйти из программы)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: initialize
+    translation_ru: инициализировать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: configure
+    translation_ru: конфигурировать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: implement
+    translation_ru: реализовать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: extend
+    translation_ru: расширить
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: length
+    translation_ru: длина (например, строки)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: loop
+    translation_ru: цикл
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: iteration
+    translation_ru: итерация (например, итерация цикла)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: nested
+    translation_ru: вложенный (вложенный цикл, например)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: count
+    translation_ru: количество (например, элементов с массиве)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: sort
+    translation_ru: сортировать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: true / false
+    translation_ru: правда / ложь
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: definition
+    translation_ru: определение (например, функции)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: scope
+    translation_ru: область видимости
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: placeholder
+    translation_ru: заполнитель, место для размещения чего-то
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: process
+    translation_ru: процесс
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: thread
+    translation_ru: поток (исполнения)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: stream
+    translation_ru: поток (данных)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: multiprocessing
+    translation_ru: многопроцессорная обработка
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: asynchronous
+    translation_ru: асинхронный
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: concurrency
+    translation_ru: конкурентность
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: parallelism
+    translation_ru: параллелизм
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: sign
+    translation_ru: подписать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: input
+    translation_ru: ввод
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: output
+    translation_ru: вывод
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: inherit
+    translation_ru: наследовать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: английский
+    translation_ru: русский
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: continuous integration
+    translation_ru: непрерывная интеграция
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: continuous delivery
+    translation_ru: непрерывная доставка
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: template
+    translation_ru: шаблон
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: record
+    translation_ru: запись (записывать)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: convention
+    translation_ru: соглашение
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: rule
+    translation_ru: правило
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: integrate
+    translation_ru: интегрировать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: legacy
+    translation_ru: наследие (legacy code - это код, который перешёл «по наследству»
+      от предыдущих разработчиков)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: dependency
+    translation_ru: зависимость
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: dependency injection
+    translation_ru: инъекция зависимости
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: maintain
+    translation_ru: поддерживать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: library
+    translation_ru: библиотека
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: MVC, Model View Controller
+    translation_ru: 'архитектура: модель, отображение, контроллер'
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+  - phrase: VCS, Version Control System
+    translation_ru: система контроля версий
+    example_en: ''
+    example_ru: ''
+    tags:
+    - core_dev
+- name: data_structures
+  title: 🧱 Типы и структуры
+  description: Классы, объекты, методы, коллекции и ООП-термины.
+  phrases:
+  - phrase: install, setup
+    translation_ru: установить (например, приложение)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: environment variable
+    translation_ru: переменная среды
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: CLI, Command Line Interface
+    translation_ru: интерфейс командной строки
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: list
+    translation_ru: список, перечень, перечисление
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: variable
+    translation_ru: переменная
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: string
+    translation_ru: строка
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: array
+    translation_ru: массив
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: list
+    translation_ru: список
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: dictionary
+    translation_ru: словарь ключ-значение
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: set
+    translation_ru: множество
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: tuple
+    translation_ru: кортеж
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: object
+    translation_ru: объект
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: class
+    translation_ru: класс
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: instance
+    translation_ru: экземпляр (например, класса)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: public
+    translation_ru: публичный (например, публичный метод)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: private
+    translation_ru: приватный (например, приватный метод)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: protected
+    translation_ru: защищённый (например, защищённый метод)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: static
+    translation_ru: статичный (например, статичный метод)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: function
+    translation_ru: функция
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: function call
+    translation_ru: вызов функции
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: method
+    translation_ru: метод
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: settings
+    translation_ru: настройки
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: abstract
+    translation_ru: абстрактный (например, абстрактный класс)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: interface
+    translation_ru: интерфейс
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: boolean
+    translation_ru: булево, булевский тип данных (имеющий значение правда или ложь)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+  - phrase: object-oriented programming
+    translation_ru: ООП, объектно-ориентированное программирование
+    example_en: ''
+    example_ru: ''
+    tags:
+    - data_structures
+- name: security
+  title: 🔐 Безопасность
+  description: Auth, пароли, токены, шифрование и права доступа.
+  phrases:
+  - phrase: encrypt
+    translation_ru: зашифровать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - security
+  - phrase: authenticate
+    translation_ru: аутентификация, проверка подлинности (например, проверка подлинности
+      пользователя путём проверки корректности введённого им логина и пароля)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - security
+  - phrase: authorize
+    translation_ru: авторизация, разрешить (например, проверка наличия прав на выполнение
+      действия в системе)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - security
+  - phrase: hot key
+    translation_ru: горячая клавиша
+    example_en: ''
+    example_ru: ''
+    tags:
+    - security
+  - phrase: keyboard
+    translation_ru: клавиатура
+    example_en: ''
+    example_ru: ''
+    tags:
+    - security
+  - phrase: RAM, Random Access Memory
+    translation_ru: ОЗУ (оперативное запоминающее устройство), оперативная память
+    example_en: ''
+    example_ru: ''
+    tags:
+    - security
+  - phrase: access
+    translation_ru: доступ
+    example_en: ''
+    example_ru: ''
+    tags:
+    - security
+  - phrase: key, keyword
+    translation_ru: ключ
+    example_en: ''
+    example_ru: ''
+    tags:
+    - security
+  - phrase: security
+    translation_ru: безопасность
+    example_en: ''
+    example_ru: ''
+    tags:
+    - security
+- name: databases
+  title: 🗄️ Базы данных
+  description: SQL, queries, indexes, миграции и работа с БД.
+  phrases:
+  - phrase: database
+    translation_ru: база данных, БД
+    example_en: ''
+    example_ru: ''
+    tags:
+    - databases
+  - phrase: query
+    translation_ru: запрос
+    example_en: ''
+    example_ru: ''
+    tags:
+    - databases
+  - phrase: table
+    translation_ru: таблица (например, в базе данных)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - databases
+  - phrase: join
+    translation_ru: объединить (например, список в строку или объединить данные нескольких
+      таблиц)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - databases
+  - phrase: index
+    translation_ru: индекс (например, поисковый индекс БД)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - databases
+  - phrase: mutable
+    translation_ru: изменяемый (например, тип данных)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - databases
+  - phrase: immutable
+    translation_ru: неизменяемый (например, тип данных)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - databases
+  - phrase: formatting
+    translation_ru: форматирование
+    example_en: ''
+    example_ru: ''
+    tags:
+    - databases
+- name: architecture
+  title: 🏗️ Архитектура
+  description: Паттерны, фреймворки, микросервисы и слои.
+  phrases:
+  - phrase: module
+    translation_ru: модуль
+    example_en: ''
+    example_ru: ''
+    tags:
+    - architecture
+  - phrase: architecture
+    translation_ru: архитектура
+    example_en: ''
+    example_ru: ''
+    tags:
+    - architecture
+  - phrase: framework
+    translation_ru: фреймворк / каркас или набор библиотек для разработки приложений
+    example_en: ''
+    example_ru: ''
+    tags:
+    - architecture
+  - phrase: clean architecture
+    translation_ru: чистая архитектура
+    example_en: ''
+    example_ru: ''
+    tags:
+    - architecture
+- name: principles
+  title: 🏛️ Принципы разработки
+  description: DRY, KISS, YAGNI, SOLID и другие архитектурные принципы.
+  phrases:
+  - phrase: DRY
+    translation_ru: Don't Repeat Yourself, принцип разработки «не повторяйся»
+    example_en: ''
+    example_ru: ''
+    tags:
+    - principles
+  - phrase: KISS
+    translation_ru: Keep It Simple Stupid, принцип разработки «не переусложняй»
+    example_en: ''
+    example_ru: ''
+    tags:
+    - principles
+  - phrase: YAGNI
+    translation_ru: You Aren't Gonna Need It, принцип разработки «вам это не понадобится»
+    example_en: ''
+    example_ru: ''
+    tags:
+    - principles
+  - phrase: SOLID
+    translation_ru: 'набор принципов разработки: SRP (Single Responsibility Principle,
+      принцип единой ответственности), OCP (Open-Close Principle, принцип открытости-закрытости),
+      LSP (Liskov Substitution Principle, принцип подстановки Лисков), ISP (Interface
+      Segregation Principle, принцип разделения интерфейсов), DIP (Dependency Inversion
+      Principle, принцип инверсии зависимостей)'
+    example_en: ''
+    example_ru: ''
+    tags:
+    - principles
+- name: git_files
+  title: 📂 Git и файлы
+  description: Репозиторий, коммиты, ветки и работа с файлами.
+  phrases:
+  - phrase: branch
+    translation_ru: ветка (например, в Git-репозитории проекта)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - git_files
+  - phrase: folder, directory
+    translation_ru: папка, директория
+    example_en: ''
+    example_ru: ''
+    tags:
+    - git_files
+  - phrase: path
+    translation_ru: путь (до файла, например)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - git_files
+- name: ui_frontend
+  title: 🎨 UI/Frontend
+  description: Дизайн, компоненты, вёрстка и пользовательский интерфейс.
+  phrases:
+  - phrase: built-in
+    translation_ru: встроенный
+    example_en: ''
+    example_ru: ''
+    tags:
+    - ui_frontend
+  - phrase: GUI, Graphical User Interface
+    translation_ru: графический пользовательский интерфейс
+    example_en: ''
+    example_ru: ''
+    tags:
+    - ui_frontend
+  - phrase: design
+    translation_ru: проектировать, создавать, проектирование, разработка, дизайн
+    example_en: ''
+    example_ru: ''
+    tags:
+    - ui_frontend
+- name: web_network
+  title: 🌐 Web и сеть
+  description: HTTP, API, REST, JSON, клиент-сервер и сетевые протоколы.
+  phrases:
+  - phrase: server
+    translation_ru: сервер в сети (компьютер, отвечающий на запросы по сети, или конкретная
+      программа, запущенная на нём, обслуживающая сетевые запросы). От слова serve,
+      обслуживать
+    example_en: ''
+    example_ru: ''
+    tags:
+    - web_network
+  - phrase: backend
+    translation_ru: серверное ПО
+    example_en: ''
+    example_ru: ''
+    tags:
+    - web_network
+  - phrase: frontend
+    translation_ru: клиентское ПО, работающее на устройстве пользователя
+    example_en: ''
+    example_ru: ''
+    tags:
+    - web_network
+- name: testing
+  title: 🧪 Тестирование
+  description: Unit-тесты, отладка, регрессии и smoke-tests.
+  phrases:
+  - phrase: debug
+    translation_ru: отлаживать (программу)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - testing
+  - phrase: error, bug
+    translation_ru: ошибка (например, HTTP 404 Error, запрашиваемый файл не найден
+      на сервере; или ошибка деления на ноль, или ошибка в синтаксисе программы)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - testing
+- name: errors
+  title: ❌ Ошибки и статусы
+  description: Exceptions, error codes, HTTP статусы и предупреждения.
+  phrases:
+  - phrase: exception
+    translation_ru: исключение (нестандартное поведение системы, которое мы обрабатываем
+      отдельным кодом)
+    example_en: ''
+    example_ru: ''
+    tags:
+    - errors
+- name: devops_cloud
+  title: 🚀 DevOps и облако
+  description: Deploy, Docker, CI/CD, мониторинг и инфраструктура.
+  phrases:
+  - phrase: deploy
+    translation_ru: развертывание приложения на сервере
+    example_en: ''
+    example_ru: ''
+    tags:
+    - devops_cloud

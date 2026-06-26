@@ -1,0 +1,988 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const title = 'Chief Agent — пульт';
+const description = 'Панель управления 13 агентами Лаборатории желаний: heartbeat, запуск, approve/reject файлов, audit.';
+---
+
+<Base
+  title={title}
+  description={description}
+  ogImage="/og-default.png"
+>
+  <section class="section chief" style="max-width: 1280px; margin: 0 auto; padding: 32px 16px;">
+    <header style="margin-bottom: 24px;">
+      <p class="section__eyebrow reveal">v2.0 · 13 агентов · 4 native + 9 remote (WS)</p>
+      <h1 class="section__title reveal" style="font-size: 32px; margin-bottom: 8px;">
+        Chief Agent — пульт управления
+      </h1>
+      <p style="opacity: 0.8; font-size: 14px;">
+        Статус, heartbeat, запуск действий, approve/reject файлов, audit.
+        <span id="summary">Загрузка…</span>
+      </p>
+
+      <div style="margin-top: 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <label style="font-size: 14px;">
+          API token:
+          <input id="token" type="password" placeholder="CHIEF_API_TOKEN"
+            style="padding: 6px 10px; border: 1px solid var(--color-line, #ddd); border-radius: 6px; font-family: monospace; width: 280px;"
+            autocomplete="off" />
+        </label>
+        <label style="font-size: 14px;">
+          Admin token (опц.):
+          <input id="admin-token" type="password" placeholder="CHIEF_ADMIN_TOKEN"
+            style="padding: 6px 10px; border: 1px solid var(--color-line, #ddd); border-radius: 6px; font-family: monospace; width: 240px;"
+            autocomplete="off" />
+        </label>
+        <label style="font-size: 14px;">
+          User:
+          <input id="chief-user" type="text" placeholder="kfigh"
+            style="padding: 6px 10px; border: 1px solid var(--color-line, #ddd); border-radius: 6px; font-family: monospace; width: 100px;"
+            autocomplete="off" />
+        </label>
+        <button id="save-token" style="padding: 6px 14px; cursor: pointer;">Сохранить</button>
+        <span id="auth-status" style="font-size: 13px; opacity: 0.6;">token not set</span>
+      </div>
+
+      <div id="kednet-banner" style="display: none; margin-top: 12px; padding: 10px 14px; border-radius: 8px; background: #fef3c7; color: #92400e; font-size: 13px;"></div>
+    </header>
+
+    <!-- ── Tabs ──────────────────────────────────────────────── -->
+    <nav class="tabs" style="display: flex; gap: 4px; border-bottom: 2px solid var(--color-line, #e5e7eb); margin-bottom: 20px;">
+      <button class="tab active" data-tab="agents">Агенты</button>
+      <button class="tab" data-tab="approvals">Approvals <span id="approvals-badge" class="badge" style="display:none;">0</span></button>
+      <button class="tab" data-tab="jobs">Jobs</button>
+      <button class="tab" data-tab="reviews">Reviews</button>
+      <button class="tab" data-tab="audit">Audit</button>
+    </nav>
+
+    <!-- ── Agents tab ─────────────────────────────────────────── -->
+    <section id="tab-agents" class="tab-panel active">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h2 style="font-size: 18px; margin: 0;">Агенты</h2>
+        <button id="add-agent-btn" style="padding: 6px 14px; cursor: pointer;">+ Добавить агента</button>
+      </div>
+      <div id="agents-grid"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+        <p style="opacity: 0.6;">Загрузка…</p>
+      </div>
+    </section>
+
+    <!-- ── Approvals tab ─────────────────────────────────────── -->
+    <section id="tab-approvals" class="tab-panel">
+      <h2 style="font-size: 18px; margin: 0 0 12px;">Pending approvals</h2>
+      <p style="font-size: 13px; opacity: 0.7; margin: 0 0 12px;">
+        TG-уведомление с inline-кнопками дублируется. Approve/reject через UI или TG.
+      </p>
+      <div id="approvals-list"></div>
+    </section>
+
+    <!-- ── Jobs tab ───────────────────────────────────────────── -->
+    <section id="tab-jobs" class="tab-panel">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <h2 style="font-size: 18px; margin: 0;">Последние jobs (20)</h2>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <select id="jobs-filter" style="padding: 6px 10px;">
+            <option value="">all</option>
+            <option value="awaiting_approval">awaiting_approval</option>
+            <option value="completed">completed</option>
+            <option value="failed">failed</option>
+            <option value="running">running</option>
+            <option value="cancelled">cancelled</option>
+          </select>
+          <button id="refresh" style="padding: 6px 14px; cursor: pointer;">Обновить</button>
+        </div>
+      </div>
+      <div style="overflow-x: auto; border: 1px solid var(--color-line, #eee); border-radius: 8px;">
+        <table id="jobs-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <thead>
+            <tr style="background: var(--color-bg-alt, #f7f7f7); text-align: left;">
+              <th style="padding: 8px 12px;">Время</th>
+              <th style="padding: 8px 12px;">Агент</th>
+              <th style="padding: 8px 12px;">Action</th>
+              <th style="padding: 8px 12px;">Статус</th>
+              <th style="padding: 8px 12px;">Exit</th>
+              <th style="padding: 8px 12px;">Длит.</th>
+              <th style="padding: 8px 12px;">T</th>
+              <th style="padding: 8px 12px;">Artifacts</th>
+              <th style="padding: 8px 12px;">By</th>
+              <th style="padding: 8px 12px;">JobID</th>
+            </tr>
+          </thead>
+          <tbody id="jobs-tbody">
+            <tr><td colspan="10" style="padding: 16px; text-align: center; opacity: 0.6;">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Audit tab ──────────────────────────────────────────── -->
+    <section id="tab-audit" class="tab-panel">
+      <h2 style="font-size: 18px; margin: 0 0 12px;">Audit log (последние 50)</h2>
+      <div style="overflow-x: auto; border: 1px solid var(--color-line, #eee); border-radius: 8px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <thead>
+            <tr style="background: var(--color-bg-alt, #f7f7f7); text-align: left;">
+              <th style="padding: 8px 12px;">Когда</th>
+              <th style="padding: 8px 12px;">Actor</th>
+              <th style="padding: 8px 12px;">Action</th>
+              <th style="padding: 8px 12px;">Target</th>
+              <th style="padding: 8px 12px;">Detail</th>
+              <th style="padding: 8px 12px;">Result</th>
+            </tr>
+          </thead>
+          <tbody id="audit-tbody">
+            <tr><td colspan="6" style="padding: 16px; text-align: center; opacity: 0.6;">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Reviews tab ───────────────────────────────────────── -->
+    <section id="tab-reviews" class="tab-panel">
+      <h2 style="font-size: 18px; margin: 0 0 4px;">Expert Reviews Hub</h2>
+      <p style="font-size: 13px; opacity: 0.7; margin: 0 0 16px;">
+        Парсеры отзывов с LiveLib / Литрес / ВК. Здесь можно посмотреть сводку и запустить парсер.
+        Сами отзывы хранятся в <code>C:\Users\kfigh\expert-reviews-hub\reviews\</code> на Kednet.
+      </p>
+
+      <div id="reviews-summary"
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;">
+        <div class="review-stat" data-key="total"><div class="review-stat__n">0</div><div class="review-stat__l">Всего запусков</div></div>
+        <div class="review-stat" data-key="completed"><div class="review-stat__n">0</div><div class="review-stat__l">Успешных</div></div>
+        <div class="review-stat" data-key="failed"><div class="review-stat__n">0</div><div class="review-stat__l">С ошибкой</div></div>
+        <div class="review-stat" data-key="last"><div class="review-stat__n">—</div><div class="review-stat__l">Последний запуск</div></div>
+      </div>
+
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+        <button class="btn btn--primary" data-review-action="parse_litres">▶ Парсер Литрес</button>
+        <button class="btn btn--ghost"   data-review-action="parse_livelib">▶ Парсер LiveLib</button>
+        <span style="font-size: 12px; opacity: 0.6; align-self: center; margin-left: auto;">
+          Kednet-агент: <span id="reviews-kednet-state">—</span>
+        </span>
+      </div>
+
+      <h3 style="font-size: 15px; margin: 16px 0 8px;">Последние запуски</h3>
+      <div style="overflow-x: auto; border: 1px solid var(--color-line, #eee); border-radius: 8px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <thead>
+            <tr style="background: var(--color-bg-alt, #f7f7f7); text-align: left;">
+              <th style="padding: 8px 12px;">Время</th>
+              <th style="padding: 8px 12px;">Action</th>
+              <th style="padding: 8px 12px;">Статус</th>
+              <th style="padding: 8px 12px;">Exit</th>
+              <th style="padding: 8px 12px;">Длит.</th>
+              <th style="padding: 8px 12px;">By</th>
+              <th style="padding: 8px 12px;">JobID</th>
+            </tr>
+          </thead>
+          <tbody id="reviews-tbody">
+            <tr><td colspan="7" style="padding: 16px; text-align: center; opacity: 0.6;">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+
+  <!-- ── Run-action modal ───────────────────────────────────── -->
+  <dialog id="run-modal" style="border: none; border-radius: 12px; padding: 0; max-width: 560px; width: 90vw;">
+    <form id="run-form" style="padding: 24px; display: flex; flex-direction: column; gap: 12px;">
+      <h3 id="modal-title" style="margin: 0;">Запустить действие</h3>
+      <p id="modal-agent" style="margin: 0; opacity: 0.7; font-size: 13px;"></p>
+      <div id="params-host" style="display: flex; flex-direction: column; gap: 10px;"></div>
+      <label style="display: flex; gap: 8px; align-items: center; font-size: 14px;">
+        <input id="dry-run" type="checkbox" />
+        Dry-run (если поддерживается)
+      </label>
+      <div id="modal-error" style="display: none; padding: 8px 12px; border-radius: 6px; background: #fee; color: #c33; font-size: 13px;"></div>
+      <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px;">
+        <button type="button" id="modal-cancel" style="padding: 8px 16px;">Отмена</button>
+        <button type="submit" id="modal-submit" style="padding: 8px 16px; background: var(--color-accent, #5b3); color: white; border: none; border-radius: 6px; cursor: pointer;">Запустить</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ── Add-agent modal (admin) ────────────────────────────── -->
+  <dialog id="add-agent-modal" style="border: none; border-radius: 12px; padding: 0; max-width: 600px; width: 90vw;">
+    <form id="add-agent-form" style="padding: 24px; display: flex; flex-direction: column; gap: 12px;">
+      <h3 style="margin: 0;">Добавить агента</h3>
+      <p style="margin: 0; opacity: 0.7; font-size: 13px;">
+        Chief создаст папку на Kednet, напишет agent.py и зарегистрирует в реестре.
+      </p>
+
+      <label style="font-size: 13px;">ID (латиница, snake_case)
+        <input name="id" required pattern="^[a-z][a-z0-9_]{1,40}$"
+          style="width: 100%; padding: 6px 10px; border: 1px solid var(--color-line, #ddd); border-radius: 6px;" />
+      </label>
+      <label style="font-size: 13px;">Display name
+        <input name="displayName" required
+          style="width: 100%; padding: 6px 10px; border: 1px solid var(--color-line, #ddd); border-radius: 6px;" />
+      </label>
+      <label style="font-size: 13px;">Описание
+        <input name="description"
+          style="width: 100%; padding: 6px 10px; border: 1px solid var(--color-line, #ddd); border-radius: 6px;" />
+      </label>
+      <label style="font-size: 13px;">Тип
+        <select name="type" required style="width: 100%; padding: 6px 10px;">
+          <option value="remote">remote (через WS к Kednet)</option>
+          <option value="subprocess">subprocess (native на VPS)</option>
+          <option value="http">http (native)</option>
+        </select>
+      </label>
+      <label style="font-size: 13px;">Корень (cwd)
+        <input name="cwd" placeholder="C:\Users\kfigh\my_skill" required
+          style="width: 100%; padding: 6px 10px; border: 1px solid var(--color-line, #ddd); border-radius: 6px; font-family: monospace;" />
+      </label>
+      <label style="font-size: 13px;">Scripts entry (для remote)
+        <input name="scriptsEntry" placeholder="scripts/my_script.py"
+          style="width: 100%; padding: 6px 10px; border: 1px solid var(--color-line, #ddd); border-radius: 6px; font-family: monospace;" />
+      </label>
+      <label style="font-size: 13px;">Env keys (через запятую)
+        <input name="envKeys" placeholder="YANDEX_API_KEY, TG_BOT_TOKEN"
+          style="width: 100%; padding: 6px 10px; border: 1px solid var(--color-line, #ddd); border-radius: 6px; font-family: monospace;" />
+      </label>
+      <label style="display: flex; gap: 8px; align-items: center; font-size: 13px;">
+        <input name="scaffold" type="checkbox" checked />
+        Создать папку + agent.py на Kednet
+      </label>
+
+      <div id="add-agent-error" style="display: none; padding: 8px 12px; border-radius: 6px; background: #fee; color: #c33; font-size: 13px;"></div>
+
+      <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px;">
+        <button type="button" id="add-agent-cancel" style="padding: 8px 16px;">Отмена</button>
+        <button type="submit" id="add-agent-submit" style="padding: 8px 16px; background: var(--color-accent, #5b3); color: white; border: none; border-radius: 6px; cursor: pointer;">Создать</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ── Job-detail modal ──────────────────────────────────── -->
+  <dialog id="job-modal" style="border: none; border-radius: 12px; padding: 0; max-width: 800px; width: 90vw; max-height: 85vh;">
+    <div style="padding: 24px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; justify-content: space-between; align-items: start;">
+        <div>
+          <h3 id="job-modal-title" style="margin: 0 0 4px;">Job details</h3>
+          <p id="job-modal-meta" style="margin: 0; opacity: 0.7; font-size: 13px;"></p>
+        </div>
+        <button id="job-modal-close" style="padding: 4px 12px; cursor: pointer;">✕</button>
+      </div>
+      <div id="job-modal-artifacts"></div>
+      <details>
+        <summary style="cursor: pointer; font-size: 13px;">stdout</summary>
+        <pre id="job-modal-stdout" style="font-size: 12px; max-height: 240px; overflow: auto; background: #f9fafb; padding: 12px; border-radius: 6px; white-space: pre-wrap;"></pre>
+      </details>
+      <details>
+        <summary style="cursor: pointer; font-size: 13px;">stderr</summary>
+        <pre id="job-modal-stderr" style="font-size: 12px; max-height: 240px; overflow: auto; background: #fef2f2; padding: 12px; border-radius: 6px; white-space: pre-wrap;"></pre>
+      </details>
+    </div>
+  </dialog>
+
+  <style>
+    .chief {
+      --status-online:   #22c55e;
+      --status-degraded: #eab308;
+      --status-offline:  #ef4444;
+      --status-unknown:  #9ca3af;
+      --status-disabled: #cbd5e1;
+    }
+    .tab { padding: 8px 16px; cursor: pointer; background: transparent; border: none; border-bottom: 2px solid transparent; font-size: 14px; }
+    .tab.active { border-bottom-color: var(--color-accent, #5b3); font-weight: 600; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .badge { display: inline-block; padding: 0 6px; margin-left: 4px; border-radius: 999px; background: #ef4444; color: white; font-size: 11px; font-weight: 600; }
+
+    .agent-card {
+      border: 1px solid var(--color-line, #e5e7eb);
+      border-radius: 10px;
+      padding: 14px 16px;
+      background: var(--color-bg, white);
+      transition: box-shadow 120ms;
+    }
+    .agent-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .agent-card[data-status="offline"] { border-left: 3px solid var(--status-offline); }
+    .agent-card[data-status="online"]  { border-left: 3px solid var(--status-online); }
+    .agent-card[data-status="degraded"] { border-left: 3px solid var(--status-degraded); }
+    .agent-card[data-status="unknown"] { border-left: 3px solid var(--status-unknown); }
+    .agent-card[data-status="disabled"] { border-left: 3px solid var(--status-disabled); opacity: 0.7; }
+    .agent-card .header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .agent-card .dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+      background: var(--status-unknown);
+    }
+    .agent-card[data-status="online"]   .dot { background: var(--status-online); }
+    .agent-card[data-status="offline"]  .dot { background: var(--status-offline); }
+    .agent-card[data-status="degraded"] .dot { background: var(--status-degraded); }
+    .agent-card .name { font-weight: 600; font-size: 15px; }
+    .agent-card .desc { font-size: 12px; opacity: 0.7; margin: 4px 0 10px; min-height: 28px; }
+    .agent-card .actions { display: flex; flex-wrap: wrap; gap: 6px; }
+    .agent-card .actions button {
+      padding: 4px 10px; font-size: 12px; border: 1px solid var(--color-line, #ddd);
+      background: var(--color-bg-alt, #f7f7f7); border-radius: 6px; cursor: pointer;
+    }
+    .agent-card .actions button:hover { background: var(--color-accent-soft, #e8f5e9); }
+    .agent-card .actions button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .agent-card .actions .restart { color: #b91c1c; border-color: #fca5a5; }
+    .agent-card .transport { font-size: 10px; opacity: 0.5; margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--color-line, #eee); }
+
+    .status-pill {
+      display: inline-block; padding: 1px 8px; border-radius: 999px;
+      font-size: 11px; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .status-pill.online   { background: #dcfce7; color: #166534; }
+    .status-pill.offline  { background: #fee2e2; color: #991b1b; }
+    .status-pill.degraded { background: #fef3c7; color: #92400e; }
+    .status-pill.unknown  { background: #f3f4f6; color: #6b7280; }
+    .status-pill.disabled { background: #f3f4f6; color: #9ca3af; }
+
+    .job-status {
+      display: inline-block; padding: 1px 8px; border-radius: 999px;
+      font-size: 11px; font-weight: 500;
+    }
+    .job-status.queued     { background: #f3f4f6; color: #374151; }
+    .job-status.running    { background: #dbeafe; color: #1e40af; }
+    .job-status.completed  { background: #dcfce7; color: #166534; }
+    .job-status.failed     { background: #fee2e2; color: #991b1b; }
+    .job-status.cancelled  { background: #fef3c7; color: #92400e; }
+    .job-status.awaiting_approval { background: #ede9fe; color: #5b21b6; }
+
+    .approval-card {
+      border: 1px solid #ddd6fe;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      background: #faf5ff;
+    }
+    .approval-card .header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .approval-card .files { font-size: 13px; font-family: ui-monospace, monospace; opacity: 0.85; padding: 8px 12px; background: white; border-radius: 6px; margin: 8px 0; }
+    .approval-card .files div { margin: 2px 0; }
+    .approval-card .actions { display: flex; gap: 8px; margin-top: 8px; }
+    .approval-card button {
+      padding: 6px 14px; border-radius: 6px; border: 1px solid var(--color-line, #ddd);
+      background: white; cursor: pointer; font-size: 13px;
+    }
+    .approval-card button.approve { background: #dcfce7; color: #166534; border-color: #86efac; }
+    .approval-card button.reject  { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+    .approval-card button.open    { background: #e0e7ff; color: #3730a3; border-color: #a5b4fc; }
+    .approval-card button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    #jobs-table tbody tr:hover { background: var(--color-bg-alt, #fafafa); }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; }
+
+    /* Reviews tab */
+    .review-stat {
+      background: #fff; border: 1px solid var(--color-line, #e5e7eb);
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .review-stat__n {
+      font-size: 22px; font-weight: 700; color: var(--color-accent, #5b3);
+      line-height: 1.1; margin-bottom: 2px;
+    }
+    .review-stat__l { font-size: 12px; opacity: 0.65; }
+
+    .btn {
+      padding: 8px 16px; border-radius: 6px; font-size: 13px;
+      border: 1px solid var(--color-line, #ddd); cursor: pointer;
+      background: white;
+    }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn--primary {
+      background: var(--color-accent, #5b3); color: white; border-color: transparent;
+    }
+    .btn--primary:hover { filter: brightness(1.1); }
+    .btn--ghost:hover { background: var(--color-bg-alt, #f7f7f7); }
+  </style>
+
+  <script>
+    // Chief Agent — control panel client v2.0
+    'use strict';
+
+    const API_BASE = '/chief/api';
+    const REFRESH_MS = 5000;
+
+    // ── Token handling ──────────────────────────────────────────
+    function getToken()  { return sessionStorage.getItem('chief_token')     || document.getElementById('token').value        || ''; }
+    function getAdmin()  { return sessionStorage.getItem('chief_admin')     || document.getElementById('admin-token').value || ''; }
+    function getUser()   { return sessionStorage.getItem('chief_user')      || document.getElementById('chief-user').value  || 'kfigh'; }
+
+    function setAuthStatus(msg, isError = false) {
+      const el = document.getElementById('auth-status');
+      el.textContent = msg;
+      el.style.color = isError ? '#dc2626' : '#166534';
+    }
+
+    document.getElementById('save-token').addEventListener('click', () => {
+      const t = document.getElementById('token').value.trim();
+      const a = document.getElementById('admin-token').value.trim();
+      const u = document.getElementById('chief-user').value.trim();
+      if (t) sessionStorage.setItem('chief_token', t); else sessionStorage.removeItem('chief_token');
+      if (a) sessionStorage.setItem('chief_admin', a); else sessionStorage.removeItem('chief_admin');
+      if (u) sessionStorage.setItem('chief_user',  u); else sessionStorage.removeItem('chief_user');
+      setAuthStatus(t ? (a ? 'token+admin saved' : 'token saved') : 'token cleared');
+      refresh();
+    });
+
+    (function initToken() {
+      const t = sessionStorage.getItem('chief_token');
+      const a = sessionStorage.getItem('chief_admin');
+      const u = sessionStorage.getItem('chief_user');
+      if (t) document.getElementById('token').value = t;
+      if (a) document.getElementById('admin-token').value = a;
+      if (u) document.getElementById('chief-user').value = u;
+      if (t) setAuthStatus('token loaded');
+    })();
+
+    // ── API helper ──────────────────────────────────────────────
+    async function api(path, opts = {}) {
+      const token = getToken();
+      if (!token) {
+        setAuthStatus('token required', true);
+        throw new Error('No token');
+      }
+      const headers = {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+        ...(opts.headers || {})
+      };
+      const r = await fetch(API_BASE + path, { ...opts, headers });
+      if (r.status === 401) {
+        setAuthStatus('401 unauthorized — wrong token', true);
+        throw new Error('Unauthorized');
+      }
+      if (!r.ok) {
+        const text = await r.text();
+        setAuthStatus(`HTTP ${r.status}`, true);
+        throw new Error(text || `HTTP ${r.status}`);
+      }
+      setAuthStatus('OK');
+      return r.json();
+    }
+
+    async function apiAdmin(path, opts = {}) {
+      const admin = getAdmin();
+      if (!admin) throw new Error('admin token required');
+      return api(path, {
+        ...opts,
+        headers: { 'X-Admin-Token': admin, ...(opts.headers || {}) }
+      });
+    }
+
+    // ── Renderers ───────────────────────────────────────────────
+    function escapeHtml(s) {
+      return String(s ?? '').replace(/[&<>"']/g, (c) => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[c]));
+    }
+
+    function renderAgents(agents) {
+      const grid = document.getElementById('agents-grid');
+      if (!Array.isArray(agents) || agents.length === 0) {
+        grid.innerHTML = '<p style="opacity: 0.6;">Нет агентов (или нет токена)</p>';
+        return;
+      }
+      window.__agentActions = window.__agentActions || {};
+
+      const cards = agents.map((a) => {
+        const actions = (window.__agentActions[a.id] || []);
+        const actionButtons = actions.slice(0, 4).map((act) => {
+          const cls = act.id === 'restart' ? 'restart' : '';
+          return `<button class="${cls}" data-agent="${a.id}" data-action="${act.id}">${escapeHtml(act.displayName)}</button>`;
+        }).join('');
+
+        const transportBadge = a.type === 'remote' ? 'WS'
+                             : a.type === 'http'   ? 'HTTP'
+                             : 'native';
+
+        return `
+          <div class="agent-card" data-status="${a.status}" data-agent="${a.id}">
+            <div class="header">
+              <span class="dot"></span>
+              <span class="name">${escapeHtml(a.displayName)}</span>
+              <span class="status-pill ${a.status}">${a.status}</span>
+            </div>
+            <div class="desc">${escapeHtml(a.description || '')}</div>
+            <div class="actions">
+              ${actionButtons || '<span style="opacity: 0.5; font-size: 11px;">no actions</span>'}
+              <span style="margin-left: auto; font-size: 11px; opacity: 0.6;">${actions.length || a.actionsCount} cmd</span>
+            </div>
+            <div class="transport">transport: ${transportBadge}</div>
+          </div>
+        `;
+      }).join('');
+      grid.innerHTML = cards;
+
+      grid.querySelectorAll('button[data-action]').forEach((btn) => {
+        btn.addEventListener('click', () => openRunModal(btn.dataset.agent, btn.dataset.action));
+      });
+    }
+
+    function renderJobs(jobs) {
+      const tbody = document.getElementById('jobs-tbody');
+      if (!Array.isArray(jobs) || jobs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" style="padding: 16px; text-align: center; opacity: 0.6;">—</td></tr>';
+        return;
+      }
+      tbody.innerHTML = jobs.map((j) => {
+        const start = j.startedAt || j.createdAt;
+        const duration = j.startedAt && j.finishedAt
+          ? Math.round((new Date(j.finishedAt) - new Date(j.startedAt)) / 1000) + 's'
+          : '—';
+        const arts = (j.artifacts && j.artifacts.length)
+          ? `<span style="font-size: 11px; padding: 1px 6px; background: #ede9fe; color: #5b21b6; border-radius: 999px;">${j.artifacts.length}</span>`
+          : '—';
+        const trBadge = j.transport === 'remote' ? 'WS'
+                      : j.transport === 'http'   ? 'HTTP'
+                      : j.transport ? 'N' : '—';
+        return `<tr>
+          <td style="padding: 6px 12px;" class="mono">${escapeHtml(start || '—')}</td>
+          <td style="padding: 6px 12px;">${escapeHtml(j.agentId)}</td>
+          <td style="padding: 6px 12px;">${escapeHtml(j.actionId)}</td>
+          <td style="padding: 6px 12px;"><span class="job-status ${j.status}">${j.status}</span></td>
+          <td style="padding: 6px 12px;" class="mono">${j.exitCode ?? '—'}</td>
+          <td style="padding: 6px 12px;" class="mono">${duration}</td>
+          <td style="padding: 6px 12px;" class="mono">${trBadge}</td>
+          <td style="padding: 6px 12px;">${arts}</td>
+          <td style="padding: 6px 12px;">${escapeHtml(j.triggeredByUser || j.triggeredBy)}</td>
+          <td style="padding: 6px 12px;" class="mono"><a href="#job-${escapeHtml(j.id)}" data-job="${escapeHtml(j.id)}" class="job-link">${escapeHtml(j.id.slice(0, 8))}</a></td>
+        </tr>`;
+      }).join('');
+
+      tbody.querySelectorAll('a.job-link').forEach((a) => {
+        a.addEventListener('click', async (ev) => {
+          ev.preventDefault();
+          await openJobModal(a.dataset.job);
+        });
+      });
+    }
+
+    function renderApprovals(list) {
+      const host = document.getElementById('approvals-list');
+      const badge = document.getElementById('approvals-badge');
+      if (!Array.isArray(list) || list.length === 0) {
+        host.innerHTML = '<p style="opacity: 0.6;">✅ Нет pending approvals</p>';
+        badge.style.display = 'none';
+        return;
+      }
+      badge.textContent = list.length;
+      badge.style.display = 'inline-block';
+
+      host.innerHTML = list.map((j) => {
+        const filesHtml = (j.artifacts || []).map(a => {
+          const sz = a.sizeBytes ? ` (${Math.round(a.sizeBytes/1024)} КБ)` : '';
+          return `<div>${escapeHtml(a.kind || '?')}: <code>${escapeHtml(a.path)}</code>${sz}</div>`;
+        }).join('');
+        const ageMin = Math.round((j.ageSec || 0) / 60);
+        return `
+          <div class="approval-card" data-job="${escapeHtml(j.jobId)}">
+            <div class="header">
+              <strong>${escapeHtml(j.agentId)}</strong> / <code>${escapeHtml(j.actionId)}</code>
+              <span style="font-size: 12px; opacity: 0.6; margin-left: auto;">${ageMin}m ago · job <code>${escapeHtml(j.jobId.slice(0,8))}</code></span>
+            </div>
+            <div class="files">${filesHtml}</div>
+            <div class="actions">
+              <button class="approve" data-act="approve">✅ Approve</button>
+              <button class="open"    data-act="open">📂 Open path</button>
+              <button class="reject"  data-act="reject">❌ Reject</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      host.querySelectorAll('.approval-card').forEach((card) => {
+        const jobId = card.dataset.job;
+        card.querySelectorAll('button').forEach((btn) => {
+          btn.addEventListener('click', () => handleApproval(jobId, btn.dataset.act, card));
+        });
+      });
+    }
+
+    async function handleApproval(jobId, action, card) {
+      const btns = card.querySelectorAll('button');
+      btns.forEach(b => b.disabled = true);
+      try {
+        if (action === 'approve') {
+          await api(`/jobs/${jobId}/approve`, { method: 'POST', body: JSON.stringify({}) });
+          card.style.opacity = '0.5';
+        } else if (action === 'reject') {
+          const reason = prompt('Reason for rejection?', 'rejected by user') || 'rejected by user';
+          await api(`/jobs/${jobId}/reject`, { method: 'POST', body: JSON.stringify({ reason }) });
+          card.style.opacity = '0.5';
+        } else if (action === 'open') {
+          // Получить job и показать путь
+          const job = await api(`/jobs/${jobId}`);
+          if (job.artifacts && job.artifacts[0]) {
+            prompt('Локальный путь на Kednet (скопируй):', job.artifacts[0].path);
+          }
+        }
+        setTimeout(refresh, 600);
+      } catch (e) {
+        alert(`Error: ${e.message}`);
+        btns.forEach(b => b.disabled = false);
+      }
+    }
+
+    function renderAudit(rows) {
+      const tbody = document.getElementById('audit-tbody');
+      if (!Array.isArray(rows) || rows.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="padding: 16px; text-align: center; opacity: 0.6;">—</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map((r) => {
+        const detail = r.params
+          ? (typeof r.params === 'object' ? JSON.stringify(r.params).slice(0, 100) : String(r.params).slice(0, 100))
+          : '';
+        return `<tr>
+          <td style="padding: 6px 12px;" class="mono">${escapeHtml(r.ts)}</td>
+          <td style="padding: 6px 12px;">${escapeHtml(r.actor || '—')}</td>
+          <td style="padding: 6px 12px;">${escapeHtml(r.action)}</td>
+          <td style="padding: 6px 12px;" class="mono">${escapeHtml(r.target || '—')}</td>
+          <td style="padding: 6px 12px; font-size: 11px; opacity: 0.7;" class="mono">${escapeHtml(detail)}</td>
+          <td style="padding: 6px 12px;"><span class="status-pill ${r.result === 'ok' ? 'online' : r.result === 'denied' ? 'degraded' : 'offline'}">${escapeHtml(r.result)}</span></td>
+        </tr>`;
+      }).join('');
+    }
+
+    function fmtAgo(iso) {
+      if (!iso) return '—';
+      const ms = Date.now() - new Date(iso).getTime();
+      if (ms < 0) return 'только что';
+      const sec = Math.floor(ms / 1000);
+      if (sec < 60)   return `${sec}с назад`;
+      const min = Math.floor(sec / 60);
+      if (min < 60)   return `${min}м назад`;
+      const hr = Math.floor(min / 60);
+      if (hr < 24)    return `${hr}ч назад`;
+      const day = Math.floor(hr / 24);
+      if (day < 30)   return `${day}д назад`;
+      return new Date(iso).toLocaleDateString('ru-RU');
+    }
+
+    function renderReviews(jobs, kednetConnected) {
+      const tbody = document.getElementById('reviews-tbody');
+      const summary = document.getElementById('reviews-summary');
+      const kednetEl = document.getElementById('reviews-kednet-state');
+
+      // Kednet state
+      if (kednetEl) {
+        if (kednetConnected === true) {
+          kednetEl.textContent = '🟢 online';
+          kednetEl.style.color = '#166534';
+        } else if (kednetConnected === false) {
+          kednetEl.textContent = '🔴 offline (job зависнет в queued)';
+          kednetEl.style.color = '#991b1b';
+        } else {
+          kednetEl.textContent = '—';
+          kednetEl.style.color = '';
+        }
+      }
+
+      const list = Array.isArray(jobs) ? jobs : [];
+      const total = list.length;
+      const completed = list.filter(j => j.status === 'completed').length;
+      const failed = list.filter(j => j.status === 'failed').length;
+      const last = list
+        .filter(j => j.startedAt || j.createdAt)
+        .sort((a, b) => new Date(b.startedAt || b.createdAt) - new Date(a.startedAt || a.createdAt))[0];
+      const lastText = last ? fmtAgo(last.startedAt || last.createdAt) : '—';
+
+      summary.querySelector('[data-key="total"] .review-stat__n').textContent = total;
+      summary.querySelector('[data-key="completed"] .review-stat__n').textContent = completed;
+      summary.querySelector('[data-key="failed"] .review-stat__n').textContent = failed;
+      summary.querySelector('[data-key="last"] .review-stat__n').textContent = lastText;
+      summary.querySelector('[data-key="last"] .review-stat__n').style.fontSize = lastText === '—' ? '22px' : '18px';
+
+      if (total === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="padding: 16px; text-align: center; opacity: 0.6;">Парсеры ещё не запускались. Нажмите «▶ Парсер Литрес».</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = list.slice(0, 10).map((j) => {
+        const start = j.startedAt || j.createdAt;
+        const duration = j.startedAt && j.finishedAt
+          ? Math.round((new Date(j.finishedAt) - new Date(j.startedAt)) / 1000) + 's'
+          : '—';
+        return `<tr>
+          <td style="padding: 6px 12px;" class="mono">${escapeHtml(start || '—')}</td>
+          <td style="padding: 6px 12px;">${escapeHtml(j.actionId)}</td>
+          <td style="padding: 6px 12px;"><span class="job-status ${j.status}">${j.status}</span></td>
+          <td style="padding: 6px 12px;" class="mono">${j.exitCode ?? '—'}</td>
+          <td style="padding: 6px 12px;" class="mono">${duration}</td>
+          <td style="padding: 6px 12px;">${escapeHtml(j.triggeredByUser || j.triggeredBy || '—')}</td>
+          <td style="padding: 6px 12px;" class="mono"><a href="#job-${escapeHtml(j.id)}" data-job="${escapeHtml(j.id)}" class="job-link">${escapeHtml(j.id.slice(0, 8))}</a></td>
+        </tr>`;
+      }).join('');
+
+      // Переиспользуем тот же handler, что и в Jobs
+      tbody.querySelectorAll('a.job-link').forEach((a) => {
+        a.addEventListener('click', async (ev) => {
+          ev.preventDefault();
+          await openJobModal(a.dataset.job);
+        });
+      });
+    }
+
+    // Кнопки запуска парсеров на вкладке Reviews
+    document.querySelectorAll('[data-review-action]').forEach((btn) => {
+      btn.addEventListener('click', () => openRunModal('expert_reviews', btn.dataset.reviewAction));
+    });
+
+    function renderKednetBanner(ws) {
+      const banner = document.getElementById('kednet-banner');
+      if (!ws || !ws.connected) {
+        banner.style.display = 'block';
+        banner.style.background = '#fee2e2';
+        banner.style.color = '#991b1b';
+        banner.textContent = '🔌 Kednet-агент OFFLINE — 9 remote-скиллов недоступны. Проверьте что машина включена и nssm-сервис работает.';
+      } else {
+        banner.style.display = 'block';
+        banner.style.background = '#dcfce7';
+        banner.style.color = '#166534';
+        banner.textContent = `🟢 Kednet-агент ONLINE: ${ws.hostname || '—'} (${ws.os || '?'}), ${(ws.skillsDetected || []).length} skills`;
+      }
+    }
+
+    // ── Tabs ───────────────────────────────────────────────────
+    document.querySelectorAll('.tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+        sessionStorage.setItem('chief_active_tab', tab.dataset.tab);
+      });
+    });
+    // Restore last tab
+    (function initTab() {
+      const last = sessionStorage.getItem('chief_active_tab') || 'agents';
+      const btn = document.querySelector(`.tab[data-tab="${last}"]`);
+      if (btn) btn.click();
+    })();
+
+    // ── Run modal ───────────────────────────────────────────────
+    let currentAgent = null;
+    let currentAction = null;
+
+    async function openRunModal(agentId, actionId) {
+      window.__agentActions = window.__agentActions || {};
+      if (!window.__agentActions[agentId]) {
+        try {
+          const list = await api(`/agents/${agentId}/actions`);
+          window.__agentActions[agentId] = list;
+        } catch (e) {
+          alert(`Failed to load actions: ${e.message}`);
+          return;
+        }
+      }
+      const action = window.__agentActions[agentId].find((a) => a.id === actionId);
+      if (!action) {
+        alert(`Action '${actionId}' not found for ${agentId}`);
+        return;
+      }
+      currentAgent = agentId;
+      currentAction = action;
+
+      document.getElementById('modal-title').textContent = action.displayName;
+      document.getElementById('modal-agent').textContent = `${agentId} · ${actionId}`;
+
+      const host = document.getElementById('params-host');
+      host.innerHTML = '';
+      const params = Array.isArray(action.params) ? action.params : [];
+      if (params.length === 0) {
+        host.innerHTML = '<p style="opacity: 0.6; font-size: 13px;">Без параметров.</p>';
+      } else {
+        for (const p of params) {
+          const wrap = document.createElement('label');
+          wrap.style.display = 'flex'; wrap.style.flexDirection = 'column';
+          wrap.style.gap = '4px'; wrap.style.fontSize = '13px';
+          let input;
+          if (p.type === 'enum' && p.options) {
+            input = document.createElement('select');
+            for (const opt of p.options) {
+              const o = document.createElement('option');
+              o.value = opt; o.textContent = opt; input.appendChild(o);
+            }
+            if (p.default) input.value = p.default;
+          } else if (p.type === 'boolean') {
+            input = document.createElement('input'); input.type = 'checkbox'; input.checked = !!p.default;
+          } else if (p.type === 'integer') {
+            input = document.createElement('input'); input.type = 'number'; input.value = p.default ?? '';
+          } else {
+            input = document.createElement('input'); input.type = 'text'; input.value = p.default ?? '';
+            input.placeholder = p.required ? '(required)' : '';
+          }
+          input.name = p.name; input.dataset.type = p.type;
+          wrap.appendChild(document.createTextNode(p.name + (p.required ? ' *' : '')));
+          wrap.appendChild(input);
+          host.appendChild(wrap);
+        }
+      }
+
+      document.getElementById('dry-run').checked = false;
+      document.getElementById('dry-run').disabled = !action.dryRunSupported;
+      document.getElementById('modal-error').style.display = 'none';
+      document.getElementById('run-modal').showModal();
+    }
+
+    document.getElementById('modal-cancel').addEventListener('click', () => {
+      document.getElementById('run-modal').close();
+    });
+
+    document.getElementById('run-form').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const errEl = document.getElementById('modal-error');
+      errEl.style.display = 'none';
+
+      const params = {};
+      const inputs = document.querySelectorAll('#params-host input, #params-host select');
+      for (const inp of inputs) {
+        let v;
+        if (inp.dataset.type === 'boolean') v = inp.checked;
+        else if (inp.dataset.type === 'integer') v = inp.value === '' ? undefined : parseInt(inp.value, 10);
+        else v = inp.value;
+        if (v !== undefined && v !== '') params[inp.name] = v;
+      }
+      const dryRun = document.getElementById('dry-run').checked;
+      const user = getUser();
+
+      const submitBtn = document.getElementById('modal-submit');
+      submitBtn.disabled = true; submitBtn.textContent = 'Запуск…';
+
+      try {
+        const r = await api(`/agents/${currentAgent}/run`, {
+          method: 'POST',
+          body: JSON.stringify({
+            actionId: currentAction.id,
+            params,
+            dryRun,
+            triggeredBy: 'web',
+            triggeredByUser: user
+          })
+        });
+        document.getElementById('run-modal').close();
+        alert(`Запущено!\n\njobId: ${r.jobId}\nстатус: ${r.status}\n\nСледите во вкладке Jobs.`);
+        refresh();
+      } catch (e) {
+        errEl.textContent = e.message;
+        errEl.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false; submitBtn.textContent = 'Запустить';
+      }
+    });
+
+    // ── Add-agent modal (admin) ───────────────────────────────
+    document.getElementById('add-agent-btn').addEventListener('click', () => {
+      if (!getAdmin()) { alert('Введите Admin token для создания агентов'); return; }
+      document.getElementById('add-agent-error').style.display = 'none';
+      document.getElementById('add-agent-modal').showModal();
+    });
+    document.getElementById('add-agent-cancel').addEventListener('click', () => {
+      document.getElementById('add-agent-modal').close();
+    });
+    document.getElementById('add-agent-form').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const errEl = document.getElementById('add-agent-error');
+      errEl.style.display = 'none';
+
+      const fd = new FormData(ev.target);
+      const body = {
+        id: fd.get('id'),
+        displayName: fd.get('displayName'),
+        description: fd.get('description') || '',
+        type: fd.get('type'),
+        metadata: {
+          cwd: fd.get('cwd'),
+          scriptsEntry: fd.get('scriptsEntry') || '',
+          envKeys: (fd.get('envKeys') || '').split(',').map(s => s.trim()).filter(Boolean)
+        },
+        scaffold: fd.get('scaffold') === 'on',
+        actions: [
+          {
+            id: 'run',
+            displayName: 'Запустить',
+            params: [],
+            dryRunSupported: true,
+            estimatedDurationSec: 60
+          }
+        ]
+      };
+
+      const btn = document.getElementById('add-agent-submit');
+      btn.disabled = true; btn.textContent = 'Создаю…';
+
+      try {
+        const r = await apiAdmin('/agents', { method: 'POST', body: JSON.stringify(body) });
+        document.getElementById('add-agent-modal').close();
+        alert(`✅ Создан агент ${r.id}\n\nФайлы:\n${(r.scaffolded && r.scaffolded.files || []).join('\n') || '(scaffold не выполнялся)'}`);
+        refresh();
+      } catch (e) {
+        errEl.textContent = e.message;
+        errEl.style.display = 'block';
+      } finally {
+        btn.disabled = false; btn.textContent = 'Создать';
+      }
+    });
+
+    // ── Job-detail modal ────────────────────────────────────
+    async function openJobModal(jobId) {
+      try {
+        const job = await api(`/jobs/${jobId}`);
+        document.getElementById('job-modal-title').textContent = `${job.agentId} / ${job.actionId}`;
+        document.getElementById('job-modal-meta').textContent =
+          `jobId: ${job.id} · status: ${job.status} · exit: ${job.exitCode ?? '—'} · transport: ${job.transport || '—'} · created: ${job.createdAt}`;
+        const arts = (job.artifacts || []).map(a => {
+          const sz = a.sizeBytes ? ` (${Math.round(a.sizeBytes/1024)} КБ)` : '';
+          return `<div>📎 ${escapeHtml(a.kind)}: <code>${escapeHtml(a.path)}</code>${sz}</div>`;
+        }).join('') || '<p style="opacity: 0.6;">No artifacts</p>';
+        document.getElementById('job-modal-artifacts').innerHTML = arts;
+        document.getElementById('job-modal-stdout').textContent = job.stdout || '(empty)';
+        document.getElementById('job-modal-stderr').textContent = job.stderr || '(empty)';
+        document.getElementById('job-modal').showModal();
+      } catch (e) {
+        alert(`Failed to load job: ${e.message}`);
+      }
+    }
+    document.getElementById('job-modal-close').addEventListener('click', () => {
+      document.getElementById('job-modal').close();
+    });
+
+    // ── Refresh + jobs filter ──────────────────────────────────
+    document.getElementById('jobs-filter').addEventListener('change', refresh);
+    document.getElementById('refresh').addEventListener('click', refresh);
+
+    async function refresh() {
+      if (!getToken()) {
+        document.getElementById('agents-grid').innerHTML =
+          '<p style="opacity: 0.6; padding: 16px;">Введите API token и нажмите «Сохранить».</p>';
+        document.getElementById('summary').textContent = '';
+        return;
+      }
+      try {
+        const status = document.getElementById('jobs-filter').value;
+        const [health, agents, jobs, approvals, ws, reviewsJobs] = await Promise.all([
+          fetch(API_BASE + '/health').then(r => r.ok ? r.json() : null).catch(() => null),
+          api('/agents'),
+          api('/jobs?limit=20' + (status ? `&status=${status}` : '')),
+          api('/approvals').catch(() => []),
+          api('/ws/status').catch(() => ({ connected: null })),
+          api('/jobs?limit=20&agent=expert_reviews').catch(() => [])
+        ]);
+        renderAgents(agents);
+        renderJobs(jobs);
+        renderApprovals(approvals);
+        renderKednetBanner(ws);
+        renderReviews(reviewsJobs, ws ? ws.connected : null);
+        if (health) {
+          document.getElementById('summary').textContent =
+            `online ${health.agentsOnline}/${health.agentsTotal}, ` +
+            `awaiting ${health.awaitingApproval || 0}, ` +
+            `running ${health.runningJobs}, ` +
+            `uptime ${Math.floor((health.uptimeSec || 0)/60)}m`;
+        }
+      } catch (e) {
+        // Errors already shown via setAuthStatus.
+      }
+    }
+    setInterval(refresh, REFRESH_MS);
+    refresh();
+  </script>
+</Base>

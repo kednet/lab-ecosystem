@@ -1,0 +1,1519 @@
+# 12-недельный курикулум English Skill v1.0
+# Фокус: грамматика времён + аудирование + IT/бизнес-лексика
+# 20-25 мин/день, ~7 уроков в неделю (5-6 рабочих + 1-2 review)
+# Целевой переход: B1 → B2 в рабочем контексте (IT/бизнес)
+# Создан для: kfigh
+
+meta:
+  level: "B1 → B2"
+  goal: "IT/business English"
+  daily_minutes: 25
+  weeks: 12
+  created_for: "kfigh"
+  created_at: "2026-06-25"
+
+# === Недельные блоки (краткий обзор) ===
+week_summary:
+  - weeks: [1, 2]
+    block: "База"
+    focus: "Present Simple + Past Simple"
+    why: "Фундамент делового английского. Без этого не построить более сложные времена."
+  - weeks: [3, 4]
+    block: "Главная проблема B1"
+    focus: "Present Perfect vs Past Simple"
+    why: "Ошибка №1 у русскоязычных B1: 'I have went' vs 'I went'. Разводим чётко: опыт vs история."
+  - weeks: [5, 6]
+    block: "Текущие задачи и планы"
+    focus: "Present Continuous + Future (will / going to)"
+    why: "Standup-формат: 'I'm debugging' (сейчас) + 'I'll ship' / 'I'm going to refactor' (план)."
+  - weeks: [7, 8]
+    block: "Контекст в прошлом"
+    focus: "Past Continuous + Past Perfect"
+    why: "Рассказать историю инцидента: 'I was reviewing when the build failed. I had already merged...'"
+  - weeks: [9, 10]
+    block: "Условные конструкции"
+    focus: "Conditionals (1st + 2nd)"
+    why: "Деловые допущения: 'If we ship now, we'll have bugs.' + советы: 'I would refactor this.'"
+  - weeks: [11, 12]
+    block: "Продвинутые темы"
+    focus: "Passive Voice + Reported Speech"
+    why: "Чтение IT-документации (passive) + пересказ митингов (reported speech)."
+
+# === Полная программа: 12 недель × 7 дней ===
+
+weeks:
+  # ============================================================
+  # БЛОК 1: БАЗА (W1-2)
+  # ============================================================
+
+  - week: 1
+    theme: "Present Simple — основа делового английского"
+    grammar_focus: "present-simple"
+    block: "База"
+
+    days:
+      - day: 1
+        type: "intro"
+        title: "Знакомство с курикулумом + Present Simple: правило"
+        content: |
+          # Week 1, Day 1: Знакомство
+
+          Добро пожаловать в English Skill! Это твоя 12-недельная программа
+          для перехода с B1 на B2 в рабочем IT/бизнес-контексте.
+
+          **Сегодня разбираем:** Present Simple — самое частое время в работе.
+
+          ## Правило (affirmative)
+
+          | Местоимение | Глагол | Пример |
+          |---|---|---|
+          | I / You / We / They | work (базовая форма) | I **work** on the API. |
+          | He / She / It | works (+ s/es) | She **works** on auth. |
+
+          ## Когда используется
+
+          - **Факты:** "The service **runs** on port 8080."
+          - **Регулярные действия:** "I **review** PRs every morning."
+          - **Расписания:** "The deploy **happens** at 14:00."
+          - **Что делает код/система:** "The script **writes** logs to S3."
+
+          ## 5 IT-примеров
+
+          1. Our API **handles** 1000 requests per second.
+          2. The build **runs** on every commit.
+          3. He **reports** to the CTO.
+          4. We **use** PostgreSQL for the main database.
+          5. The hotfix **fixes** the memory leak.
+
+          ## Мини-задание
+
+          Переведи на английский (устно или письменно):
+          - Я работаю в команде из 5 человек.
+          - Сервис запускается каждый день в 9 утра.
+          - Он отвечает за деплой.
+
+          ## Vocab дня
+          - to be responsible for — отвечать за
+          - to report to — подчиняться
+          - to deal with — иметь дело с
+        listening: ["bbc-6min-job-titles"]
+        vocab: ["be responsible for", "report to", "deal with"]
+
+      - day: 2
+        type: "grammar"
+        title: "Present Simple: отрицания и вопросы"
+        content: |
+          # Week 1, Day 2: Present Simple — negative & questions
+
+          ## Отрицание
+
+          | Местоимение | Форма | Пример |
+          |---|---|---|
+          | I / You / We / They | don't + V | I **don't work** on weekends. |
+          | He / She / It | doesn't + V | He **doesn't work** on auth. |
+
+          ## Вопрос
+
+          | Местоимение | Форма | Пример |
+          |---|---|---|
+          | I / You / We / They | Do + V? | **Do you work** remotely? |
+          | He / She / It | Does + V? | **Does he work** on the team? |
+
+          ⚠️ **Важно:** в вопросах и отрицаниях **s/es исчезает**:
+          - He works. → He doesn't work. (НЕ ~~doesn't works~~)
+          - She runs tests. → Does she run tests? (НЕ ~~Does she runs~~)
+
+          ## 5 IT-примеров (отрицание)
+
+          1. The API **doesn't handle** more than 1000 RPS.
+          2. We **don't deploy** on Fridays.
+          3. The script **doesn't write** logs to the database.
+          4. I **don't review** my own PRs.
+          5. The service **doesn't restart** automatically.
+
+          ## 5 IT-примеров (вопросы)
+
+          1. **Does the build run** on every commit?
+          2. **Do you deploy** on Fridays?
+          3. **Does the API handle** authentication?
+          4. **Do you use** TypeScript?
+          5. **Does the script write** to S3 or to disk?
+        listening: ["voa-everyday-grammar-routines"]
+
+      - day: 3
+        type: "listening"
+        title: "День рутины: standup-фразы"
+        listening: ["bbc-podcast-working-from-home"]
+        task: |
+          Послушай эпизод BBC и ответь на вопросы ниже устно.
+          Потом сверься с sample_answer.
+
+          ## Comprehension questions
+
+          1. What are the three main tips for working from home?
+          2. What does the phrase "WFH" stand for?
+          3. How does the speaker describe "focus mode"?
+
+          ## Vocab для запоминания
+          - remote work — удалённая работа
+          - WFH = working from home
+          - commute — дорога на работу
+          - distraction — отвлечение
+          - focus mode — режим сосредоточенности
+
+      - day: 4
+        type: "grammar"
+        title: "Present Simple: наречия частоты"
+        content: |
+          # Week 1, Day 4: Наречия частоты
+
+          ## Порядок в предложении
+
+          1. **be** + наречие: She **is always** late.
+          2. **другие глаголы**: наречие **перед** глаголом: I **often work** late.
+
+          ## Шкала (от самого частого к редкому)
+
+          always (100%) → usually (80%) → often (60%) → sometimes (30%) → hardly ever (5%) → never (0%)
+
+          ## 5 IT-примеров
+
+          1. We **always run** tests before deploying.
+          2. The build **usually takes** 10 minutes.
+          3. I **often review** PRs in the morning.
+          4. We **sometimes deploy** on Friday afternoons.
+          5. Critical bugs **never wait** until Monday.
+
+          ## Мини-задание
+
+          Расставь наречия в правильном месте:
+          - We deploy on Fridays. (sometimes)
+          - The build fails on Mondays. (always)
+          - I review my own PRs. (never)
+
+          Правильные ответы:
+          - We **sometimes deploy** on Fridays.
+          - The build **always fails** on Mondays.
+          - I **never review** my own PRs.
+
+      - day: 5
+        type: "dialog"
+        title: "Dialog: standup"
+        dialog: "standup"
+        task: |
+          Открой диалог: `python scripts/english.py dialog standup`
+          Прочитай facilitator-реплики вслух, потом свои реплики.
+          Сверься с model_answer.
+
+      - day: 6
+        type: "quiz"
+        title: "Mini-quiz: Present Simple"
+        quiz: "present-simple"
+        task: |
+          Пройди мини-тест:
+          ```
+          python scripts/english.py quiz present-simple
+          ```
+
+      - day: 7
+        type: "review"
+        title: "Review Week 1"
+        task: |
+          # Week 1 — повторение
+
+          ## Что мы выучили
+          - Present Simple: факты, регулярные действия, расписания
+          - Форма: I work / He works
+          - Отрицание: don't / doesn't + V
+          - Вопрос: Do / Does + V?
+          - Наречия частоты: always, usually, often, sometimes, hardly ever, never
+
+          ## 5 фраз на повторение (прочитай вслух 3 раза)
+          1. "I **work** on the auth service."
+          2. "She **doesn't deploy** on Fridays."
+          3. "**Do you use** TypeScript?"
+          4. "We **always run** tests before deploying."
+          5. "The build **usually takes** 10 minutes."
+
+          ## Проверь себя
+
+          Пройди quiz ещё раз:
+          ```
+          python scripts/english.py quiz present-simple --force
+          ```
+
+          Если score ≥ 8/10 — Week 2 разблокирована! 🎉
+
+  - week: 2
+    theme: "Past Simple — истории и кейсы"
+    grammar_focus: "past-simple"
+    block: "База"
+
+    days:
+      - day: 1
+        type: "grammar"
+        title: "Past Simple: правило"
+        content: |
+          # Week 2, Day 1: Past Simple
+
+          ## Правило
+
+          - **Regular verbs:** V + ed (worked, shipped, fixed)
+          - **Irregular verbs:** 2-я форма (go → went, see → saw, ship → shipped... wait, that's regular)
+            Полный список — `references/irregular-verbs.md`
+
+          | Местоимение | Форма | Пример |
+          |---|---|---|
+          | I / You / He / She / It / We / They | V2 (worked / went / saw) | I **shipped** the release on Monday. |
+
+          ## 5 IT-примеров
+
+          1. We **shipped** v2.1 last Friday.
+          2. The build **failed** at 14:00.
+          3. I **fixed** the memory leak in 2 hours.
+          4. She **reviewed** 20 PRs yesterday.
+          5. The service **crashed** at 3 AM.
+
+          ## Signal words (маркеры Past Simple)
+
+          yesterday, last week/month/year, ago, in 2020, when I was…
+        listening: ["bbc-6min-job-titles"]
+
+      - day: 2
+        type: "grammar"
+        title: "Past Simple: отрицания и вопросы"
+        content: |
+          # Week 2, Day 2: Past Simple — negative & questions
+
+          ## Отрицание: didn't + V (базовая форма!)
+
+          ⚠️ **Важно:** после **didn't** идёт **базовая форма**, не V2:
+          - I worked. → I **didn't work**. (НЕ ~~didn't worked~~)
+          - She went. → She **didn't go**. (НЕ ~~didn't went~~)
+
+          ## Вопрос: Did + V (базовая форма)?
+
+          - **Did** you **work** on the migration? (НЕ ~~Did you worked~~)
+
+          ## 5 IT-примеров
+
+          1. The build **didn't fail** — we caught the bug in CI.
+          2. I **didn't deploy** on Friday.
+          3. **Did you fix** the memory leak?
+          4. **Didn't the tests pass** yesterday?
+          5. The service **didn't crash** in production.
+
+      - day: 3
+        type: "listening"
+        title: "BBC: рассказ о работе мечты"
+        listening: ["bbc-6min-job-titles"]
+        task: |
+          Послушай эпизод. Сфокусируйся на Past Simple в историях:
+          - "I **started** my career as..."
+          - "I **worked** at Google for 3 years."
+
+          ## Comprehension questions
+          1. What was the guest's first job?
+          2. Why did they change careers?
+          3. What's the difference between "job title" and "position"?
+
+      - day: 4
+        type: "grammar"
+        title: "Past Simple в IT-нарративе"
+        content: |
+          # Week 2, Day 4: Past Simple в историях
+
+          Типичная структура IT-нарратива:
+          - "We **shipped** v2.0 on Monday."
+          - "The build **failed** on Wednesday."
+          - "I **investigated** and **found** the root cause."
+          - "We **deployed** a hotfix on Friday."
+
+          ## Мини-задание: расскажи историю
+
+          "У нас был инцидент на прошлой неделе. Напиши/расскажи 5 предложений,
+          что произошло, что ты сделал, как починил."
+
+          Шаблон:
+          - On [day], [what happened].
+          - I [action 1].
+          - Then I [action 2].
+          - We [team action].
+          - In the end, [result].
+
+      - day: 5
+        type: "dialog"
+        title: "Dialog: incident (история инцидента)"
+        dialog: "incident"
+
+      - day: 6
+        type: "quiz"
+        title: "Mini-quiz: Past Simple"
+        quiz: "past-simple"
+
+      - day: 7
+        type: "review"
+        title: "Review Week 2"
+        task: |
+          # Week 2 — повторение
+
+          ## Past Simple — правило в одном абзаце
+
+          Завершённые действия в прошлом с конкретным временем (yesterday, last week, in 2020).
+          Регулярные глаголы: V + ed. Неправильные: 2-я форма (go-went-gone).
+          Отрицание: didn't + V (базовая форма). Вопрос: Did + V?
+
+          ## 5 фраз на повторение
+          1. "We **shipped** v2.1 last Friday."
+          2. "The build **didn't fail**."
+          3. "**Did you fix** the memory leak?"
+          4. "I **found** the root cause in 2 hours."
+          5. "She **reviewed** 20 PRs yesterday."
+
+          Повтори quiz с `--force`. Score ≥ 8 → Block 2 разблокирован!
+
+  # ============================================================
+  # БЛОК 2: ГЛАВНАЯ ПРОБЛЕМА B1 (W3-4)
+  # ============================================================
+
+  - week: 3
+    theme: "Present Perfect vs Past Simple — самая частая проблема B1"
+    grammar_focus: "present-perfect-vs-past-simple"
+    block: "Главная проблема B1"
+    why: "Ошибка №1 у русскоязычных B1: 'I have went' вместо 'I have gone' + путаница 'I've been' vs 'I went'. Разводим чётко: опыт vs история."
+
+    days:
+      - day: 1
+        type: "intro"
+        title: "Present Perfect vs Past Simple: ключевое различие"
+        content: |
+          # Week 3, Day 1: Present Perfect vs Past Simple
+
+          ## Главное правило (запомни первым!)
+
+          | | Past Simple | Present Perfect |
+          |---|---|---|
+          | **Время** | Конкретное (вчера, в 2020) | Неважно / сейчас актуально |
+          | **Маркеры** | yesterday, last week, in 2020, ago | ever, never, just, already, yet, since, for, recently, three times |
+          | **Результат** | История | Связь с настоящим |
+
+          ## Простой способ выбрать
+
+          - Есть **дата/время в прошлом** → **Past Simple**
+          - Даты нет, важен **результат/опыт** → **Present Perfect**
+
+          ## 10 пар примеров (IT-контекст)
+
+          1. "I **shipped** the hotfix on Monday." (PS — день есть)
+             "I'**ve shipped** three hotfixes this week." (PP — результат в текущей неделе)
+          2. "I **went** to the office yesterday." (PS — вчера)
+             "I'**ve been** to the office three times this week." (PP — опыт на этой неделе)
+          3. "**Did you deploy** v2.1?" (PS — конкретный вопрос про прошлое)
+             "**Have you ever deployed** a hotfix?" (PP — вопрос про опыт)
+          4. "The build **failed** at 14:00." (PS — точное время)
+             "The build **has failed** three times today." (PP — результат сейчас)
+          5. "We **used** MongoDB in v1." (PS — в прошлом, сейчас нет)
+             "We'**ve used** MongoDB since 2018." (PP — действие продолжается)
+
+          ## Формула Present Perfect
+
+          | Местоимение | Форма |
+          |---|---|
+          | I / You / We / They | **have** + V3 (worked, shipped) |
+          | He / She / It | **has** + V3 |
+
+          Сокращения: **I've**, **You've**, **He's** shipped.
+
+          ## Мини-задание: выбери правильное
+
+          1. I ___ (ship / shipped / have shipped) v2.0 last Monday.
+          2. I ___ (ship / shipped / have shipped) three releases this month.
+          3. We ___ (used / have used / did use) TypeScript since 2020.
+          4. She ___ (went / has gone / did go) to the office yesterday.
+          5. ___ (Did you / Have you ever) debugged a memory leak?
+
+          **Ответы:**
+          1. shipped (PS — last Monday)
+          2. have shipped (PP — this month, результат в настоящем)
+          3. have used (PP — since 2020, продолжается)
+          4. went (PS — yesterday)
+          5. Have you ever (PP — опыт)
+
+          ## Vocab дня
+          - so far — на данный момент
+          - recently — недавно
+          - lately — в последнее время
+          - just — только что
+          - already — уже
+          - yet — ещё не (в отрицаниях и вопросах)
+        listening: ["bbc-podcast-working-from-home", "voa-everyday-grammar-routines"]
+        vocab: ["so far", "recently", "lately", "just", "already", "yet"]
+
+      - day: 2
+        type: "grammar"
+        title: "Present Perfect: 3 случая использования"
+        content: |
+          # Week 3, Day 2: Present Perfect — 3 случая
+
+          ## 1. Жизненный опыт (ever / never)
+
+          - "I'**ve been** to London three times."
+          - "I'**ve never seen** a memory leak this bad."
+          - "**Have you ever worked** with Kubernetes?"
+
+          ## 2. Недавнее событие с результатом (just / already)
+
+          - "I'**ve just deployed** the hotfix."
+          - "We'**ve already fixed** the bug."
+          - "**Have you finished** the migration yet?"
+
+          ## 3. Действие, начавшееся в прошлом и продолжающееся (since / for)
+
+          - "I'**ve worked** here **since** 2018."
+          - "We'**ve used** TypeScript **for** 3 years."
+          - "The service **has been** down **for** 2 hours."
+
+          ## 5 IT-примеров на каждый случай
+
+          **Опыт:**
+          1. "I'**ve shipped** 50 releases in my career."
+          2. "I'**ve never debugged** a race condition this tricky."
+
+          **Недавнее + результат:**
+          3. "We'**ve just deployed** v2.1."
+          4. "I'**ve already fixed** the critical bug."
+
+          **Продолжающееся:**
+          5. "We'**ve used** PostgreSQL **since** 2020."
+
+      - day: 3
+        type: "listening"
+        title: "BBC: опыт и достижения"
+        listening: ["bbc-6min-job-titles"]
+        task: |
+          Слушай интервью. Выпиши все Present Perfect, которые услышишь:
+          - "I'**ve worked** for..."
+          - "**Have you ever** ...?"
+
+          ## Comprehension
+          1. How many years has the guest worked in tech?
+          2. What is their biggest achievement?
+
+      - day: 4
+        type: "grammar"
+        title: "Мини-разбор: типичные ошибки B1"
+        content: |
+          # Week 3, Day 4: Типичные ошибки B1
+
+          ## ❌ Частая ошибка #1: I have went
+
+          Правильно: **I have gone** / **I went**
+
+          После **have/has** идёт **V3** (3-я форма глагола):
+          - go → went → **gone** (см. references/irregular-verbs.md)
+          - see → saw → **seen**
+          - do → did → **done**
+          - ship → shipped → **shipped** (regular)
+
+          ## ❌ Частая ошибка #2: I have went to London in 2020
+
+          С **конкретным прошлым временем** (in 2020) → **Past Simple**:
+          - ❌ "I have went to London in 2020."
+          - ✅ "I **went** to London in 2020."
+          - ✅ "I'**ve been** to London." (без даты — опыт)
+
+          ## ❌ Частая ошибка #3: Did you ever...?
+
+          С **ever** (когда-либо) → **Present Perfect**:
+          - ❌ "**Did you ever go** to London?"
+          - ✅ "**Have you ever been** to London?"
+
+          ## Мини-задание: исправь ошибки
+
+          1. ❌ "I have went to Berlin last year." → ?
+          2. ❌ "Did you ever debugged a race condition?" → ?
+          3. ❌ "I have shipped three releases yesterday." → ?
+          4. ❌ "She has went to the meeting." → ?
+          5. ❌ "I have worked here in 2020." → ?
+
+          **Ответы:**
+          1. ✅ "I **went** to Berlin last year." (last year → PS)
+          2. ✅ "**Have you ever debugged** a race condition?" (ever → PP)
+          3. ✅ "I **shipped** three releases yesterday." (yesterday → PS)
+          4. ✅ "She **has gone** to the meeting." (V3 = gone, не went)
+          5. ✅ "I **worked** here in 2020." (in 2020 → PS)
+
+      - day: 5
+        type: "dialog"
+        title: "Dialog: customer-chat (где уже был сделан Progress)"
+        dialog: "customer-chat"
+
+      - day: 6
+        type: "quiz"
+        title: "Mini-quiz: Present Perfect vs Past Simple"
+        quiz: "present-perfect-vs-past-simple"
+
+      - day: 7
+        type: "review"
+        title: "Review Week 3"
+        task: |
+          # Week 3 — повторение
+
+          ## Главное правило (выучи наизусть)
+
+          **Past Simple** = конкретное время в прошлом (yesterday, last week, in 2020, ago)
+          **Present Perfect** = опыт / результат сейчас (ever, never, just, already, since, for, three times, so far)
+
+          ## 5 фраз на повторение
+          1. "I'**ve shipped** 50 releases in my career." (PP — опыт)
+          2. "I **shipped** the hotfix on Monday." (PS — день)
+          3. "**Have you ever debugged** a memory leak?" (PP — ever)
+          4. "She **went** to Berlin in 2020." (PS — in 2020)
+          5. "We'**ve used** PostgreSQL **since** 2018." (PP — since)
+
+          Повтори quiz с `--force`. Score ≥ 8 → Block 2 продолжается!
+
+  - week: 4
+    theme: "Present Perfect vs Past Simple: закрепление + since/for"
+    grammar_focus: "present-perfect-vs-past-simple"
+    block: "Главная проблема B1"
+
+    days:
+      - day: 1
+        type: "grammar"
+        title: "Present Perfect: since / for / how long"
+        content: |
+          # Week 4, Day 1: since / for / how long
+
+          ## Разница
+
+          - **since** + точка времени: since 2018, since Monday, since I joined
+          - **for** + период: for 3 years, for 2 hours, for a long time
+
+          ## Шпаргалка
+
+          | since (точка) | for (период) |
+          |---|---|
+          | since 2018 | for 6 years |
+          | since Monday | for 3 days |
+          | since 9 AM | for 2 hours |
+          | since I started | for a long time |
+
+          ## Вопрос "как давно?"
+
+          - **How long have you worked here?**
+          - **I've worked here for 3 years.** (= с какого-то момента в прошлом до сейчас)
+
+          ## 5 IT-примеров
+
+          1. "I'**ve worked** here **for** 3 years."
+          2. "We'**ve used** TypeScript **since** 2020."
+          3. "The service **has been** down **for** 2 hours."
+          4. "**How long have you been** on this team?"
+          5. "I'**ve been** a senior engineer **since** January."
+        listening: ["voa-everyday-grammar-routines"]
+
+      - day: 2
+        type: "grammar"
+        title: "For / Since — практика"
+        content: |
+          # Week 4, Day 2: For / Since — practice
+
+          ## Мини-задание: заполни пропуски
+
+          1. I'**ve worked** here ___ 2018. (since / for)
+          2. We'**ve used** this database ___ 5 years. (since / for)
+          3. She **has been** a manager ___ last year. (since / for)
+          4. The bug **has been** there ___ a long time. (since / for)
+          5. I'**ve been** waiting ___ 30 minutes. (since / for)
+
+          **Ответы:**
+          1. since (точка)
+          2. for (период)
+          3. since (точка — last year = 2025)
+          4. for (период)
+          5. for (период)
+
+          ## Составь свои 5 предложений про себя
+
+          Используя since / for / how long:
+          - "I'**ve lived** in Moscow ___ 10 years."
+          - "I'**ve worked** in IT ___ 2015."
+          - и т.д.
+
+      - day: 3
+        type: "listening"
+        title: "VOA: повседневная грамматика"
+        listening: ["voa-everyday-grammar-routines"]
+
+      - day: 4
+        type: "grammar"
+        title: "Already / Yet / Just — позиция в предложении"
+        content: |
+          # Week 4, Day 4: Already / Yet / Just
+
+          ## Позиция
+
+          - **just** — между have/has и V3: "I'**ve just shipped** v2.1."
+          - **already** — обычно в конце (утверждение): "I'**ve shipped** it **already**."
+          - **already** — между have/has и V3 (акцент): "I'**ve already shipped** it."
+          - **yet** — в конце (отрицание/вопрос): "I **haven't shipped** it **yet**."
+
+          ## 5 IT-примеров
+
+          1. "I'**ve just deployed** the hotfix." (= только что)
+          2. "We'**ve already fixed** the bug." (= уже)
+          3. "**Have you finished** the migration **yet**?" (= ещё нет?)
+          4. "I **haven't reviewed** the PR **yet**."
+          5. "The tests **have already run**." (= уже)
+
+      - day: 5
+        type: "dialog"
+        title: "Dialog: standup (с Present Perfect)"
+        dialog: "standup"
+        task: |
+          Пройди диалог ещё раз, теперь в репликах подчёркивай Present Perfect:
+          - "I've just finished the migration."
+          - "I've already deployed the hotfix."
+          - "I haven't seen the new spec yet."
+
+      - day: 6
+        type: "quiz"
+        title: "Mini-quiz: Present Perfect (since/for/already/yet/just)"
+        quiz: "present-perfect"
+
+      - day: 7
+        type: "review"
+        title: "Review Week 4"
+        task: |
+          # Week 4 — повторение
+
+          ## Главные маркеры Present Perfect
+
+          | Маркер | Позиция | Пример |
+          |---|---|---|
+          | ever | вопрос | "Have you **ever** shipped v3?" |
+          | never | между have и V3 | "I'**ve never** debugged a race condition." |
+          | just | между have и V3 | "I'**ve just** deployed." |
+          | already | в конце или между | "I've shipped it **already**." |
+          | yet | в конце (отриц./вопрос) | "I haven't shipped it **yet**." |
+          | since | + точка времени | "since 2020" |
+          | for | + период | "for 3 years" |
+          | so far | в конце | "...so far." |
+          | recently | между have и V3 | "I've recently deployed..." |
+          | three times | в конце | "...three times." |
+
+          🎉 Если ты дошёл до конца Week 4 и quiz scores ≥ 8 — ты закрыл главную B1-проблему!
+
+  # ============================================================
+  # БЛОК 3: ТЕКУЩИЕ ЗАДАЧИ И ПЛАНЫ (W5-6)
+  # ============================================================
+
+  - week: 5
+    theme: "Present Continuous — что происходит сейчас"
+    grammar_focus: "present-continuous"
+    block: "Текущие задачи и планы"
+
+    days:
+      - day: 1
+        type: "grammar"
+        title: "Present Continuous: правило"
+        content: |
+          # Week 5, Day 1: Present Continuous
+
+          ## Правило
+
+          | Местоимение | Форма | Пример |
+          |---|---|---|
+          | I | am working | I **am debugging** the issue. |
+          | He / She / It | is working | He **is reviewing** the PR. |
+          | You / We / They | are working | We **are shipping** v3. |
+
+          Сокращения: I'm, He's, She's, We're, They're.
+
+          ## Когда используется
+
+          - **Прямо сейчас:** "I'**m debugging** the issue right now."
+          - **Временная ситуация:** "We'**re using** the staging server this week."
+          - **Тренд/изменение:** "The team **is growing** fast."
+          - **Заранее запланированное:** "I'**m meeting** the CTO at 3 PM." (= в календаре)
+
+          ## 5 IT-примеров
+
+          1. "We'**re migrating** to v3 this quarter."
+          2. "I'**m reviewing** Maria's PR right now."
+          3. "The service **is failing** every 5 minutes."
+          4. "He'**s debugging** the memory leak."
+          5. "We'**re scaling** to 10,000 RPS this week."
+        listening: ["bbc-6min-meetings"]
+
+      - day: 2
+        type: "grammar"
+        title: "Present Continuous vs Present Simple"
+        content: |
+          # Week 5, Day 2: PC vs PS
+
+          | | Present Simple | Present Continuous |
+          |---|---|---|
+          | **Что выражает** | Регулярное / факт | Прямо сейчас / временно |
+          | **Маркеры** | usually, always, every day | now, right now, currently, this week |
+          | **Пример** | I **work** remotely. | I'**m working** from home today. |
+
+          ## 5 пар
+
+          1. "She **works** on auth." (обычно)
+             "She'**s working** on auth this week." (временно)
+          2. "We **use** PostgreSQL." (обычно)
+             "We'**re using** PostgreSQL for the migration." (сейчас)
+          3. "I **review** PRs every morning." (регулярно)
+             "I'**m reviewing** Maria's PR right now." (прямо сейчас)
+          4. "The service **runs** on port 8080." (всегда)
+             "The service **is running** slow today." (временно)
+          5. "He **debugs** memory leaks." (обычно)
+             "He'**s debugging** a memory leak right now." (сейчас)
+
+      - day: 3
+        type: "listening"
+        title: "BBC: meetings"
+        listening: ["bbc-6min-meetings"]
+
+      - day: 4
+        type: "grammar"
+        title: "Present Continuous в standup"
+        content: |
+          # Week 5, Day 4: PC в standup
+
+          Типичные standup-фразы:
+          - "**I'm working on** the migration."
+          - "**I'm debugging** the API."
+          - "**I'm reviewing** PRs."
+          - "**I'm stuck on** the auth refactor."
+
+          ## Мини-задание: standup на завтра
+
+          Напиши/расскажи 5 предложений, что ты делаешь прямо сейчас:
+          1. "I'm debugging..."
+          2. "I'm reviewing..."
+          3. "I'm investigating..."
+          4. "I'm writing..."
+          5. "I'm testing..."
+
+      - day: 5
+        type: "dialog"
+        title: "Dialog: standup (PC focus)"
+        dialog: "standup"
+
+      - day: 6
+        type: "quiz"
+        title: "Mini-quiz: Present Continuous"
+        quiz: "present-continuous"
+
+      - day: 7
+        type: "review"
+        title: "Review Week 5"
+
+  - week: 6
+    theme: "Future: will vs going to"
+    grammar_focus: "future-will-going"
+    block: "Текущие задачи и планы"
+
+    days:
+      - day: 1
+        type: "grammar"
+        title: "Will — спонтанные решения и предсказания"
+        content: |
+          # Week 6, Day 1: Will
+
+          ## Когда используется
+
+          - **Спонтанное решение** (в момент речи): "The phone is ringing. **I'll** get it."
+          - **Предсказание:** "I think it **will** rain tomorrow."
+          - **Обещание:** "I **will** send you the report by 5 PM."
+          - **Факт о будущем:** "The sun **will** rise at 6 AM."
+
+          ## 5 IT-примеров
+
+          1. "**I'll** cut a release in an hour." (= решение прямо сейчас)
+          2. "I think we **will** ship v3 next week." (= предсказание)
+          3. "I **will** send you the logs." (= обещание)
+          4. "The build **will** fail if we don't fix the test." (= предсказание)
+          5. "Don't worry, I **'ll** fix it." (= спонтанное решение)
+        listening: ["voa-health-sleep"]
+
+      - day: 2
+        type: "grammar"
+        title: "Going to — запланированные действия"
+        content: |
+          # Week 6, Day 2: Going to
+
+          ## Когда используется
+
+          - **План, принятый ДО момента речи:** "I'**m going to review** the PR this afternoon." (= в календаре)
+          - **Предсказание на основе признаков:** "Look at the errors — the build **is going to fail**."
+
+          ## Разница
+
+          | | will | going to |
+          |---|---|---|
+          | **Решение** | в момент речи | заранее |
+          | **План** | нет | да |
+          | **Предсказание** | мнение/убеждение | на основе фактов |
+
+          ## 5 IT-пар
+
+          1. "**I'll** deploy now." (решение)
+             "I'**m going to deploy** at 14:00." (в календаре)
+          2. "I think we **will** ship v3." (мнение)
+             "We'**re going to ship** v3 on Friday." (план)
+          3. "**I'll** check the logs." (спонтанно)
+             "I'**m going to check** the logs tomorrow." (план)
+          4. "I think the build **will** fail." (мнение)
+             "The build **is going to fail** — there are 50 errors." (видно признаки)
+
+      - day: 3
+        type: "listening"
+        title: "VOA: Health Report"
+        listening: ["voa-health-sleep"]
+
+      - day: 4
+        type: "grammar"
+        title: "Future в деловом контексте"
+        content: |
+          # Week 6, Day 4: Future в деловых email/чатах
+
+          ## Шаблон письма
+
+          ```
+          Hi team,
+
+          Quick update on the migration:
+
+          - We're going to deploy v2.1 on Friday (planned).
+          - I'll send the release notes by Thursday.
+          - I think we'll hit the deadline.
+
+          Let me know if you have any blockers.
+          ```
+
+          ## Мини-задание
+
+          Напиши 3 предложения про свои планы на следующую неделю, используя will и going to.
+
+      - day: 5
+        type: "dialog"
+        title: "Dialog: estimate (как дать оценку)"
+        dialog: "estimate"
+
+      - day: 6
+        type: "quiz"
+        title: "Mini-quiz: Future (will / going to)"
+        quiz: "future-will-going"
+
+      - day: 7
+        type: "review"
+        title: "Review Week 6"
+
+  # ============================================================
+  # БЛОК 4: КОНТЕКСТ В ПРОШЛОМ (W7-8)
+  # ============================================================
+
+  - week: 7
+    theme: "Past Continuous — действие в процессе в прошлом"
+    grammar_focus: "past-continuous"
+    block: "Контекст в прошлом"
+
+    days:
+      - day: 1
+        type: "grammar"
+        title: "Past Continuous: правило"
+        content: |
+          # Week 7, Day 1: Past Continuous
+
+          ## Правило
+
+          | Местоимение | Форма | Пример |
+          |---|---|---|
+          | I / He / She / It | was working | I **was debugging** when the build failed. |
+          | You / We / They | were working | We **were migrating** all day yesterday. |
+
+          ## Когда используется
+
+          - **Действие в процессе** в конкретный момент в прошлом.
+          - Часто как **фон** для Past Simple: "I was reviewing the PR **when** the build failed."
+
+          ## 5 IT-примеров
+
+          1. "I **was debugging** the memory leak when you called."
+          2. "We **were migrating** the database all day yesterday."
+          3. "She **was reviewing** PRs at 3 PM."
+          4. "The service **was crashing** every 5 minutes."
+          5. "While you **were sleeping**, the build was running."
+        listening: ["bbc-idioms-time"]
+
+      - day: 2
+        type: "grammar"
+        title: "Past Continuous + Past Simple (фон + событие)"
+        content: |
+          # Week 7, Day 2: PC + PS (фон + событие)
+
+          ## Структура
+
+          - **Past Continuous** = фон (что происходило)
+          - **Past Simple** = событие (что произошло)
+          - Связка: **when** / **while**
+
+          ## 5 IT-историй
+
+          1. "I **was reviewing** the PR **when** the build **failed**."
+          2. "**While** we **were deploying**, the database **went** down."
+          3. "She **was debugging** when she **noticed** the memory leak."
+          4. "The service **was crashing** every minute, so we **restarted** it."
+          5. "I **was writing** tests when the CI **broke**."
+
+      - day: 3
+        type: "listening"
+        title: "BBC: idioms about time"
+        listening: ["bbc-idioms-time"]
+
+      - day: 4
+        type: "grammar"
+        title: "Past Continuous в историях инцидентов"
+        content: |
+          # Week 7, Day 4: PC в инцидентах
+
+          ## Шаблон рассказа об инциденте
+
+          1. **Background (PC):** "We **were migrating** to v3."
+          2. **Problem (PS):** "The database **went** down at 14:00."
+          3. **Investigation (PC):** "I **was investigating** the logs when..."
+          4. **Resolution (PS):** "We **found** the root cause and **fixed** it."
+          5. **Aftermath (PP - бонус):** "We'**ve added** monitoring since then."
+
+          ## Мини-задание
+
+          Расскажи историю любого инцидента из своей практики по этому шаблону.
+        listening: ["bbc-idioms-time"]
+
+      - day: 5
+        type: "dialog"
+        title: "Dialog: incident (PC focus)"
+        dialog: "incident"
+
+      - day: 6
+        type: "quiz"
+        title: "Mini-quiz: Past Continuous"
+        quiz: "past-continuous"
+
+      - day: 7
+        type: "review"
+        title: "Review Week 7"
+
+  - week: 8
+    theme: "Past Perfect — прошлое в прошлом"
+    grammar_focus: "past-perfect"
+    block: "Контекст в прошлом"
+
+    days:
+      - day: 1
+        type: "grammar"
+        title: "Past Perfect: правило"
+        content: |
+          # Week 8, Day 1: Past Perfect
+
+          ## Правило
+
+          **had + V3** для всех местоимений.
+          Сокращение: I'd, he'd, she'd, we'd, they'd.
+
+          ## Когда используется
+
+          - Действие, **завершившееся ДО другого действия в прошлом**.
+          - «Прошлое в прошлом».
+
+          ## 5 IT-примеров
+
+          1. "I **had already merged** the PR before the build failed."
+          2. "She **had finished** the migration by the time we started."
+          3. "We **had shipped** three releases by Friday."
+          4. "By yesterday evening, the team **had found** the root cause."
+          5. "He **had never seen** such a bug before." (= до этого момента в прошлом)
+        listening: ["voa-education-report"]
+
+      - day: 2
+        type: "grammar"
+        title: "Past Perfect + Past Simple"
+        content: |
+          # Week 8, Day 2: PP + PS
+
+          ## Структура
+
+          - **Past Perfect** = действие, которое произошло РАНЬШЕ (had + V3)
+          - **Past Simple** = действие, которое произошло ПОЗЖЕ (V2)
+
+          ## 5 историй
+
+          1. "I **had reviewed** the PR **before** I **merged** it."
+          2. "After we **had deployed**, the tests **failed**."
+          3. "She **had already left** when the alert **came**."
+          4. "By the time we **arrived**, the bug **had been** fixed."
+          5. "I **had never written** TypeScript before I joined this team."
+
+          ## Signal words
+
+          before, after, already, by the time, when, by yesterday, by 5pm, never... before
+
+      - day: 3
+        type: "listening"
+        title: "VOA: Education Report"
+        listening: ["voa-education-report"]
+
+      - day: 4
+        type: "grammar"
+        title: "Past Perfect в нарративе"
+        content: |
+          # Week 8, Day 4: PP в нарративе
+
+          ## Полная IT-история (PC + PS + PP)
+
+          "On Monday, we **were preparing** to deploy v3. I **had finished** the
+          migration script the week before, but we **hadn't tested** it in staging.
+          At 14:00, the build **failed**. I **was investigating** when I **noticed**
+          that we **had missed** a database migration step. By 16:00, we **had fixed**
+          it and **deployed** successfully."
+
+          ## Разбор
+
+          - were preparing (PC — фон)
+          - had finished (PP — раньше)
+          - hadn't tested (PP отрицание)
+          - failed (PS)
+          - was investigating (PC — фон)
+          - noticed (PS)
+          - had missed (PP — раньше)
+          - had fixed, deployed (PP + PS — последовательность)
+
+      - day: 5
+        type: "dialog"
+        title: "Dialog: retro"
+        dialog: "retro"
+
+      - day: 6
+        type: "quiz"
+        title: "Mini-quiz: Past Perfect"
+        quiz: "past-perfect"
+
+      - day: 7
+        type: "review"
+        title: "Review Week 8"
+
+  # ============================================================
+  # БЛОК 5: УСЛОВНЫЕ КОНСТРУКЦИИ (W9-10)
+  # ============================================================
+
+  - week: 9
+    theme: "1st Conditional — реальные условия"
+    grammar_focus: "conditional-1st"
+    block: "Условные конструкции"
+
+    days:
+      - day: 1
+        type: "grammar"
+        title: "1st Conditional: правило"
+        content: |
+          # Week 9, Day 1: 1st Conditional (real/likely)
+
+          ## Правило
+
+          **If + Present Simple, will + V**
+
+          - If **condition** (real/likely), **result** (future).
+          - If it **rains** tomorrow, I **will stay** home.
+          - If we **ship** now, we **will have** bugs.
+
+          ## 5 IT-примеров
+
+          1. "If we **ship** now, we **will have** bugs in production."
+          2. "If the tests **pass**, I **will merge** the PR."
+          3. "If the build **fails**, we **will roll back**."
+          4. "**Unless** we **fix** the memory leak, the service **will crash**."
+          5. "If you **push** to main, the CI **will run** automatically."
+        listening: ["voa-education-report"]
+
+      - day: 2
+        type: "grammar"
+        title: "1st Conditional в деловых решениях"
+        content: |
+          # Week 9, Day 2: 1st в решениях
+
+          ## Шаблон обсуждения рисков
+
+          "If we [decision], then [consequence]."
+
+          - "If we deploy on Friday, we **won't have** time to monitor over the weekend."
+          - "If we wait until Monday, we **will lose** 2 days."
+          - "If we add more tests, we **will ship** later but with higher quality."
+
+          ## Unless (= if not)
+
+          - "Unless we fix the memory leak, the service will crash."
+          - = "If we don't fix the memory leak, the service will crash."
+
+      - day: 3
+        type: "listening"
+        title: "VOA: Education"
+        listening: ["voa-education-report"]
+
+      - day: 4
+        type: "grammar"
+        title: "1st Conditional — практика"
+        content: |
+          # Week 9, Day 4: Practice
+
+          ## Мини-задание: допиши предложения
+
+          1. If the build fails, we ___. (roll back)
+          2. If you review my PR, I ___. (merge it)
+          3. Unless we add tests, the code ___. (will break)
+          4. If the user clicks Save, the data ___. (will be saved)
+          5. If we don't deploy today, we ___. (won't ship on time)
+
+          **Ответы:**
+          1. ...we **will roll back**.
+          2. ...I **will merge** it.
+          3. ...the code **will break**.
+          4. ...the data **will be saved**.
+          5. ...we **won't ship** on time.
+
+      - day: 5
+        type: "dialog"
+        title: "Dialog: estimate (с conditional)"
+        dialog: "estimate"
+
+      - day: 6
+        type: "quiz"
+        title: "Mini-quiz: 1st Conditional"
+        quiz: "conditionals-1-2"  # общий файл на 1st+2nd
+
+      - day: 7
+        type: "review"
+        title: "Review Week 9"
+
+  - week: 10
+    theme: "2nd Conditional — гипотетические ситуации"
+    grammar_focus: "conditional-2nd"
+    block: "Условные конструкции"
+
+    days:
+      - day: 1
+        type: "grammar"
+        title: "2nd Conditional: правило"
+        content: |
+          # Week 10, Day 1: 2nd Conditional (unreal/hypothetical)
+
+          ## Правило
+
+          **If + Past Simple, would + V**
+
+          - If I **had** more time, I **would refactor** this code.
+          - If we **were** using TypeScript, this bug **wouldn't happen**.
+          - = Нереальная/маловероятная ситуация в настоящем или будущем.
+
+          ## 5 IT-примеров
+
+          1. "If I **had** more time, I **would refactor** this code."
+          2. "If we **were** using TypeScript, this bug **wouldn't happen**."
+          3. "What **would** you do if the build **failed** right now?"
+          4. "If I **were** the CTO, I **would prioritize** technical debt."
+          5. "If we **had** a bigger team, we **would ship** faster."
+        listening: ["code-review-podcast"]
+
+      - day: 2
+        type: "grammar"
+        title: "2nd Conditional в советах и мечтах"
+        content: |
+          # Week 10, Day 2: 2nd в советах
+
+          ## Структура
+
+          - Совет: "If I **were** you, I **would**..."
+          - Мечта: "If we **had** [resource], we **would**..."
+          - Предположение: "What **would** happen if..."
+
+          ## 5 IT-примеров
+
+          1. "If I **were** you, I **would add** more tests."
+          2. "If we **had** a senior reviewer, we **would ship** faster."
+          3. "If we **were** using Kubernetes, this **would be** easier."
+          4. "If the code **were** cleaner, this bug **wouldn't have happened**."
+          5. "I **would love** to refactor this, but we **don't have** time."
+
+      - day: 3
+        type: "listening"
+        title: "IT-подкаст: Code review etiquette"
+        listening: ["code-review-podcast"]
+
+      - day: 4
+        type: "grammar"
+        title: "1st vs 2nd Conditional"
+        content: |
+          # Week 10, Day 4: 1st vs 2nd
+
+          | | 1st Conditional | 2nd Conditional |
+          |---|---|---|
+          | **If clause** | Present Simple | Past Simple |
+          | **Result** | will + V | would + V |
+          | **Реальность** | реально / вероятно | нереально / маловероятно |
+          | **Пример** | If we **ship** now, we **will have** bugs. | If we **shipped** now, we **would have** bugs. (но мы не шлём) |
+
+          ## Мини-задание: выбери правильное
+
+          1. If we ___ (have) more time, we ___ (would / will) ship v3.
+          2. If the tests ___ (pass), I ___ (would / will) merge.
+          3. If I ___ (were / am) you, I ___ (would / will) refactor.
+          4. Unless we ___ (fix / fixed) the bug, it ___ (would / will) crash.
+
+          **Ответы:**
+          1. had, would (2nd — нереально, у нас нет времени)
+          2. pass, will (1st — реально)
+          3. were, would (2nd — совет)
+          4. fix, will (1st — реально)
+
+      - day: 5
+        type: "dialog"
+        title: "Dialog: push-back (с conditional)"
+        dialog: "push-back"
+
+      - day: 6
+        type: "quiz"
+        title: "Mini-quiz: Conditionals (1st + 2nd)"
+        quiz: "conditionals-1-2"
+
+      - day: 7
+        type: "review"
+        title: "Review Week 10"
+
+  # ============================================================
+  # БЛОК 6: ПРОДВИНУТЫЕ ТЕМЫ (W11-12)
+  # ============================================================
+
+  - week: 11
+    theme: "Passive Voice — фокус на действии, не исполнителе"
+    grammar_focus: "passive-voice"
+    block: "Продвинутые темы"
+
+    days:
+      - day: 1
+        type: "grammar"
+        title: "Passive Voice: правило"
+        content: |
+          # Week 11, Day 1: Passive Voice
+
+          ## Правило
+
+          **be + V3** (по времени be)
+
+          - Present: The code **is reviewed** by Maria.
+          - Past: The bug **was fixed** yesterday.
+          - Present Perfect: The fix **has been deployed**.
+          - Future: The hotfix **will be deployed** at 14:00.
+
+          ## Когда используется
+
+          - **Исполнитель не важен:** "The bug was fixed."
+          - **Исполнитель неизвестен:** "The data was deleted."
+          - **Общий процесс:** "The code is reviewed by 2 engineers."
+
+          ## 5 IT-примеров
+
+          1. "The hotfix **was deployed** at 14:00." (исполнитель не важен)
+          2. "This bug **has been fixed** in v2.1." (процесс)
+          3. "The build **was broken** by the new migration." (с исполнителем через by)
+          4. "The PR **is reviewed** by 2 engineers." (процесс)
+          5. "Tests **are run** on every commit." (факт о системе)
+        listening: ["developer-voices-standup"]
+
+      - day: 2
+        type: "grammar"
+        title: "Active vs Passive"
+        content: |
+          # Week 11, Day 2: Active vs Passive
+
+          ## Трансформация
+
+          - Active: Maria **fixed** the bug.
+          - Passive: The bug **was fixed** by Maria.
+
+          - Active: We **ship** releases every Friday.
+          - Passive: Releases **are shipped** every Friday.
+
+          ## 5 IT-пар
+
+          1. Maria deployed the hotfix. → The hotfix **was deployed** by Maria.
+          2. We review PRs daily. → PRs **are reviewed** daily.
+          3. They fixed the bug. → The bug **was fixed**.
+          4. He broke the build. → The build **was broken** by him.
+          5. We will deploy v3 on Friday. → V3 **will be deployed** on Friday.
+
+      - day: 3
+        type: "listening"
+        title: "Developer Voices: standup vs status"
+        listening: ["developer-voices-standup"]
+
+      - day: 4
+        type: "grammar"
+        title: "Passive в IT-документации"
+        content: |
+          # Week 11, Day 4: Passive в документации
+
+          IT-документация часто использует Passive:
+          - "Data **is stored** in PostgreSQL."
+          - "Logs **are rotated** every 24 hours."
+          - "The API **is called** via HTTPS."
+          - "Builds **are triggered** on push to main."
+          - "Backups **are taken** daily at 3 AM."
+
+          ## Мини-задание
+
+          Перепиши 5 предложений из IT-документации в Passive:
+          - "We store passwords in bcrypt." → "Passwords **are stored** in bcrypt."
+          - "The system logs errors to S3." → "Errors **are logged** to S3."
+          - ... (3 своих)
+
+      - day: 5
+        type: "dialog"
+        title: "Dialog: onboarding"
+        dialog: "onboarding"
+
+      - day: 6
+        type: "quiz"
+        title: "Mini-quiz: Passive Voice"
+        quiz: "passive-voice"
+
+      - day: 7
+        type: "review"
+        title: "Review Week 11"
+
+  - week: 12
+    theme: "Reported Speech + Финальный обзор"
+    grammar_focus: "reported-speech"
+    block: "Продвинутые темы"
+
+    days:
+      - day: 1
+        type: "grammar"
+        title: "Reported Speech: правило"
+        content: |
+          # Week 12, Day 1: Reported Speech
+
+          ## Правило
+
+          Когда пересказываешь чужие слова, сдвигай время назад:
+          - Present Simple → Past Simple
+          - Present Continuous → Past Continuous
+          - Present Perfect → Past Perfect
+          - Past Simple → Past Perfect
+          - will → would
+          - can → could
+
+          ## 5 IT-пар (прямая речь → пересказ)
+
+          1. Maria: "I'm debugging." → He said Maria **was debugging**.
+          2. Tom: "I will ship v3." → He said Tom **would ship** v3.
+          3. Lisa: "I fixed the bug." → She said Lisa **had fixed** the bug.
+          4. Alex: "We have shipped v2." → He said they **had shipped** v2.
+          5. PM: "We can deploy on Friday." → She said they **could deploy** on Friday.
+        listening: ["soft-skills-engineering"]
+
+      - day: 2
+        type: "grammar"
+        title: "Say vs Tell"
+        content: |
+          # Week 12, Day 2: say / tell
+
+          - **say** + (that): "He **said** (that) he was busy." (без объекта-человека после)
+          - **tell** + someone + (that): "He **told me** (that) he was busy." (с объектом)
+
+          ## 5 IT-примеров
+
+          1. He **said** the build failed.
+          2. He **told me** the build failed.
+          3. She **said** she would deploy v3.
+          4. She **told the team** she would deploy v3.
+          5. They **said** they had shipped v2.
+
+      - day: 3
+        type: "listening"
+        title: "Soft Skills Engineering"
+        listening: ["soft-skills-engineering"]
+
+      - day: 4
+        type: "grammar"
+        title: "Reported Speech в пересказе митингов"
+        content: |
+          # Week 12, Day 4: Reported Speech в митингах
+
+          ## Шаблон пересказа митинга
+
+          "At the standup, Maria **said** she **was debugging** the auth issue.
+          Tom **mentioned** that he **had finished** the migration. The PM **told** us
+          we **could deploy** v3 on Friday. Alex **said** he **would review** the PR
+          by EOD."
+
+          ## Мини-задание
+
+          Перескажи любой недавний митинг/разговор по этому шаблону (5-7 предложений).
+
+      - day: 5
+        type: "dialog"
+        title: "Dialog: negotiation (с reported speech)"
+        dialog: "negotiation"
+
+      - day: 6
+        type: "quiz"
+        title: "Mini-quiz: Reported Speech + Passive"
+        quiz: "reported-speech"
+
+      - day: 7
+        type: "review"
+        title: "🎉 Финальный обзор Week 12 + Graduation"
+        task: |
+          # 🎉 Поздравляю! Ты прошёл(ла) 12-недельную программу!
+
+          ## Что ты выучил(а) — 12 времён
+
+          | # | Время | Главное |
+          |---|---|---|
+          | 1 | Present Simple | Факты, регулярные действия |
+          | 2 | Past Simple | Завершённые действия с конкретным временем |
+          | 3 | Present Continuous | Прямо сейчас, временные ситуации |
+          | 4 | Future: will | Спонтанные решения, предсказания |
+          | 5 | Future: going to | Планы, решения заранее |
+          | 6 | Present Perfect | Опыт, результат сейчас, since/for |
+          | 7 | Present Perfect vs Past Simple | Главная B1-проблема |
+          | 8 | Past Continuous | Фон для прошлых событий |
+          | 9 | Past Perfect | Прошлое в прошлом |
+          | 10 | 1st Conditional | Реальные условия |
+          | 11 | 2nd Conditional | Гипотетические ситуации |
+          | 12 | Passive Voice | Фокус на действии |
+          | 13 | Reported Speech | Пересказ чужих слов |
+
+          ## Что дальше?
+
+          - Продолжай читать IT-статьи и слушать подкасты без субтитров
+          - Используй глоссарий (80 IT-фраз) в ежедневной работе
+          - Применяй диалоги в реальных митингах и чатах
+          - **Phase 2:** LLM-фидбек на ответы, TTS-озвучка эталонов
+
+          ## Финальный тест
+
+          Пройди все 10 мини-тестов с `--force` и набери средний score ≥ 8/10:
+
+          ```bash
+          for tense in present-simple past-simple present-perfect present-perfect-vs-past-simple \
+                       present-continuous future-will-going past-continuous past-perfect \
+                       conditionals-1-2 passive-voice reported-speech; do
+            python scripts/english.py quiz $tense --force
+          done
+          ```
+
+          Удачи! 🚀

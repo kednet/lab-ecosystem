@@ -1,0 +1,100 @@
+# Yandex Object Storage setup для image_skill
+#
+# v1.4: альтернатива Cloudflare R2 (для случая когда R2 недоступен).
+# S3-compatible, ~0.01 ₽/ГБ/мес, 0.20 ₽/ГБ исходящий трафик.
+# ~100 картинок × 400 КБ = 40 МБ = менее 1 ₽/мес.
+#
+# ───────────────────────────────────────────────────────────────────
+# 1. Регистрация в Yandex Cloud
+# ───────────────────────────────────────────────────────────────────
+# • Зайти на https://console.yandex.cloud/ через Яндекс ID
+# • Создать платёжный аккаунт (нужна карта, но free tier не превысишь)
+# • Создать новое облако (folder) — например "pulab-images"
+#   → Запомнить FOLDER_ID (вида b1g...)
+#
+# ───────────────────────────────────────────────────────────────────
+# 2. Сервисный аккаунт с ролью storage.editor
+# ───────────────────────────────────────────────────────────────────
+# • В консоли → Identity and Access Management → Service accounts
+# • Create service account: имя "image-skill-publisher"
+# • Назначить роль "storage.editor" на folder
+# • Создать статический ключ доступа:
+#   - Service account → image-skill-publisher → Create new key → Static access key
+#   - Сохранить:
+#     - Access Key (вида YCxxxxxxxx)
+#     - Secret Key (длинная base64-строка, показывается 1 раз)
+#
+# ───────────────────────────────────────────────────────────────────
+# 3. Создать бакет
+# ───────────────────────────────────────────────────────────────────
+# • Object Storage → Buckets → Create bucket
+# • Имя: pulab-images (или любое, главное чтобы уникальное в Yandex Cloud)
+# • Регион: ru-central1
+# • Default storage class: Standard
+# • Max size: 1 GB (для ~3000 JPEG)
+#
+# ───────────────────────────────────────────────────────────────────
+# 4. Сделать бакет публичным
+# ───────────────────────────────────────────────────────────────────
+# Вариант A (через консоль):
+#   - Bucket → Permissions → Add subject → "All users" / "All anonymous users"
+#   - Role: storage.reader
+#
+# Вариант B (через CLI):
+#   yc storage bucket update --name pulab-images --anonymous-access-read
+#
+# Публичный URL бакета:
+#   https://storage.yandexcloud.net/pulab-images
+#   или
+#   https://pulab-images.storage.yandexcloud.net
+#
+# ───────────────────────────────────────────────────────────────────
+# 5. Записать в image_skill/.env
+# ───────────────────────────────────────────────────────────────────
+# STORAGE_PROVIDER=yandex
+# YANDEX_STORAGE_ACCESS_KEY=YCxxxxxxxxxxxxxxxx
+# YANDEX_STORAGE_SECRET_KEY=YYYYYYYYYYYYYYYYYYYYYY
+# YANDEX_STORAGE_BUCKET=pulab-images
+# YANDEX_STORAGE_PUBLIC_URL=https://storage.yandexcloud.net/pulab-images
+#
+# ───────────────────────────────────────────────────────────────────
+# 6. pip install boto3
+# ───────────────────────────────────────────────────────────────────
+# pip install boto3
+#
+# ───────────────────────────────────────────────────────────────────
+# 7. Проверить dry-run
+# ───────────────────────────────────────────────────────────────────
+# python scripts/image.py publish lab/zakat-nad-okeanom,-mechtatelnaya-illyustraciya \
+#   --profile=lab --channels vk --dry-run
+#
+# Ожидаемый вывод:
+#   🔧 Phase 3: storage upload ...jpg → images/lab/...jpg
+#     → Storage: Yandex Object Storage (provider=yandex)
+#     ✓ Загружено в Yandex Storage: images/lab/...jpg → https://storage.yandexcloud.net/pulab-images/...
+#   ✓ JSON-контент: tmp\post-channels\...
+#   📤 Публикация: 5 шагов к мечте...
+#
+# Проверить в браузере:
+#   https://storage.yandexcloud.net/pulab-images/images/lab/...jpg
+#   Должна открыться JPEG-картинка.
+#
+# ───────────────────────────────────────────────────────────────────
+# 8. Live (после проверки)
+# ───────────────────────────────────────────────────────────────────
+# python scripts/image.py publish lab/zakat-nad-okeanom,-mechtatelnaya-illyustraciya \
+#   --profile=lab --channels vk
+#
+# ⚠️ Требует ручного подтверждения kfigh (auto-mode classifier).
+#    Пост появится на https://vk.com/pulabru
+
+# Пример конфига (YAML, для справки — реально читается из .env):
+yandex_storage:
+  access_key: "YCxxxxxxxxxxxxxxxx"
+  secret_key: "YYYYYYYYYYYYYYYYYYYYYY"
+  bucket: "pulab-images"
+  region: "ru-central1"
+  endpoint: "https://storage.yandexcloud.net"
+  public_url: "https://storage.yandexcloud.net/pulab-images"
+  cost_storage_rub_per_gb_month: 0.01
+  cost_egress_rub_per_gb: 0.20

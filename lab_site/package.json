@@ -1,0 +1,32 @@
+{
+  "name": "lab-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "sitemap": "node scripts/build-sitemap.mjs",
+    "spheres": "node scripts/generate-sphere-images.mjs",
+    "prebuild": "npm run sitemap && npm run spheres",
+    "build": "astro build",
+    "preview": "npm run build && wrangler dev",
+    "astro": "astro",
+    "deploy": "npm run build && wrangler deploy",
+    "deploy:experts": "python scripts/deploy_experts.py"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "11",
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/tailwind": "^5.1.4",
+    "@vkontakte/vk-bridge": "^3.0.2",
+    "astro": "^4.16.18",
+    "marked": "^14.1.4",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.2",
+    "wrangler": "^4.99.0"
+  }
+}

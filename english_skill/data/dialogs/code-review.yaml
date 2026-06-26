@@ -1,0 +1,93 @@
+# Ролевой диалог: Code Review
+# Категория: collaboration
+
+meta:
+  name: "code-review"
+  display_name: "Code Review (PR Comments)"
+  category: "collaboration"
+  level: "B1-B2"
+  estimated_min: 6
+  grammar_focus: ["present-simple", "modal-verbs", "conditionals-1st"]
+  vocab_from_glossary: ["LGTM", "Nit", "Blocking comment", "Request changes", "Approve", "Let me loop in", "Out of scope"]
+
+context:
+  role: "Senior developer reviewing a junior's PR"
+  team: "Pulse Lab"
+  setting: "PR comment thread on GitHub (text-based but written)"
+  scenario: |
+    A junior developer submitted a PR for the new API endpoint. It works, but there are
+    3 things to fix: missing test for the error case, a typo in a variable name, and a
+    refactoring suggestion that's out of scope. You need to leave a constructive review.
+
+script:
+  - speaker: "junior"
+    line: "Hey, could you review my PR when you get a chance?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — opening comment, positive]"
+    hint: "Thanks for the PR! Overall <positive feedback>. I left <number> comments."
+    model_answer: "Thanks for the PR! Overall looks good — clean code and good test coverage. I left a few comments inline."
+    alternatives:
+      - "Nice work! I have a few small comments, nothing major."
+      - "Thanks! I left one blocking comment and a few nits."
+
+  - speaker: "junior"
+    line: "Thanks! What did you find?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — blocking comment about missing test]"
+    hint: "Blocking: we need a test for <case>."
+    model_answer: "Blocking: could you add a test for the case when the user is not authenticated? This is a critical path."
+    alternatives:
+      - "Blocking: please add a test for the error case (500 Internal Server Error)."
+      - "One blocking comment — we need a test that covers the edge case when input is null."
+
+  - speaker: "junior"
+    line: "Got it. What about the rest?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — nit (small comment)]"
+    hint: "Nit: <minor issue>. Non-blocking."
+    model_answer: "Nit: typo in the variable name on line 42 — 'recieve' should be 'receive'. Non-blocking."
+    alternatives:
+      - "Nit: add a space after the comma here for readability. Non-blocking."
+      - "Nit: could you extract this into a helper function? Not blocking, just a thought."
+
+  - speaker: "junior"
+    line: "What about the refactoring you mentioned?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — politely decline refactor as out of scope]"
+    hint: "<Suggestion> but let's keep that out of scope for this PR."
+    model_answer: "Good point about extracting the validation logic. But let's keep that out of scope for this PR — let's file a separate ticket."
+    alternatives:
+      - "I see the duplication, but refactoring is out of scope for this PR. Let's address it separately."
+      - "Agreed it's a smell. Can we tackle this in a follow-up PR? Don't want to bloat this one."
+
+  - speaker: "junior"
+    line: "Thanks! I'll address the comments."
+
+  - speaker: "user"
+    line: "[YOUR TURN — close]"
+    hint: "Thanks! Ping me when you've <action>."
+    model_answer: "Thanks! Ping me when you've addressed the blocking comment and I'll re-review."
+    alternatives:
+      - "Thanks! Let me know when it's ready for another look."
+      - "Appreciate it. Tag me when ready."
+
+after_dialog:
+  recap_vocab:
+    - "Overall looks good."
+    - "I left a few comments inline."
+    - "Blocking: please add a test for ..."
+    - "Nit: typo / small issue. Non-blocking."
+    - "Out of scope for this PR."
+    - "Let me know when it's ready for another look."
+    - "Tag me when ready."
+
+  grammar_notes:
+    - "Modal verbs (could you, please): мягкие просьбы"
+    - "Present Simple для описания кода: 'the variable is named...'"
+
+  next_dialog: "push-back"
+  notes: "Code review — must-have навык. Тон должен быть конструктивным, не снисходительным."

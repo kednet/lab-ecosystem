@@ -1,0 +1,161 @@
+---
+import Base from '../layouts/Base.astro';
+import { breadcrumbLd } from '../lib/seo';
+
+const plans = [
+  {
+    id: 'free',
+    name: 'Свободный',
+    price: '0',
+    period: 'навсегда',
+    description: 'Чтобы попробовать формат и понять, наш ли он.',
+    cta: 'Открыть библиотеку',
+    href: '/wish-map/',
+    accent: false,
+    features: [
+      'Все открытые конспекты',
+      'Воркбуки и советы',
+      'Поиск по темам',
+      'Карта желаний без лимитов (6 сфер × 3 желания)',
+      'Открытый Telegram-канал',
+    ],
+  },
+  {
+    id: 'month',
+    name: 'Месяц',
+    price: '590',
+    period: '₽/месяц',
+    description: 'Чтобы попробовать формат и внедрять, а не коллекционировать.',
+    cta: 'Оформить подписку',
+    href: '/checkout/?plan=month',
+    accent: true,
+    badge: 'Популярный',
+    features: [
+      'Всё из «Свободного»',
+      'AI-помощник по книгам',
+      'Закрытый чат сообщества',
+      'Участие в ежемесячном розыгрыше Premium-доступов',
+    ],
+  },
+  {
+    id: 'year',
+    name: 'Год',
+    price: '4 990',
+    period: '₽/год',
+    description: 'Скидка 30% от месячной — всего 416 ₽/мес. Для тех, кто настроен серьёзно внедрять.',
+    cta: 'Оформить на год',
+    href: '/checkout/?plan=year',
+    accent: false,
+    badge: 'Экономия 30%',
+    features: [
+      'Всё из «Месяца»',
+      'Ранний доступ к новинкам библиотеки',
+      'Закрытые разборы с экспертами',
+    ],
+  },
+];
+---
+<Base
+  title="Подписка"
+  description="3 тарифа: бесплатно, 590₽/мес, 4 990₽/год (экономия 30%). Доступ к AI-помощнику по книгам и закрытому чату сообщества."
+  extraJsonLd={[
+    JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': plans
+        .filter((p) => p.id !== 'free')
+        .map((p) => ({
+          '@type': 'Offer',
+          name: `ЛАБОРАТОРИЯ ЖЕЛАНИЙ — ${p.name}`,
+          description: p.description,
+          price: p.price.replace(/\s/g, ''),
+          priceCurrency: 'RUB',
+          url: `https://app.pulab.ru${p.href}`,
+          availability: 'https://schema.org/InStock',
+          seller: { '@type': 'Organization', name: 'ЛАБОРАТОРИЯ ЖЕЛАНИЙ', url: 'https://app.pulab.ru' },
+        })),
+    }),
+    breadcrumbLd([
+      { name: 'Главная', url: '/' },
+      { name: 'Подписка', url: '/pricing/' },
+    ]),
+  ]}
+>
+  <section class="section">
+    <div class="container">
+      <p class="section__eyebrow reveal">Подписка</p>
+      <h1 class="section__title reveal">
+        Сколько стоит участие<br />в&nbsp;Лаборатории
+      </h1>
+      <p class="footer__about reveal" style="text-align: center; max-width: 60ch; margin: 0 auto 48px;">
+        Без скрытых платежей. Отменить — в&nbsp;любой момент.
+        ЮKassa: карты и&nbsp;СБП.
+      </p>
+
+      <div class="pricing-grid">
+        {plans.map((plan) => (
+          <div class={`pricing-card ${plan.accent ? 'pricing-card--accent' : ''}`}>
+            {plan.badge && <div class="pricing-card__badge">{plan.badge}</div>}
+            <h2 class="pricing-card__name">{plan.name}</h2>
+            <div class="pricing-card__price">
+              <span class="pricing-card__price-value">{plan.price}</span>
+              <span class="pricing-card__price-period">{plan.period}</span>
+            </div>
+            <p class="pricing-card__desc">{plan.description}</p>
+            <ul class="pricing-card__features">
+              {plan.features.map((f) => (
+                <li><span class="pricing-card__check" aria-hidden="true">✓</span>{f}</li>
+              ))}
+            </ul>
+            <a
+              class={`btn ${plan.accent ? 'btn--primary' : 'btn--ghost'} btn--block pricing-cta`}
+              href={plan.href}
+              data-plan={plan.id}
+            >{plan.cta}</a>
+          </div>
+        ))}
+      </div>
+
+      <div class="pricing-faq">
+        <h2 class="section__title reveal" style="font-size: 28px;">Частые вопросы</h2>
+        <div class="pricing-faq__list">
+          <details>
+            <summary>А что даёт подписка, чего нет в бесплатном?</summary>
+            <p>AI-помощник по&nbsp;книгам, закрытый чат сообщества для&nbsp;разборов и&nbsp;встреч, а&nbsp;на «Году» — ранний доступ к&nbsp;новинкам и&nbsp;закрытые разборы с&nbsp;экспертами.</p>
+          </details>
+          <details>
+            <summary>Почему «Год» выгоднее месяца?</summary>
+            <p>«Год» стоит 4&nbsp;990&nbsp;₽ — это 416&nbsp;₽ в&nbsp;месяц вместо 590&nbsp;₽. Экономия 30%. Плюс ранний доступ к&nbsp;новинкам и&nbsp;закрытые разборы с&nbsp;экспертами.</p>
+          </details>
+          <details>
+            <summary>Можно ли отменить?</summary>
+            <p>Да, в любой момент. Доступ сохранится до конца оплаченного периода.</p>
+          </details>
+          <details>
+            <summary>Какие способы оплаты?</summary>
+            <p>Карты российских и зарубежных банков, СБП, ЮMoney. Чек приходит на e-mail автоматически.</p>
+          </details>
+          <details>
+            <summary>А если мне не подойдёт?</summary>
+            <p>В течение 7 дней после первой оплаты — полный возврат без вопросов. Напишите в поддержку.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+  (function initPricingGoals() {
+    // Клик по CTA — фиксируем выбор тарифа
+    document.querySelectorAll('.pricing-cta').forEach((el) => {
+      el.addEventListener('click', () => {
+        const plan = el.getAttribute('data-plan') || 'unknown';
+        if (plan === 'free') {
+          window.labReachGoal('pricing_plan_viewed', { plan });
+        } else {
+          window.labReachGoal('pricing_checkout_started', { plan });
+        }
+      });
+    });
+  })();
+</script>

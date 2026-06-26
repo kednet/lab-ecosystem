@@ -1,0 +1,52 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "Алхимик",
+  "alternateName": "O Alquimista",
+  "author": {
+    "@type": "Person",
+    "name": "Пауло Коэльо",
+    "alternateName": "Paulo Coelho"
+  },
+  "datePublished": "1988",
+  "inLanguage": "ru",
+  "isbn": "978-5-17-078136-6",
+  "genre": "Philosophical novel",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "3.9",
+    "bestRating": "5",
+    "worstRating": "1",
+    "ratingCount": 58421,
+    "reviewCount": 2095
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": {"@type": "Person", "name": "За Фай Ру"},
+      "datePublished": "2026-06-21",
+      "reviewBody": "Когда волшебство проступает через швы вселенной.",
+      "reviewRating": {"@type": "Rating", "ratingValue": "5", "bestRating": "5"},
+      "publisher": {"@type": "Organization", "name": "LiveLib"},
+      "url": "https://www.livelib.ru/review/5906725-alhimik-paulo-koelo"
+    },
+    {
+      "@type": "Review",
+      "author": {"@type": "Person", "name": "vitiviitii"},
+      "datePublished": "2026-06-21",
+      "reviewBody": "Мекка внутри или Мекка вдали?",
+      "reviewRating": {"@type": "Rating", "ratingValue": "4", "bestRating": "5"},
+      "publisher": {"@type": "Organization", "name": "LiveLib"},
+      "url": "https://www.livelib.ru/review/5827432-alhimik-paulo-koelo"
+    },
+    {
+      "@type": "Review",
+      "author": {"@type": "Person", "name": "Пользователь iRecommend"},
+      "datePublished": "2026-06-21",
+      "reviewBody": "Глубокая, жизненная, полезная книга. Заставляет задуматься о своей жизни. Легко и быстро читается. Много мудрых мыслей и красивых цитат. Книга-притча, способная изменить жизнь.",
+      "reviewRating": {"@type": "Rating", "ratingValue": "5", "bestRating": "5"},
+      "publisher": {"@type": "Organization", "name": "iRecommend"},
+      "url": "https://irecommend.ru/content/alkhimik-koelo-poulo"
+    }
+  ]
+}

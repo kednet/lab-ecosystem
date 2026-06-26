@@ -1,0 +1,92 @@
+meta:
+  name: "past-simple"
+  display_name: "Past Simple"
+  level: "B1"
+  estimated_min: 5
+  description: "Завершённые действия в прошлом с конкретным временем. I shipped / I went."
+  grammar_point: "past-simple"
+  prerequisites: ["present-simple"]
+
+questions:
+  - id: 1
+    type: "multiple_choice"
+    prompt: "We ___ v2.1 last Friday."
+    options: ["ship", "shipped", "have shipped", "are shipping"]
+    correct: "shipped"
+    explanation: "Конкретное время (last Friday) → Past Simple. ship → shipped (regular)."
+
+  - id: 2
+    type: "open"
+    prompt: "I ___ (go) to Berlin in 2020."
+    correct_answer: "went"
+    acceptable_answers: ["went"]
+    explanation: "go → went (irregular). In 2020 → Past Simple."
+
+  - id: 3
+    type: "multiple_choice"
+    prompt: "She ___ the bug yesterday."
+    options: ["fix", "fixed", "did fixed", "didn't fix"]
+    correct: "fixed"
+    explanation: "Yesterday → Past Simple. Fix → fixed (regular)."
+
+  - id: 4
+    type: "open"
+    prompt: "The build ___ (not / fail) — we caught it in CI."
+    correct_answer: "didn't fail"
+    acceptable_answers: ["didn't fail", "did not fail"]
+    explanation: "Negative: didn't + V (базовая форма!)."
+
+  - id: 5
+    type: "multiple_choice"
+    prompt: "___ you ship the release on Monday?"
+    options: ["Do", "Did", "Have", "Were"]
+    correct: "Did"
+    explanation: "Вопрос в Past Simple: Did + V?"
+
+  - id: 6
+    type: "open"
+    prompt: "They ___ (see) the production bug yesterday."
+    correct_answer: "saw"
+    acceptable_answers: ["saw"]
+    explanation: "see → saw (irregular). Yesterday → Past Simple."
+
+  - id: 7
+    type: "multiple_choice"
+    prompt: "I ___ to the office yesterday morning."
+    options: ["go", "went", "have gone", "going"]
+    correct: "went"
+    explanation: "go → went. Yesterday → Past Simple."
+
+  - id: 8
+    type: "open"
+    prompt: "The team ___ (not / have) time to test."
+    correct_answer: "didn't have"
+    acceptable_answers: ["didn't have", "did not have"]
+    explanation: "didn't + V. have → had (но в отрицании с didn't идёт базовая форма 'have')."
+
+  - id: 9
+    type: "multiple_choice"
+    prompt: "He ___ the migration last week."
+    options: ["finish", "finished", "did finished", "finishes"]
+    correct: "finished"
+    explanation: "Past Simple + last week. Finish → finished."
+
+  - id: 10
+    type: "open"
+    prompt: "I ___ (write) 5 tests this morning."
+    correct_answer: "wrote"
+    acceptable_answers: ["wrote"]
+    explanation: "write → wrote (irregular). This morning = сегодня утром (уже прошло)."
+
+after_quiz:
+  recap: |
+    **Past Simple:**
+    - Regular: V + ed (work → worked)
+    - Irregular: 2-я форма (go → went, see → saw, write → wrote)
+    - Negative: didn't + V (базовая форма!)
+    - Question: Did + V?
+    - Маркеры: yesterday, last week/month/year, ago, in 2020
+
+  next_tense: "present-perfect"
+  recommended_review: "references/tenses-12-table.md#past-simple"
+  related_lesson: "Week 2 Day 1 (curriculum.yaml)"

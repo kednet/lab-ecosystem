@@ -1,0 +1,30 @@
+# Сфера: Карьера
+# NB: в каталоге WL нет книг про карьеру напрямую.
+#     Связь косвенная через книги про достижение целей, мышление, успех.
+
+sphere:
+  id: career
+  name: Карьера
+  description: Работа, профессия, навыки, проекты
+  icon: 🚀
+  color: "#3b82f6"
+  order: 4
+
+source_books:
+  - slug: templar-pravila-dostizheniya-tseli  # Правила достижения цели
+    relevant_chapters: []
+    note: "косвенная связь через целеполагание"
+  - slug: trunin-ra-ot-mechty-do-uspekha     # От мечты до успеха
+    relevant_chapters: []
+    note: "косвенная связь через карьерный путь"
+  - slug: daniel-kaneman-dumay-medlenno-reshay-bystro
+    relevant_chapters: []
+    note: "косвенная связь через принятие карьерных решений"
+
+subsphere_hints:
+  - skills: профессиональные навыки (курсы, сертификации, практика)
+  - projects: конкретные проекты (запустить, завершить, выложить)
+  - promotion: карьерный рост (повышение, смена работы, фриланс)
+  - network: нетворкинг (конференции, менторы, сообщества)
+  - soft-skills: soft skills (переговоры, презентации, лидерство)
+  - portfolio: портфолио (кейсы, сайт, выступления)

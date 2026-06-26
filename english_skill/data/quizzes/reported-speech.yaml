@@ -1,0 +1,103 @@
+meta:
+  name: "reported-speech"
+  display_name: "Reported Speech"
+  level: "B2"
+  estimated_min: 7
+  description: "Пересказ чужих слов со сдвигом времён. He said (that) he had..."
+  grammar_point: "reported-speech"
+  prerequisites: ["past-simple", "past-perfect", "present-perfect"]
+
+questions:
+  - id: 1
+    type: "multiple_choice"
+    prompt: "Maria: 'I'm debugging.' → He said Maria ___ debugging."
+    options: ["is", "was", "has been", "had been"]
+    correct: "was"
+    explanation: "Direct: am debugging. Reported: was debugging. Present Continuous → Past Continuous."
+
+  - id: 2
+    type: "open"
+    prompt: "Tom: 'I will ship v3.' → He said Tom ___ ship v3."
+    correct_answer: "would"
+    acceptable_answers: ["would"]
+    explanation: "Direct: will ship. Reported: would ship. will → would."
+
+  - id: 3
+    type: "multiple_choice"
+    prompt: "Lisa: 'I fixed the bug.' → She said Lisa ___ the bug."
+    options: ["fixed", "has fixed", "had fixed", "fixes"]
+    correct: "had fixed"
+    explanation: "Direct: fixed (Past Simple). Reported: had fixed (Past Perfect). Past Simple → Past Perfect."
+
+  - id: 4
+    type: "open"
+    prompt: "Alex: 'We have shipped v2.' → He said they ___ v2."
+    correct_answer: "had shipped"
+    acceptable_answers: ["had shipped"]
+    explanation: "Direct: have shipped (Present Perfect). Reported: had shipped (Past Perfect)."
+
+  - id: 5
+    type: "multiple_choice"
+    prompt: "PM: 'We can deploy on Friday.' → She said they ___ deploy on Friday."
+    options: ["can", "could", "will", "would"]
+    correct: "could"
+    explanation: "Direct: can. Reported: could. can → could."
+
+  - id: 6
+    type: "multiple_choice"
+    prompt: "He ___ (tell) me he was busy."
+    options: ["say", "says", "said", "told"]
+    correct: "told"
+    explanation: "Tell + someone + that. 'He told me...' (не say — say не требует объекта-человека)."
+
+  - id: 7
+    type: "open"
+    prompt: "He said (that) he ___ (work) on the migration. (longer action in past)"
+    correct_answer: "had been working"
+    acceptable_answers: ["had been working", "was working"]
+    explanation: "Direct (probably): 'I have been working'. Reported: had been working. Past Perfect Continuous. Допускаем was working."
+
+  - id: 8
+    type: "multiple_choice"
+    prompt: "She asked me ___ I was free. (yes/no question)"
+    options: ["that", "if", "whether", "if or whether"]
+    correct: "if"
+    explanation: "Yes/No questions → if/whether в reported speech."
+
+  - id: 9
+    type: "open"
+    prompt: "He asked me where ___ (work). (wh-question)"
+    correct_answer: "I worked"
+    acceptable_answers: ["I worked", "I work"]
+    explanation: "Wh-question в reported: question word + subject + Past Simple (no auxiliary do/does/did)."
+
+  - id: 10
+    type: "multiple_choice"
+    prompt: "Direct: 'I am tired.' → Reported: He said (that) he ___ tired."
+    options: ["is", "was", "has been", "had been"]
+    correct: "was"
+    explanation: "am (Present Simple) → was (Past Simple) в reported. To be сдвигается стандартно."
+
+after_quiz:
+  recap: |
+    **Reported Speech — сдвиг времён:**
+
+    | Direct | Reported |
+    |---|---|
+    | Present Simple | Past Simple |
+    | Present Continuous | Past Continuous |
+    | Present Perfect | Past Perfect |
+    | Past Simple | Past Perfect |
+    | will | would |
+    | can | could |
+
+    **say vs tell:**
+    - say + (that): He said (that)...
+    - tell + someone + (that): He told me (that)...
+
+    **Questions:** wh-word stays, if/whether для yes/no, no auxiliary do/does/did.
+
+  next_tense: null  # финальный квиз
+  recommended_review: "references/tenses-12-table.md#reported-speech"
+  related_lesson: "Week 12 (curriculum.yaml)"
+  final_quiz_message: "🎉 Поздравляю! Ты прошёл(ла) все 10 мини-тестов! 12-недельная программа завершена."

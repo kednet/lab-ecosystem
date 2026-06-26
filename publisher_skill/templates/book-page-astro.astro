@@ -1,0 +1,164 @@
+---
+import Base from '../../layouts/Base.astro';
+import book from '../../data/books/{slug}.json';
+---
+
+<!-- book-page-astro.astro
+     Сгенерирован publisher_skill/scripts/render_book.py
+     Не редактировать вручную — при следующем /publish будет перезаписан.
+     Кастомизация — в `book-page-astro.astro` шаблоне в publisher_skill/templates/.
+-->
+<Base
+  title={book.title + ' — конспект и практика | Лаборатория желаний'}
+  description={'Краткое содержание, практические советы и упражнения по книге ' + book.title + ' автора ' + book.author + '.'}
+  ogImage={book.og_image_path || book.cover_path}
+>
+  <article class="book-page">
+    <header class="book-header">
+      <img src={book.cover_path} alt={book.title} class="book-cover" />
+      <div class="book-meta">
+        <h1>{book.title}</h1>
+        <p class="author">{book.author}{book.year ? ', ' + book.year : ''}</p>
+        {book.isbn ? <p class="isbn">ISBN: {book.isbn}</p> : null}
+      </div>
+    </header>
+
+    <!-- TABS -->
+    <nav class="book-tabs" role="tablist" aria-label="Разделы книги">
+      <button class="book-tab is-active" role="tab" data-tab="summary" aria-selected="true">Содержание</button>
+      <button class="book-tab" role="tab" data-tab="tips" aria-selected="false">Советы</button>
+      <button class="book-tab" role="tab" data-tab="reviews" aria-selected="false">Отзывы</button>
+      <button class="book-tab" role="tab" data-tab="workbook" aria-selected="false">Воркбук</button>
+      <button class="book-tab" role="tab" data-tab="buy" aria-selected="false">Где купить</button>
+    </nav>
+
+    <section class="book-panel is-active" data-panel="summary" role="tabpanel">
+      <h2 class="book-panel__title">Краткое содержание</h2>
+      <Fragment set:html={book.summary_html || '<p class=\"book-empty\">Содержание готовится.</p>'} />
+    </section>
+
+    <section class="book-panel" data-panel="tips" role="tabpanel" hidden>
+      <h2 class="book-panel__title">Практические советы</h2>
+      <Fragment set:html={book.tips_html || '<p class=\"book-empty\">Советы появятся позже.</p>'} />
+    </section>
+
+    <section class="book-panel" data-panel="reviews" role="tabpanel" hidden>
+      <h2 class="book-panel__title">Отзывы читателей</h2>
+      <Fragment set:html={book.reviews_html || '<p class=\"book-empty\">Отзывов пока нет. Станьте первым — напишите нам.</p>'} />
+    </section>
+
+    <section class="book-panel" data-panel="workbook" role="tabpanel" hidden>
+      <h2 class="book-panel__title">Упражнения (воркбук)</h2>
+      <Fragment set:html={book.workbook_html || '<p class=\"book-empty\">Воркбук готовится.</p>'} />
+    </section>
+
+    <section class="book-panel" data-panel="buy" role="tabpanel" hidden>
+      <h2 class="book-panel__title">Где купить</h2>
+      <Fragment set:html={book.buy_links_html || '<p class=\"book-empty\">Где купить — обновится позже.</p>'} />
+    </section>
+
+    {book.scientific_html ? (
+      <section class="book-scientific">
+        <h2>Научные ссылки</h2>
+        <Fragment set:html={book.scientific_html} />
+      </section>
+    ) : null}
+
+    <!-- Schema.org Book + FAQPage (заполняется seo-advisor-skill в Phase 2) -->
+    <script type="application/ld+json" set:html={JSON.stringify(book.seo?.schema || {})} />
+  </article>
+
+  <script is:inline>
+    (() => {
+      const tabs = document.querySelectorAll('.book-tab');
+      const panels = document.querySelectorAll('.book-panel');
+      if (!tabs.length || !panels.length) return;
+
+      function activate(name) {
+        tabs.forEach((t) => {
+          const on = t.dataset.tab === name;
+          t.classList.toggle('is-active', on);
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        panels.forEach((p) => {
+          const on = p.dataset.panel === name;
+          p.classList.toggle('is-active', on);
+          if (on) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
+        });
+        // Метрика: переключение вкладки
+        try {
+          if (typeof window.ym === 'function') {
+            window.ym(109734669, 'reachGoal', 'book_tab_switched', { tab: name });
+          }
+        } catch (_) {}
+      }
+
+      tabs.forEach((t) => {
+        t.addEventListener('click', () => activate(t.dataset.tab));
+      });
+
+      // Глубокая ссылка: /books/<slug>/#reviews
+      const hash = (window.location.hash || '').replace('#', '');
+      if (hash && [...tabs].some((t) => t.dataset.tab === hash)) {
+        activate(hash);
+      }
+    })();
+  </script>
+</Base>
+
+<style>
+  .book-page { max-width: 760px; margin: 0 auto; padding: 2rem 1rem; }
+  .book-header { display: grid; grid-template-columns: 200px 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+  .book-cover { width: 200px; height: auto; border-radius: 8px; }
+  .book-meta h1 { margin: 0 0 0.5rem 0; font-size: 1.8rem; line-height: 1.2; }
+  .book-meta .author { color: #555; font-size: 1.05rem; margin: 0; }
+  .book-meta .isbn { color: #888; font-size: 0.9rem; margin: 0.25rem 0 0; }
+
+  /* TABS */
+  .book-tabs {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    border-bottom: 2px solid #eee;
+    margin: 0 0 1.5rem;
+    overflow-x: auto;
+  }
+  .book-tab {
+    appearance: none; -webkit-appearance: none;
+    background: transparent; border: 0;
+    padding: 10px 16px;
+    font: inherit; font-size: 0.95rem; font-weight: 500;
+    color: #666; cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px; /* чтобы active-border перекрыл серую линию */
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .book-tab:hover { color: #111; }
+  .book-tab.is-active { color: #c2185b; border-bottom-color: #c2185b; }
+
+  /* PANELS */
+  .book-panel { margin-bottom: 2.5rem; }
+  .book-panel[hidden] { display: none; }
+  .book-panel__title {
+    margin: 0 0 1rem; font-size: 1.35rem;
+    border-bottom: 1px solid #eee; padding-bottom: 0.5rem;
+  }
+  .book-panel :global(img) { max-width: 100%; height: auto; border-radius: 6px; }
+  .book-panel :global(blockquote) {
+    border-left: 3px solid #c2185b;
+    margin: 1rem 0; padding: 0.5rem 1rem;
+    color: #444; background: #faf6f9; border-radius: 0 6px 6px 0;
+  }
+  .book-panel :global(table) { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  .book-panel :global(th), .book-panel :global(td) {
+    border: 1px solid #eee; padding: 8px 12px; text-align: left;
+  }
+  .book-panel :global(th) { background: #faf6f9; }
+
+  section { margin-bottom: 2rem; }
+  section h2 { border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+
+  @media (max-width: 600px) {
+    .book-header { grid-template-columns: 1fr; }
+    .book-cover { width: 160px; }
+  }
+</style>

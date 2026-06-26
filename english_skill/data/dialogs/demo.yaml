@@ -1,0 +1,89 @@
+# Ролевой диалог: Product Demo
+# Категория: ceremonies
+
+meta:
+  name: "demo"
+  display_name: "Presenting a Demo"
+  category: "ceremonies"
+  level: "B1-B2"
+  estimated_min: 7
+  grammar_focus: ["present-simple", "present-continuous", "future-will"]
+  vocab_from_glossary: ["Let me show you", "This feature allows you to", "Quick demo", "Any questions?"]
+
+context:
+  role: "Developer demoing a new feature to stakeholders"
+  team: "Pulse Lab"
+  setting: "Bi-weekly demo meeting, screen-share, 5-10 minute demo"
+  scenario: |
+    You're demoing the new export feature to PM, design, and a few stakeholders. You need
+    to walk through the feature, explain what it does, and take questions.
+
+script:
+  - speaker: "moderator"
+    line: "Great, over to you for the export demo!"
+
+  - speaker: "user"
+    line: "[YOUR TURN — intro]"
+    hint: "Hi everyone. Today I'll demo <feature>."
+    model_answer: "Hi everyone! Today I'll demo the new PDF export feature. It took us 3 sprints to build, and it's now ready for testing."
+    alternatives:
+      - "Thanks! Quick demo of the PDF export — should take about 5 minutes."
+      - "Hey team! I've got the export feature to show you today. Let me share my screen."
+
+  - speaker: "user"
+    line: "[YOUR TURN — walk through feature]"
+    hint: "This feature allows you to <action>. Let me show you ..."
+    model_answer: "This feature allows users to export the dashboard as a PDF. Let me show you — I'll click 'Export' here, and you'll see the PDF generated in under 5 seconds."
+    alternatives:
+      - "So the user clicks 'Export', selects PDF, and the system generates the report with our standard template. Let me click through it."
+      - "I'll show you the end-to-end flow. First, the user opens the dashboard, then clicks export, and here you can see the PDF ready to download."
+
+  - speaker: "stakeholder"
+    line: "Can users customize the template?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — answer + clarify scope]"
+    hint: "Not in this version, but <plan for future>."
+    model_answer: "Not in this version — we're using our standard template. Custom branding is planned for next sprint."
+    alternatives:
+      - "That's on the roadmap for next quarter, but not in the MVP."
+      - "Not yet. We're starting with the standard template and will add customization based on customer feedback."
+
+  - speaker: "pm"
+    line: "What about charts? I see they're missing from the PDF."
+
+  - speaker: "user"
+    line: "[YOUR TURN — explain limitation + workaround]"
+    hint: "Charts aren't <state> in this MVP. As a workaround, <alternative>."
+    model_answer: "Charts aren't included in this MVP — the underlying data is there, but the visualization comes in the next iteration. As a workaround, users can export the data as CSV for now."
+    alternatives:
+      - "Right, we scoped charts out for this release. The data is there, but the charts will come in v2."
+      - "Good catch — charts will be in v2. For now, users can see the data tables, and we'll add visualizations next sprint."
+
+  - speaker: "stakeholder"
+    line: "Looks great! Any questions from the team? ... OK, thanks!"
+
+  - speaker: "user"
+    line: "[YOUR TURN — close]"
+    hint: "Thanks! Ping me if you have <follow-up>."
+    model_answer: "Thanks everyone! Ping me in Slack if you have any follow-up questions."
+    alternatives:
+      - "Thanks! I'll send the demo recording in the channel."
+      - "Thanks for the feedback! Feel free to test it and let me know."
+
+after_dialog:
+  recap_vocab:
+    - "Today I'll demo ..."
+    - "This feature allows you to ..."
+    - "Not in this version — we're using ..."
+    - "That's on the roadmap for ..."
+    - "Charts will be in v2."
+    - "Ping me if you have any follow-up questions."
+
+  grammar_notes:
+    - "Future will: 'Today I'll demo' (план на сейчас)"
+    - "Present Simple для описания функции: 'This feature allows users to ...'"
+    - "Present Continuous: 'We're using the standard template' (текущее состояние)"
+
+  next_dialog: "negotiation"
+  notes: "Demo = show, don't tell. Больше действий, меньше слов."

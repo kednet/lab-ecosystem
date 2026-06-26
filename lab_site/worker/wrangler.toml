@@ -1,0 +1,49 @@
+name = "lab-site-api"
+main = "src/index-assets.ts"
+compatibility_date = "2024-12-18"
+compatibility_flags = ["nodejs_compat"]
+
+# Переменные окружения (задаются через `wrangler secret put` для боевых значений)
+[vars]
+ENVIRONMENT = "development"
+FRONTEND_ORIGIN = "http://127.0.0.1:4321"
+JWT_SECRET_DEV = "dev-secret-change-me-in-production-please-make-it-long-and-random"
+PYTHON_SERVICE_URL = "http://127.0.0.1:8790"
+PYTHON_SERVICE_TOKEN = "dev-token-change-me"
+
+# Production
+# FRONTEND_ORIGIN = "https://app.pulab.online"
+
+# Cloudflare KV — основное хранилище данных
+[[kv_namespaces]]
+binding = "LAB_KV"
+id = "c9d44152187e4ac18f4a44b895ea0c4b"
+preview_id = "fb491026cb58467ca67e140e94636774"
+
+# R2 — не используется (нет возможности оплатить с RU-карты)
+# Файлы книг хранятся в LAB_KV по ключу book:{slug} (base64 внутри JSON)
+# [[r2_buckets]]
+# binding = "LAB_R2"
+# bucket_name = "lab-books"
+# preview_bucket_name = "lab-books-preview"
+
+# Static assets — Astro build хранится в LAB_KV по ключу static:{path}
+# (R2 недоступен из-за RU-карты, поэтому dist/ заливается в KV как base64)
+# См. `python scripts/upload-static.py` — заливает dist/* в KV.
+
+# Publisher secrets (через `wrangler secret put`):
+#   VK_GROUP_TOKEN          — токен сообщества (pulabru, id 237295798)
+#   VK_GROUP_ID             — 237295798
+#   TELEGRAM_BOT_TOKEN      — токен бота для анонсов + callback
+#   TELEGRAM_ADMIN_ID       — личный chat_id админа (для кнопок)
+#   TELEGRAM_CHANNEL_ID     — @wishlab_channel или числовой chat_id
+#   PYTHON_SERVICE_URL      — https://lab-site-python.onrender.com
+#   PYTHON_SERVICE_TOKEN    — общий секрет для /internal/*
+
+# Cron: проверка подписок в 3:00 МСК (= 0:00 UTC) ежедневно
+# [triggers]
+# crons = ["0 0 * * *"]
+
+# Лимиты и квоты
+[limits]
+cpu_ms = 50

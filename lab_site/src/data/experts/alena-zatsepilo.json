@@ -1,0 +1,69 @@
+{
+  "slug": "alena-zatsepilo",
+  "name": "Алёна Зацепило",
+  "jobTitle": "Блогер о силе мысли, осознанности и управлении реальностью",
+  "description": "Алёна Зацепило",
+  "url": "[youtube.com/@alzacepilo](https://www.youtube.com/@alzacepilo)",
+  "image": "/experts/alena-zatsepilo.jpg?v=4",
+  "email": "_по рекламе — через менеджера в профиле канала_",
+  "sameAs": [
+    "https://www.youtube.com/@alzacepilo"
+  ],
+  "knowsAbout": [
+    "Сила мысли",
+    "Осознанность",
+    "Сознание и подсознание",
+    "Управление реальностью",
+    "Трансерфинг",
+    "Работа с убеждениями"
+  ],
+  "alumniOf": [],
+  "awards": [],
+  "worksFor": "",
+  "quotes": [],
+  "media": {
+    "youtube": "https://www.youtube.com/@alzacepilo"
+  },
+  "tags": [
+    "youtube",
+    "блогер",
+    "самопознание",
+    "работа-с-мышлением",
+    "осознанность",
+    "трансерфинг",
+    "убеждения"
+  ],
+  "score": 60,
+  "schema_jsonld": {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Алёна Зацепило",
+    "alternateName": "Alena Zatsepilo",
+    "jobTitle": "Блогер о силе мысли, осознанности и управлении реальностью",
+    "description": "Русскоязычный YouTube-блогер, 87.5К подписчиков, 274 видео. Говорит о силе мысли, сознании и подсознании, управлении реальностью, трансерфинге и осознанности.",
+    "url": "https://www.youtube.com/@alzacepilo",
+    "image": "/experts/alena-zatsepilo.jpg?v=4",
+    "sameAs": [
+      "https://www.youtube.com/@alzacepilo"
+    ],
+    "knowsAbout": [
+      "Сила мысли",
+      "Осознанность",
+      "Сознание и подсознание",
+      "Управление реальностью",
+      "Трансерфинг",
+      "Работа с убеждениями"
+    ],
+    "subjectOf": {
+      "@type": "VideoObject",
+      "name": "Вселенная исполняет ЛЮБОЕ желание, НО...",
+      "embedUrl": "https://www.youtube.com/embed/lhwKCXLi-UA",
+      "url": "https://www.youtube.com/watch?v=lhwKCXLi-UA",
+      "thumbnailUrl": "https://i.ytimg.com/vi/lhwKCXLi-UA/hqdefault.jpg"
+    }
+  },
+  "source_path": "C:\\Users\\kfigh\\expert-reviews-hub\\experts\\alena-zatsepilo.md",
+  "recommended_books": [],
+  "generated_at": "",
+  "featured_video": "lhwKCXLi-UA"
+}

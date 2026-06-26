@@ -1,0 +1,91 @@
+# Ролевой диалог: Onboarding
+# Категория: ceremonies
+
+meta:
+  name: "onboarding"
+  display_name: "Onboarding New Team Member"
+  category: "ceremonies"
+  level: "B1-B2"
+  estimated_min: 6
+  grammar_focus: ["present-simple", "imperative", "modal-verbs"]
+  vocab_from_glossary: ["Welcome to the team", "Let me show you around", "Read the README", "Don't hesitate to ask", "When in doubt, ask", "Clone the repo", "I'll pair with you"]
+
+context:
+  role: "Senior developer welcoming a new team member"
+  team: "Pulse Lab"
+  setting: "First day, in-person or video call"
+  scenario: |
+    A new developer (Tom) just joined. You need to welcome them, show them around
+    the codebase, set expectations, and offer help.
+
+script:
+  - speaker: "newcomer"
+    line: "Hi! I'm Tom. I'm excited to join the team."
+
+  - speaker: "user"
+    line: "[YOUR TURN — welcome]"
+    hint: "Welcome, Tom! We're excited to have you."
+    model_answer: "Welcome, Tom! We're really excited to have you on the team. Let me show you around the codebase."
+    alternatives:
+      - "Welcome aboard, Tom! Great to have you. Let me get you set up with the dev environment."
+      - "Hey Tom, welcome! I'm Maria, your onboarding buddy. Let's get you started."
+
+  - speaker: "newcomer"
+    line: "Thanks! Where should I start?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — give onboarding steps]"
+    hint: "First, <step 1>. Then, <step 2>."
+    model_answer: "First, clone the repo and run the setup script in the README. Then, read the architecture doc in Notion. After that, I'll pair with you on your first PR."
+    alternatives:
+      - "Start by cloning the repo and running the setup. Once that works, check out the 'Hello World' tutorial in our docs."
+      - "Let's go through this step by step: 1) clone the repo, 2) run setup, 3) read the README. I'll be with you the whole time."
+
+  - speaker: "newcomer"
+    line: "Sounds good. What if I get stuck?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — offer help]"
+    hint: "Don't hesitate to ask. You can <channel> or <person>."
+    model_answer: "Don't hesitate to ask — Slack me anytime, or post in #engineering-help. When in doubt, ask. Better to ask than to break something."
+    alternatives:
+      - "Ask questions anytime. I'm your buddy for the first 30 days. Slack, DM, call — whatever works."
+      - "Don't struggle alone. Ping me in Slack and I'll jump on a call to help you debug."
+
+  - speaker: "newcomer"
+    line: "How long does ramp-up usually take?"
+
+  - speaker: "user"
+    line: "[YOUR TURN — set expectations]"
+    hint: "Usually <duration>. Don't worry if <realistic concern>."
+    model_answer: "Usually 2-3 months to feel comfortable. Don't worry if everything feels overwhelming at first — that's normal. Just focus on shipping small PRs to start."
+    alternatives:
+      - "It varies, but most people ramp up in about 3 months. Your first 2 weeks are about absorbing — there's no pressure to ship."
+      - "Expect to feel lost for the first month. By month 3, you'll be shipping independently."
+
+  - speaker: "newcomer"
+    line: "Great. Thanks for the help!"
+
+  - speaker: "user"
+    line: "[YOUR TURN — close warmly]"
+    hint: "You're welcome! Let's get started."
+    model_answer: "You're welcome, Tom! Let's get you set up. Ready to dive in?"
+    alternatives:
+      - "Anytime! Let's get started — I'll share my screen and we can walk through the setup."
+      - "Of course! Welcome again. Looking forward to working with you."
+
+after_dialog:
+  recap_vocab:
+    - "Welcome to the team!"
+    - "Let me show you around."
+    - "Clone the repo and run the setup script."
+    - "Don't hesitate to ask."
+    - "When in doubt, ask."
+    - "I'll pair with you on the first PR."
+
+  grammar_notes:
+    - "Imperative для инструкций: 'clone the repo', 'read the docs'"
+    - "Future will для планов: 'I'll pair with you'"
+
+  next_dialog: "standup"
+  notes: "Onboarding задаёт тон. Тёплое и структурированное начало = хороший онбординг."

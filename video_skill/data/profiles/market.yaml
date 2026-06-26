@@ -1,0 +1,57 @@
+# Профиль: Wish Market (заглушка)
+# Phase 1: минимально валидный YAML, дорабатывается при первом использовании
+
+name: market
+display_name: "Wish Market"
+description: "Маркет желаний + VK Mini App. Анонсы маркет-плейса, конкурсы, спецпредложения."
+
+defaults:
+  platform: tiktok
+  tone: bold
+  goal: traffic
+  duration: 15
+  voice: madirus
+  speed: 1.05
+  music_mood: uplifting
+
+voice_tones:
+  - bold
+  - playful
+  - energetic
+  - inspiring
+
+branding:
+  watermark: "@wishmarket"
+  watermark_handle: "wishmarket"
+  cta_default: "Участвуй в конкурсе — ссылка в закрепе"
+  cta_url: "https://app.pulab.online/market"  # нужно уточнить
+  accent_color: "#EA580C"  # оранжевый
+  palette:
+    primary: "#EA580C"
+    text: "#1F0A14"
+    bg: "#FFF7ED"
+
+hashtags_base:
+  - "#wishmarket"
+  - "#конкурс"
+  - "#маркетжеланий"
+  - "#pulabru"
+
+cta_profiles:
+  bold:
+    - "Участвуй — главный приз в закрепе"
+    - "Не упусти, дедлайн в закрепе"
+  playful:
+    - "Поймай удачу — ссылка в закрепе"
+    - "Крути рулетку, приз в закрепе"
+  energetic:
+    - "Скорее жми — розыгрыш в закрепе"
+    - "3 секунды, ссылка в закрепе, успей"
+
+source_domains:
+  - "Конкурсы, розыгрыши, спецпредложения"
+  - "Wish Market — маркет желаний, 1.08-31.12.2026"
+
+output:
+  filename_template: "{slug}-market"
+  state_subdir: "market"

@@ -1,0 +1,23 @@
+{
+  "title": "{title} — конспект и практика | Лаборатория желаний",
+  "description": "Краткое содержание, практические советы и упражнения по книге {title} автора {author}.",
+  "og_title": "{title} — конспект и практика",
+  "og_description": "Краткое содержание, практические советы и упражнения по книге {title}.",
+  "og_image": "{cover_url}",
+  "og_type": "book",
+  "twitter_card": "summary_large_image",
+  "schema_book": {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "{title}",
+    "author": {
+      "@type": "Person",
+      "name": "{author}"
+    },
+    "datePublished": "{year}",
+    "isbn": "{isbn}",
+    "image": "{cover_url}",
+    "inLanguage": "ru"
+  },
+  "schema_faqpage": null
+}

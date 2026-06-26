@@ -1,0 +1,528 @@
+---
+import Base from '../layouts/Base.astro';
+import booksData from '../data/books.json';
+import { breadcrumbLd } from '../lib/seo';
+
+/**
+ * /my-experiment/ — форма «поделиться своим экспериментом».
+ *
+ * Стратегия community-first (2026-06-18): читатели — главные герои.
+ * Форма — снижение порога: кому неловко писать в чат, может заполнить 5 полей.
+ *
+ * Поля (community-first, источник опционален):
+ *   1. Имя/псевдоним (опц.)
+ *   2. Откуда идея (книга из каталога / своя / пропустить)
+ *   3. Что пробовали (textarea 30-1000)
+ *   4. Что получилось (textarea 30-1000)
+ *   5. Согласие на публикацию (checkbox)
+ *
+ * API: POST /api/experiments (см. worker/src/routes/experiments.ts)
+ * Уведомление: Лаборатория получает в TG + email.
+ */
+
+const pageTitle = 'Поделиться экспериментом';
+const pageDescription =
+  'Расскажите, что вы попробовали в жизни — из книги, подкаста или просто ситуации — и что получилось. Без регистрации, 5 полей. Лучшие истории попадают в ежемесячную подборку.';
+
+const books = booksData.books.map((b) => ({
+  slug: b.slug,
+  title: b.title,
+  author: b.author,
+}));
+
+const breadcrumb = breadcrumbLd([
+  { name: 'Главная', url: '/' },
+  { name: 'Эксперименты читателей', url: '/experiments/' },
+  { name: 'Поделиться', url: '/my-experiment/' },
+]);
+---
+<Base
+  title={pageTitle}
+  description={pageDescription}
+  ogImage="/og-default.png"
+  extraJsonLd={breadcrumb}
+>
+  <!-- HERO -->
+  <section class="section myexp-hero">
+    <div class="container" style="max-width: 640px; text-align: center;">
+      <p class="section__eyebrow reveal">Форма · 5 полей · без регистрации</p>
+      <h1 class="section__title reveal" style="font-size: 36px; line-height: 1.15;">
+        Расскажите свой<br />эксперимент
+      </h1>
+      <p class="footer__about reveal" style="margin: 18px auto 0; max-width: 56ch; font-size: 16px;">
+        Попробовали что-то в&nbsp;жизни&nbsp;— из&nbsp;книги, подкаста или просто ситуации&nbsp;— поделитесь.
+        Получилось или&nbsp;нет&nbsp;— неважно, важен сам&nbsp;опыт.
+        Лучшие истории попадают в&nbsp;<a href="/experiments/" style="color: var(--rose);">ежемесячную подборку</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <section class="section section--alt">
+    <div class="container" style="max-width: 640px;">
+      <form class="myexp reveal" id="myexp-form" novalidate>
+        <!-- Honeypot: боты заполняют, люди — нет -->
+        <input class="myexp__hp" type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <!-- 1. Имя/псевдоним -->
+        <div class="myexp__row">
+          <label class="myexp__label" for="myexp-name">
+            Как вас подписать
+            <span class="myexp__hint">— не&nbsp;обязательно, можно оставить пустым</span>
+          </label>
+          <input
+            class="myexp__input"
+            id="myexp-name"
+            name="name"
+            type="text"
+            maxlength="60"
+            placeholder="Анна, @olga_lab, или просто 'участник сообщества'"
+          />
+        </div>
+
+        <!-- 2. Откуда идея (опц.) -->
+        <div class="myexp__row">
+          <label class="myexp__label" for="myexp-source">
+            Откуда идея
+            <span class="myexp__hint">— книга, подкаст, разговор, жизненная ситуация… или пропустите</span>
+          </label>
+          <select class="myexp__input myexp__select" id="myexp-source" name="source-kind">
+            <option value="" selected>— Пропустить —</option>
+            {books.map((b) => (
+              <option value={`book:${b.slug}`} data-title={`${b.title} — ${b.author}`}>
+                📖 {b.title} — {b.author}
+              </option>
+            ))}
+            <option value="custom" data-title="">✍️ Свой вариант (ввести ниже)</option>
+          </select>
+          <input
+            class="myexp__input myexp__source-custom"
+            id="myexp-source-custom"
+            name="source-custom"
+            type="text"
+            maxlength="200"
+            placeholder="Например: подкаст «Теория игр», разговор с подругой, книга Мужицкой…"
+            hidden
+          />
+        </div>
+
+        <!-- 3. Что пробовали -->
+        <div class="myexp__row">
+          <label class="myexp__label" for="myexp-did">
+            Что пробовали
+            <span class="myexp__hint">— коротко, что именно делали</span>
+            <span class="myexp__required">*</span>
+          </label>
+          <textarea
+            class="myexp__input myexp__textarea"
+            id="myexp-did"
+            name="did"
+            rows="5"
+            minlength="30"
+            maxlength="1000"
+            required
+            placeholder="Например: попробовала технику «5 почему» из книги Мужицкой на своём желании сменить работу. После 3-го «почему» дошла до «хочу чувствовать, что справляюсь»…"
+          ></textarea>
+          <p class="myexp__counter" data-role="counter-did">0 / 1000</p>
+        </div>
+
+        <!-- 4. Что получилось -->
+        <div class="myexp__row">
+          <label class="myexp__label" for="myexp-got">
+            Что получилось
+            <span class="myexp__hint">— честно: успех, провал, «ничего», «удивило»</span>
+            <span class="myexp__required">*</span>
+          </label>
+          <textarea
+            class="myexp__input myexp__textarea"
+            id="myexp-got"
+            name="got"
+            rows="5"
+            minlength="30"
+            maxlength="1000"
+            required
+            placeholder="Например: поняла, что дело не в работе, а в самооценке. Уже 2 недели работаю с этим по-другому — без смены работы, но состояние изменилось."
+          ></textarea>
+          <p class="myexp__counter" data-role="counter-got">0 / 1000</p>
+        </div>
+
+        <!-- 5. Согласие на публикацию -->
+        <label class="myexp__consent">
+          <input type="checkbox" id="myexp-publish" name="publish" />
+          <span>
+            <strong>Разрешаю опубликовать</strong> в&nbsp;подборке на&nbsp;<a href="/experiments/" target="_blank" rel="noopener">/experiments/</a> и&nbsp;в&nbsp;каналах сообщества (ВК, Telegram).
+            Без согласия историю увижу только&nbsp;я.
+          </span>
+        </label>
+
+        <label class="myexp__consent myexp__consent--policy">
+          <input type="checkbox" id="myexp-policy" required />
+          <span>
+            Согласен(на) на&nbsp;<a href="/privacy/" target="_blank" rel="noopener">обработку персональных данных</a>
+            <span class="myexp__required">*</span>
+          </span>
+        </label>
+
+        <button class="btn btn--primary btn--block myexp__submit" type="submit">
+          Отправить историю
+        </button>
+
+        <p class="myexp__error" data-role="error" hidden></p>
+      </form>
+
+      <div class="myexp__success reveal" id="myexp-success" hidden>
+        <div class="myexp__success-icon">✓</div>
+        <h3 class="myexp__success-title">Спасибо!</h3>
+        <p class="myexp__success-text" data-role="success-text">
+          История получена.
+        </p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a class="btn btn--ghost" href="/experiments/">К подборкам</a>
+          <a class="btn btn--primary" href="/library/">К книгам</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY FORM -->
+  <section class="section">
+    <div class="container" style="max-width: 640px;">
+      <h2 class="section__title reveal" style="font-size: 24px; text-align: center;">
+        Почему именно форма
+      </h2>
+      <ul class="myexp-why reveal">
+        <li><strong>Снижение порога.</strong> Не&nbsp;каждый готов писать в&nbsp;чат&nbsp;— заполнить 5&nbsp;полей проще.</li>
+        <li><strong>Не теряются детали.</strong> В&nbsp;чате сообщения уходят в&nbsp;ленту, в&nbsp;форме&nbsp;— структура: что делали → что вышло.</li>
+        <li><strong>Легко собрать подборку.</strong> AI-агент возьмёт ответы из&nbsp;базы, я&nbsp;отредактирую и&nbsp;опубликую раз&nbsp;в&nbsp;месяц.</li>
+        <li><strong>Без негатива.</strong> Если не&nbsp;отметили согласие&nbsp;— ваша история не&nbsp;попадёт в&nbsp;публичную подборку, только мне.</li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { apiFetch, ApiError } from '../lib/api';
+  import { reachGoal, GOALS } from '../lib/metrika';
+
+  const form = document.getElementById('myexp-form') as HTMLFormElement | null;
+  const successBlock = document.getElementById('myexp-success') as HTMLElement | null;
+  const successText = successBlock?.querySelector<HTMLElement>('[data-role="success-text"]') ?? null;
+
+  // Счётчики символов
+  const counterDid = form?.querySelector<HTMLElement>('[data-role="counter-did"]');
+  const counterGot = form?.querySelector<HTMLElement>('[data-role="counter-got"]');
+  const inputDid = form?.querySelector<HTMLTextAreaElement>('#myexp-did');
+  const inputGot = form?.querySelector<HTMLTextAreaElement>('#myexp-got');
+  const selectSource = form?.querySelector<HTMLSelectElement>('#myexp-source');
+  const inputSourceCustom = form?.querySelector<HTMLInputElement>('#myexp-source-custom');
+
+  // Показ поля «свой вариант» когда выбрано custom
+  selectSource?.addEventListener('change', () => {
+    if (!inputSourceCustom) return;
+    const isCustom = selectSource.value === 'custom';
+    inputSourceCustom.hidden = !isCustom;
+    if (isCustom) inputSourceCustom.focus();
+  });
+
+  function updateCounter(input: HTMLTextAreaElement | null, counter: HTMLElement | null) {
+    if (!input || !counter) return;
+    const len = input.value.length;
+    counter.textContent = `${len} / 1000`;
+    counter.classList.toggle('myexp__counter--warn', len > 900);
+  }
+
+  inputDid?.addEventListener('input', () => updateCounter(inputDid, counterDid));
+  inputGot?.addEventListener('input', () => updateCounter(inputGot, counterGot));
+
+  function showError(msg: string) {
+    if (!form) return;
+    const errorEl = form.querySelector<HTMLElement>('[data-role="error"]');
+    if (!errorEl) return;
+    errorEl.textContent = msg;
+    errorEl.hidden = false;
+    form.querySelectorAll<HTMLElement>('.myexp__input[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+  }
+
+  if (form && successBlock) {
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const errorEl = form.querySelector<HTMLElement>('[data-role="error"]');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (errorEl) errorEl.hidden = true;
+
+      const name = (form.querySelector<HTMLInputElement>('#myexp-name')?.value ?? '').trim();
+      const sourceKind = selectSource?.value ?? '';
+      const sourceCustom = inputSourceCustom?.value.trim() ?? '';
+      let bookSlug = '';
+      let bookTitle = '';
+      let source = '';
+      if (sourceKind.startsWith('book:')) {
+        bookSlug = sourceKind.slice('book:'.length);
+        bookTitle = selectSource?.selectedOptions[0]?.dataset.title ?? '';
+        source = bookTitle;
+      } else if (sourceKind === 'custom') {
+        source = sourceCustom;
+      }
+      const did = inputDid?.value.trim() ?? '';
+      const got = inputGot?.value.trim() ?? '';
+      const allowPublish = form.querySelector<HTMLInputElement>('#myexp-publish')?.checked === true;
+      const policyOk = form.querySelector<HTMLInputElement>('#myexp-policy')?.checked === true;
+      const hp = form.querySelector<HTMLInputElement>('input[name="hp"]')?.value ?? '';
+
+      if (sourceKind === 'custom' && sourceCustom.length === 0) {
+        showError('Опишите в одной строке, откуда идея, или выберите «Пропустить»');
+        inputSourceCustom?.focus();
+        return;
+      }
+      if (did.length < 30) { showError('Расскажите подробнее, что вы пробовали (минимум 30 знаков)'); return; }
+      if (got.length < 30) { showError('Расскажите, что получилось (минимум 30 знаков)'); return; }
+      if (!policyOk) { showError('Нужно согласие на обработку персональных данных'); return; }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Отправляем…';
+      }
+
+      try {
+        reachGoal(GOALS.myExperimentFormSubmitted);
+        const result = await apiFetch<{ ok: boolean; id: string; message: string }>('/api/experiments', {
+          method: 'POST',
+          body: {
+            name: name || undefined,
+            bookSlug: bookSlug || undefined,
+            bookTitle: bookTitle || undefined,
+            source: source || undefined,
+            did,
+            got,
+            allowPublish,
+            hp,
+          },
+        });
+
+        reachGoal(GOALS.myExperimentFormSuccess);
+        form.hidden = true;
+        if (successText) successText.textContent = result.message;
+        successBlock.hidden = false;
+        successBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (err) {
+        const msg = err instanceof ApiError ? err.message : 'Что-то пошло не так. Попробуйте позже.';
+        showError(msg);
+        reachGoal(GOALS.myExperimentFormError);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Отправить историю';
+        }
+      }
+    });
+  }
+</script>
+
+<style>
+  .myexp {
+    background: #fff;
+    border: 1.5px solid rgba(225, 29, 72, 0.2);
+    border-radius: 18px;
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: 0 12px 40px -20px rgba(225, 29, 72, 0.25);
+  }
+
+  .myexp__hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .myexp__row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .myexp__label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .myexp__hint {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .myexp__required {
+    color: var(--rose);
+    font-weight: 700;
+  }
+
+  .myexp__input {
+    width: 100%;
+    padding: 12px 16px;
+    font: inherit;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .myexp__input::placeholder { color: rgba(107, 58, 74, 0.5); }
+  .myexp__input:focus {
+    border-color: var(--rose);
+    box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.12);
+  }
+  .myexp__input[aria-invalid="true"] {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+  }
+
+  .myexp__select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23881337' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 12px;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
+  .myexp__source-custom {
+    margin-top: 6px;
+  }
+
+  .myexp__textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.5;
+  }
+
+  .myexp__counter {
+    margin: 0;
+    text-align: right;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .myexp__counter--warn {
+    color: #d97706;
+    font-weight: 600;
+  }
+
+  .myexp__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .myexp__consent--policy {
+    padding-top: 12px;
+    border-top: 1px solid rgba(225, 29, 72, 0.12);
+  }
+
+  .myexp__consent input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: var(--rose);
+    cursor: pointer;
+  }
+
+  .myexp__consent a {
+    color: var(--rose);
+    text-decoration: underline;
+  }
+
+  .myexp__submit { margin-top: 8px; }
+  .myexp__submit[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .myexp__error {
+    margin: 0;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #881337;
+    background: #fff1f2;
+    border: 1px solid rgba(225, 29, 72, 0.3);
+    border-radius: 10px;
+  }
+
+  .myexp__success {
+    background: #fff;
+    border: 1.5px solid rgba(225, 29, 72, 0.3);
+    border-radius: 18px;
+    padding: 36px 28px;
+    text-align: center;
+    box-shadow: 0 12px 40px -20px rgba(225, 29, 72, 0.25);
+  }
+
+  .myexp__success-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e11d48, #881337);
+    color: #fff;
+    font-size: 30px;
+    line-height: 56px;
+    font-weight: 700;
+  }
+
+  .myexp__success-title {
+    margin: 0 0 10px;
+    font-family: var(--font-display);
+    font-size: 26px;
+    color: var(--ink);
+  }
+
+  .myexp__success-text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .myexp-why {
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .myexp-why li {
+    padding: 14px 18px;
+    background: var(--bg-2);
+    border-radius: 12px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .myexp-why strong {
+    color: var(--rose-deep);
+  }
+</style>

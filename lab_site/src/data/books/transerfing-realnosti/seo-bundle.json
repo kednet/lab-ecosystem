@@ -1,0 +1,89 @@
+{
+  "title": "Трансерфинг реальности — конспект и практика | Лаборатория желаний",
+  "description": "📋 Общая информация\n- **Автор:** Вадим Зеланд\n- **Год:** 2004\n- **Жанр:** саморазвитие / практическая психология",
+  "og_title": "Трансерфинг реальности — конспект и практика",
+  "og_description": "Краткое содержание, практические советы и упражнения по книге «Трансерфинг реальности» автора Вадим Зеланд.",
+  "og_image": "/src/data/books/transerfing-realnosti/og_image.jpg",
+  "og_type": "book",
+  "twitter_card": "summary_large_image",
+  "canonical_url": "https://pulab.ru/books/transerfing-realnosti",
+  "keywords": [
+    "намерение",
+    "внимание",
+    "действие"
+  ],
+  "lsi": [
+    "намерение",
+    "внимание",
+    "действие"
+  ],
+  "cover_path": "/src/data/books/transerfing-realnosti/cover.jpg",
+  "cover_format": "jpg",
+  "schema_book": {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Трансерфинг реальности",
+    "author": {
+      "@type": "Person",
+      "name": "Вадим Зеланд"
+    },
+    "datePublished": "2004",
+    "isbn": null,
+    "image": "https://pulab.ru/books/transerfing-realnosti/cover.jpg",
+    "inLanguage": "ru",
+    "url": "https://pulab.ru/books/transerfing-realnosti"
+  },
+  "schema_faqpage": {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "О чём книга «Трансерфинг реальности»?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "(ответ генерируется из summary.md в Phase 3+)"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Кто автор книги «Трансерфинг реальности»?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "(ответ генерируется из summary.md в Phase 3+)"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Какие основные идеи в книге «Трансерфинг реальности»?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "(ответ генерируется из summary.md в Phase 3+)"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Какие практические упражнения предлагает автор?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "(ответ генерируется из summary.md в Phase 3+)"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Кому подойдёт книга «Трансерфинг реальности»?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "(ответ генерируется из summary.md в Phase 3+)"
+        }
+      }
+    ]
+  },
+  "_meta": {
+    "generated_at": "2026-06-15T14:28:04.081793Z",
+    "generator": "publisher_skill/scripts/seo_optimize.py",
+    "seo_advisor_integration": true,
+    "og_image_generated": true,
+    "phase": "v0.3"
+  }
+}

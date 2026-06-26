@@ -1,0 +1,155 @@
+---
+// Компактный индикатор пользователя в шапке
+// Показывает email + dropdown с «выйти», или кнопку «войти» если нет токена.
+// На клиенте обновляется по событию 'lab-auth-changed'.
+---
+<header class="header-auth" data-component="header-auth">
+  <a class="header-auth__login" href="/auth/" data-role="login">Войти</a>
+  <div class="header-auth__user" data-role="user" hidden>
+    <button class="header-auth__btn" type="button" data-role="toggle" aria-haspopup="menu">
+      <span data-role="email">—</span>
+      <span class="header-auth__caret" aria-hidden="true">▾</span>
+    </button>
+    <div class="header-auth__menu" data-role="menu" role="menu" hidden>
+      <a class="header-auth__menu-item" href="/wish-map/" role="menuitem">Моя карта желаний</a>
+      <a class="header-auth__menu-item" href="/pricing/" role="menuitem">Подписка</a>
+      <hr class="header-auth__menu-sep" />
+      <button class="header-auth__menu-item header-auth__menu-item--danger" type="button" data-role="logout" role="menuitem">Выйти</button>
+    </div>
+  </div>
+</header>
+
+<script>
+  import { getUser, isAuthed, logout, onAuthChange } from '../lib/auth';
+
+  const root = document.querySelector<HTMLElement>('[data-component="header-auth"]');
+  if (root) {
+    const loginEl = root.querySelector<HTMLElement>('[data-role="login"]')!;
+    const userEl = root.querySelector<HTMLElement>('[data-role="user"]')!;
+    const emailEl = root.querySelector<HTMLElement>('[data-role="email"]')!;
+    const toggle = root.querySelector<HTMLButtonElement>('[data-role="toggle"]')!;
+    const menu = root.querySelector<HTMLElement>('[data-role="menu"]')!;
+    const logoutBtn = root.querySelector<HTMLButtonElement>('[data-role="logout"]')!;
+
+    function render() {
+      const user = getUser();
+      if (isAuthed() && user) {
+        loginEl.hidden = true;
+        userEl.hidden = false;
+        emailEl.textContent = user.email;
+      } else {
+        loginEl.hidden = false;
+        userEl.hidden = true;
+        menu.hidden = true;
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = !menu.hidden;
+      menu.hidden = isOpen;
+      toggle.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!root.contains(e.target as Node)) {
+        menu.hidden = true;
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      logout();
+      window.location.href = '/';
+    });
+
+    onAuthChange(render);
+    render();
+  }
+</script>
+
+<style>
+  .header-auth {
+    display: flex;
+    align-items: center;
+  }
+  .header-auth__login {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rose-deep);
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1.5px solid var(--rose);
+    transition: background 0.15s, color 0.15s;
+  }
+  .header-auth__login:hover {
+    background: var(--rose);
+    color: #fff;
+  }
+  .header-auth__user {
+    position: relative;
+  }
+  .header-auth__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rose-deep);
+    padding: 8px 14px;
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    cursor: pointer;
+    max-width: 220px;
+    transition: border-color 0.15s;
+  }
+  .header-auth__btn:hover { border-color: var(--rose); }
+  .header-auth__btn [data-role="email"] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 180px;
+  }
+  .header-auth__caret {
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .header-auth__menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 220px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 20px 40px -15px rgba(225, 29, 72, 0.18);
+    padding: 6px;
+    z-index: 100;
+  }
+  .header-auth__menu-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    padding: 10px 14px;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.12s;
+  }
+  .header-auth__menu-item:hover { background: var(--bg-2); }
+  .header-auth__menu-item--danger { color: var(--rose-deep); }
+  .header-auth__menu-item--danger:hover { background: rgba(225, 29, 72, 0.1); }
+  .header-auth__menu-sep {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 4px 0;
+  }
+</style>

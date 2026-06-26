@@ -1,0 +1,87 @@
+# Параметры 5 платформ для Video Creator Skill v1.0
+# Используется в Phase 1 (для генерации сценариев) и Phase 2 (для ffmpeg-параметров)
+#
+# Источник safe_zones:
+# - TikTok: 9:16, ~250px сверху и ~400px снизу для UI-оверлеев платформы
+# - YouTube Shorts: аналогично
+# - VK Клипы: чуть меньше safe-zones (200/350)
+# - Telegram: 1:1 (кружочки) — max 60 сек, минимальные safe-zones
+# - Reels: 9:16, 90 сек max (вместо 60)
+#
+# default_voice: голос по умолчанию, если в profile.defaults не задан
+# default_music_mood: тег для подбора BGM (Phase 2, bgm_catalog.yaml)
+
+tiktok:
+  aspect: "9:16"
+  width: 1080
+  height: 1920
+  max_duration: 60
+  safe_zones:
+    top: 250
+    bottom: 400
+    left: 50
+    right: 50
+  default_voice: madirus
+  default_music_mood: uplifting
+  hashtags_extra: ["#tiktok", "#рилсы"]
+  notes: "TikTok: лучше всего заходит энергичный/провокационный тон"
+
+youtube:
+  aspect: "9:16"
+  width: 1080
+  height: 1920
+  max_duration: 60
+  safe_zones:
+    top: 200
+    bottom: 350
+    left: 50
+    right: 50
+  default_voice: ermil
+  default_music_mood: ambient
+  hashtags_extra: ["#shorts", "#youtube"]
+  notes: "YouTube Shorts: объясняйки/уроки, образовательный тон"
+
+vk:
+  aspect: "9:16"
+  width: 1080
+  height: 1920
+  max_duration: 60
+  safe_zones:
+    top: 200
+    bottom: 350
+    left: 50
+    right: 50
+  default_voice: alena
+  default_music_mood: tide
+  hashtags_extra: ["#вкклипы", "#вконтакте"]
+  notes: "VK Клипы: средне между TikTok и YouTube, тёплая подача"
+
+telegram:
+  aspect: "1:1"     # TG-кружочки = квадрат
+  width: 720
+  height: 720
+  max_duration: 60
+  safe_zones:
+    top: 30
+    bottom: 30
+    left: 30
+    right: 30
+  default_voice: ermil
+  default_music_mood: silence
+  hashtags_extra: []   # в TG-кружочках хештеги не работают
+  notes: "Telegram кружочки: квадрат 1:1, без BGM (только голос), без субтитров"
+
+reels:
+  aspect: "9:16"
+  width: 1080
+  height: 1920
+  max_duration: 90     # Instagram даёт 90 сек
+  safe_zones:
+    top: 250
+    bottom: 400
+    left: 50
+    right: 50
+  default_voice: marina
+  default_music_mood: uplifting
+  hashtags_extra: ["#reels", "#инста"]
+  notes: "Instagram Reels: 90 сек max, эстетичная подача, трендовая музыка"

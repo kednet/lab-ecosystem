@@ -1,0 +1,109 @@
+{
+  "name": "Лаборатория желаний",
+  "slug": "lab-zhelanij",
+  "domain": "app.pulab.online",
+  "description": "Сообщество осознанных желаний: библиотека конспектов книг, трекер привычек и целей, AI-коуч, медитации и аффермации. Подписка 590 ₽/мес.",
+  "audience": "Женщины 25-55, сегмент B (35-44) — приоритет",
+  "draft_keywords_file": "data/draft_lab_zhelanij_keywords.md",
+  "pages": [
+    {
+      "id": "home",
+      "url": "/",
+      "purpose": "бренд + общее позиционирование",
+      "current_title": "Превращаем «хочу» в жизнь — Лаборатория желаний",
+      "current_h1": "Превращаем «хочу» в жизнь",
+      "primary_keywords": ["как достичь цели", "как не бросать начатое", "саморазвитие с чего начать"],
+      "expected_distribution": ["how-to", "brend"]
+    },
+    {
+      "id": "library",
+      "url": "/library/",
+      "purpose": "книги, конспекты, краткие пересказы",
+      "current_title": "Краткие пересказы книг по саморазвитию — Библиотека",
+      "current_h1": "Краткие пересказы книг, которые меняют мышление",
+      "primary_keywords": ["краткие пересказы книг", "книги по саморазвитию", "лучшие книги по психологии"],
+      "expected_distribution": ["books", "how-to"]
+    },
+    {
+      "id": "experts",
+      "url": "/experts/",
+      "purpose": "авторы, тренеры, психологи",
+      "current_title": "Авторы и тренеры саморазвития — Лаборатория желаний",
+      "current_h1": "Эксперты",
+      "primary_keywords": ["авторы книг по саморазвитию", "тренеры личностного роста", "психологи блогеры"],
+      "expected_distribution": ["info", "brend"]
+    },
+    {
+      "id": "tracker",
+      "url": "/tracker/",
+      "purpose": "цели, привычки, планы",
+      "current_title": "Трекер привычек и целей онлайн — как достичь желаемого",
+      "current_h1": "Трекер привычек и целей",
+      "primary_keywords": ["трекер привычек", "как достичь цели", "как не бросать начатое", "как ставить цели правильно"],
+      "expected_distribution": ["transactional", "how-to"]
+    },
+    {
+      "id": "generate",
+      "url": "/generate/",
+      "purpose": "ИИ-коуч, конспекты",
+      "current_title": "AI-коуч для целей и книг — Лаборатория желаний",
+      "current_h1": "AI-коуч и конспекты книг",
+      "primary_keywords": ["ии коуч", "нейросеть для саморазвития", "конспект книги онлайн"],
+      "expected_distribution": ["transactional", "brend"]
+    },
+    {
+      "id": "pricing",
+      "url": "/pricing/",
+      "purpose": "тарифы, подписка 590 ₽/мес",
+      "current_title": "Подписка на саморазвитие — 590 ₽/мес",
+      "current_h1": "Подписка на саморазвитие",
+      "primary_keywords": ["подписка на саморазвитие", "сколько стоит подписка на курсы", "платный трекер целей"],
+      "expected_distribution": ["commercial", "brend"]
+    },
+    {
+      "id": "blog",
+      "url": "/blog/",
+      "purpose": "статьи, лонгриды",
+      "current_title": "Блог о саморазвитии — когнитивные искажения, привычки",
+      "current_h1": "Блог: мышление, привычки, осознанность",
+      "primary_keywords": ["когнитивные искажения", "как перестать прокрастинировать", "привычки успешных людей", "осознанность практика"],
+      "expected_distribution": ["info", "how-to"]
+    },
+    {
+      "id": "audio",
+      "url": "/audio/",
+      "purpose": "медитации, аффермации",
+      "current_title": "Медитации и аффермации онлайн бесплатно — слушать",
+      "current_h1": "Медитации онлайн: слушать бесплатно",
+      "primary_keywords": ["медитации онлайн", "медитации слушать онлайн", "вечерние медитации для сна", "аффермации на каждый день"],
+      "expected_distribution": ["info", "transactional"]
+    },
+    {
+      "id": "about",
+      "url": "/about/",
+      "purpose": "о проекте, история",
+      "current_title": "О проекте — Лаборатория желаний",
+      "current_h1": "О проекте",
+      "primary_keywords": ["лаборатория желаний", "сообщество по саморазвитию"],
+      "expected_distribution": ["brend", "info"]
+    },
+    {
+      "id": "legal",
+      "url": "/legal/",
+      "purpose": "оферта, политика 152-ФЗ",
+      "current_title": "Публичная оферта — Лаборатория желаний",
+      "current_h1": "Публичная оферта",
+      "primary_keywords": ["публичная оферта образец", "политика конфиденциальности 152 фз"],
+      "expected_distribution": ["navigational", "legal"]
+    },
+    {
+      "id": "login",
+      "url": "/login/",
+      "purpose": "вход в ЛК",
+      "current_title": "Вход в Лабораторию желаний",
+      "current_h1": "Вход",
+      "primary_keywords": ["вход в личный кабинет", "вход по email коду"],
+      "expected_distribution": ["navigational", "brend"]
+    }
+  ]
+}

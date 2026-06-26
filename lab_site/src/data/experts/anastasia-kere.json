@@ -1,0 +1,66 @@
+{
+  "slug": "anastasia-kere",
+  "name": "Анастасия Кере",
+  "jobTitle": "Блогер, амбассадор самодисциплины и любви к себе",
+  "description": "Анастасия Кере",
+  "url": "[youtube.com/@anastasiakere](https://www.youtube.com/@anastasiakere)",
+  "image": "/experts/anastasia-kere.jpg?v=4",
+  "email": "_по рекламе — через менеджера в профиле канала_",
+  "sameAs": [
+    "https://www.youtube.com/@anastasiakere"
+  ],
+  "knowsAbout": [
+    "Самодисциплина",
+    "Любовь к себе",
+    "Осознанное материнство",
+    "UGC-контент",
+    "Блогинг"
+  ],
+  "alumniOf": [],
+  "awards": [],
+  "worksFor": "",
+  "quotes": [],
+  "media": {
+    "youtube": "https://www.youtube.com/@anastasiakere"
+  },
+  "tags": [
+    "youtube",
+    "блогер",
+    "самодисциплина",
+    "любовь-к-себе",
+    "мама",
+    "к-себе-нежно"
+  ],
+  "score": 60,
+  "schema_jsonld": {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Анастасия Кере",
+    "alternateName": "Anastasia Kere",
+    "jobTitle": "Блогер, амбассадор самодисциплины и любви к себе",
+    "description": "Российскоязычный лайфстайл-блогер в США, 1.47М подписчиков на YouTube. Голос мамского/женского сообщества о самодисциплине, любви к себе и осознанном материнстве.",
+    "url": "https://www.youtube.com/@anastasiakere",
+    "image": "/experts/anastasia-kere.jpg?v=4",
+    "sameAs": [
+      "https://www.youtube.com/@anastasiakere"
+    ],
+    "knowsAbout": [
+      "Самодисциплина",
+      "Любовь к себе",
+      "Осознанное материнство",
+      "UGC-контент",
+      "Блогинг"
+    ],
+    "subjectOf": {
+      "@type": "VideoObject",
+      "name": "Два года жизни, чтобы найти себя",
+      "embedUrl": "https://www.youtube.com/embed/cC_83PgFRHU",
+      "url": "https://www.youtube.com/watch?v=cC_83PgFRHU",
+      "thumbnailUrl": "https://i.ytimg.com/vi/cC_83PgFRHU/hqdefault.jpg"
+    }
+  },
+  "source_path": "C:\\Users\\kfigh\\expert-reviews-hub\\experts\\anastasia-kere.md",
+  "recommended_books": [],
+  "generated_at": "",
+  "featured_video": "cC_83PgFRHU"
+}

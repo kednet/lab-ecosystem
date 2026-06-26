@@ -1,0 +1,96 @@
+meta:
+  name: "conditionals-1-2"
+  display_name: "Conditionals: 1st & 2nd"
+  level: "B1-B2"
+  estimated_min: 7
+  description: "1st Conditional (реальные) vs 2nd Conditional (нереальные)."
+  grammar_point: "conditionals-1-2"
+  prerequisites: ["present-simple", "future-will"]
+
+questions:
+  - id: 1
+    type: "multiple_choice"
+    prompt: "If we ship now, we ___ bugs. (real/likely)"
+    options: ["will have", "would have", "have", "had"]
+    correct: "will have"
+    explanation: "1st Conditional: If + Present, will + V. Реально."
+
+  - id: 2
+    type: "open"
+    prompt: "If I ___ (have) more time, I would refactor this code. (unreal)"
+    correct_answer: "had"
+    acceptable_answers: ["had"]
+    explanation: "2nd Conditional: If + Past Simple, would + V. Нереально (у меня нет времени)."
+
+  - id: 3
+    type: "multiple_choice"
+    prompt: "If the tests ___, I will merge the PR. (real)"
+    options: ["pass", "passed", "would pass", "had passed"]
+    correct: "pass"
+    explanation: "1st Conditional: If + Present Simple (pass), will + V (merge)."
+
+  - id: 4
+    type: "open"
+    prompt: "If we were using TypeScript, this bug ___ (not / happen). (hypothetical)"
+    correct_answer: "wouldn't happen"
+    acceptable_answers: ["wouldn't happen", "would not happen", "would not have happened"]
+    explanation: "2nd Conditional: If + Past Simple (were using), would + V (happen)."
+
+  - id: 5
+    type: "multiple_choice"
+    prompt: "Unless we fix the memory leak, the service ___ crash. (real)"
+    options: ["will", "would", "shall", "is going"]
+    correct: "will"
+    explanation: "Unless = if not. 1st Conditional: will + V."
+
+  - id: 6
+    type: "multiple_choice"
+    prompt: "If I ___ you, I would add more tests. (advice, hypothetical)"
+    options: ["am", "was", "were", "be"]
+    correct: "were"
+    explanation: "2nd Conditional: 'If I were you' (классическая идиома), would + V."
+
+  - id: 7
+    type: "open"
+    prompt: "If she ___ (study) harder, she would pass the exam. (hypothetical)"
+    correct_answer: "studied"
+    acceptable_answers: ["studied"]
+    explanation: "2nd Conditional: If + Past Simple (studied), would + V."
+
+  - id: 8
+    type: "multiple_choice"
+    prompt: "If you ___ me, I will help. (real, simple)"
+    options: ["ask", "asked", "would ask", "had asked"]
+    correct: "ask"
+    explanation: "1st Conditional: If + Present (ask), will + V."
+
+  - id: 9
+    type: "open"
+    prompt: "What ___ you do if the build failed right now? (hypothetical question)"
+    correct_answer: "would"
+    acceptable_answers: ["would"]
+    explanation: "2nd Conditional question: What + would + you + V?"
+
+  - id: 10
+    type: "multiple_choice"
+    prompt: "If we had more engineers, we ___ ship faster. (hypothetical)"
+    options: ["will", "would", "shall", "are going"]
+    correct: "would"
+    explanation: "2nd Conditional: If + Past (had), would + V (ship)."
+
+after_quiz:
+  recap: |
+    **1st Conditional (реально/вероятно):**
+    - If + Present Simple, will + V
+    - 'If we ship now, we will have bugs.'
+
+    **2nd Conditional (нереально/маловероятно):**
+    - If + Past Simple, would + V
+    - 'If I had more time, I would refactor.'
+    - 'If I were you, I would add tests.'
+
+    **Unless = if not**
+
+  next_tense: "passive-voice"
+  recommended_review: "references/tenses-12-table.md#conditional-1st"
+  related_lesson: "Week 9-10 (curriculum.yaml)"

@@ -1,0 +1,74 @@
+[project]
+name = "wishcoach"
+version = "0.1.0"
+description = "WishCoach — ИИ-коуч для подписчиков Лаборатории желаний (Phase 0 — каркас)"
+requires-python = ">=3.11"
+authors = [
+  { name = "kfigh" }
+]
+
+# === FastAPI / backend ===
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn>=0.32.0",
+  "pydantic>=2.9.0",
+  "pydantic-settings>=2.6.0",
+  "httpx[socks]>=0.27.0",
+  "PySocks>=1.7.1",
+  "python-dotenv>=1.0.0",
+  "structlog>=24.4.0",
+  "anyio>=4.6.0",
+  "aiosqlite>=0.20.0",
+]
+
+# Lazy extras (не тянутся в Phase 0):
+#   Phase 1+: anthropic
+#   Phase 5+: yandex-cloud-ml-sdk
+#   Phase 6+: python-telegram-bot[job-queue]
+#   Phase 7+: vk_api
+#   Phase 1+: APScheduler
+
+# SOCKS5 нужен ТОЛЬКО если не через системный прокси; в каркасе опционально
+# (PySocks установлен опционально в dev для отладки)
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+  "pytest-asyncio>=0.24.0",
+  "ruff>=0.7.0",
+  "mypy>=1.13.0",
+]
+telegram = [
+  "python-telegram-bot[job-queue]>=21.0",
+]
+vk = [
+  "vk_api>=11.11.0",
+]
+ai = [
+  "anthropic>=0.39.0",
+  "yandex-cloud-ml-sdk>=2.3.0",
+]
+all = [
+  "wishcoach[dev,telegram,vk,ai]",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = [".", "tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "W"]
+ignore = ["E501", "B008"]  # B008: FastAPI Depends() — идиома фреймворка
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agent*"]

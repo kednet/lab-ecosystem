@@ -1,0 +1,38 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://lab.com/#organization",
+  "name": "Лаборатория желаний",
+  "alternateName": "pulabru",
+  "url": "https://lab.com",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://lab.com/logo.png",
+    "width": 600,
+    "height": 60
+  },
+  "description": "Конспекты, воркбуки и рецензии лучших книг по саморазвитию, психологии и исполнению желаний.",
+  "foundingDate": "2024-01-01",
+  "founder": {
+    "@type": "Person",
+    "name": "{{FOUNDER_NAME}}"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "{{PHONE}}",
+    "contactType": "customer service",
+    "email": "{{EMAIL}}",
+    "availableLanguage": ["Russian"]
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "{{STREET}}",
+    "addressLocality": "{{CITY}}",
+    "postalCode": "{{POSTAL_CODE}}",
+    "addressCountry": "RU"
+  },
+  "sameAs": [
+    "https://vk.com/pulabru",
+    "https://t.me/pulabru"
+  ]
+}

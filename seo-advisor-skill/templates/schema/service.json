@@ -1,0 +1,28 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "{{SERVICE_TYPE}}",
+  "name": "{{SERVICE_NAME}}",
+  "description": "{{DESCRIPTION}}",
+  "provider": {
+    "@type": "Person",
+    "name": "{{PROVIDER_NAME}}",
+    "url": "{{PROVIDER_URL}}"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Россия"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "{{PRICE}}",
+    "priceCurrency": "RUB",
+    "availability": "https://schema.org/InStock",
+    "url": "{{PURCHASE_URL}}"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{RATING}}",
+    "ratingCount": "{{COUNT}}"
+  }
+}

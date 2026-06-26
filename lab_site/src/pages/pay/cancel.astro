@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const url = new URL(Astro.request.url);
+const orderId = url.searchParams.get('order_id') ?? '';
+---
+<Base
+  title="Оплата отменена"
+  description="Оплата не была завершена. Можете попробовать ещё раз."
+  noindex
+>
+  <section class="section">
+    <div class="container" style="max-width: 640px;">
+      <p class="section__eyebrow reveal">Оплата</p>
+      <h1 class="section__title reveal">Не&nbsp;завершено</h1>
+
+      <div class="checkout-card reveal">
+        <p class="checkout-card__notice">
+          Вы отменили оплату или&nbsp;что-то пошло не&nbsp;так. Деньги не&nbsp;списались&nbsp;— можете попробовать ещё раз.
+        </p>
+        <a class="btn btn--primary btn--block" href="/pricing/">К тарифам</a>
+        <a class="btn btn--ghost btn--block" href="/library/">К библиотеке</a>
+        {orderId && (
+          <p class="checkout-card__alt" style="font-size:11px;opacity:0.6;">
+            ID заказа: <code>{orderId}</code>
+          </p>
+        )}
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,370 @@
+---
+// Каталог экспертов — список карточек
+import Base from '../../layouts/Base.astro';
+import { getExpertsIndex, getAllExperts, type Expert } from '../../lib/experts';
+
+const index = getExpertsIndex();
+const experts = getAllExperts();
+
+// Сортировка: по score ↓, потом по имени
+const sortedExperts: Expert[] = [...experts].sort(
+  (a, b) => (b.score - a.score) || a.name.localeCompare(b.name, 'ru'),
+);
+
+// Собираем уникальные ниши (tags) для фильтра
+const tagCounts = new Map<string, number>();
+for (const e of sortedExperts) {
+  for (const t of e.tags || []) {
+    const k = t.trim().toLowerCase();
+    if (!k) continue;
+    tagCounts.set(k, (tagCounts.get(k) ?? 0) + 1);
+  }
+}
+const allTags = [...tagCounts.entries()]
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ru'))
+  .map(([tag, count]) => ({ tag, count }));
+
+const hasExperts = sortedExperts.length > 0;
+
+// Флаг: раздел активен. Эксперты добавляются через wizard:
+// /experts add → /experts edit → /experts deploy (см. expert-reviews-hub/SKILL.md).
+const isComingSoon = false;
+---
+<Base
+  title="Эксперты"
+  description="Авторы, тренеры, психологи и блогеры — те, чьи рекомендации помогают нам в саморазвитии."
+>
+  <section class="section">
+    <div class="container">
+      <p class="section__eyebrow reveal">Кто рекомендует</p>
+      <h1 class="section__title reveal">Эксперты</h1>
+
+      {isComingSoon && (
+        <div class="experts-soon reveal" role="status">
+          <div class="experts-soon__icon" aria-hidden="true">🔍</div>
+          <h2 class="experts-soon__title">Ищем настоящих экспертов</h2>
+          <p class="experts-soon__lead">
+            Раздел в разработке. Мы не публикуем случайных людей — только тех, кого проверили лично и кто дал согласие на рекомендацию.
+          </p>
+
+          <div class="experts-soon__criteria">
+            <h3 class="experts-soon__criteria-title">Кого мы ждём</h3>
+            <ul class="experts-soon__list">
+              <li><strong>Автор книги</strong> по психологии, отношениям, саморазвитию, осознанности</li>
+              <li><strong>Практикующий психолог</strong> с образованием и этическим кодексом</li>
+              <li><strong>Тренер / коуч</strong> с реальными кейсами и отзывами клиентов</li>
+              <li><strong>Блогер</strong> с аудиторией 5 000+ и экспертным контентом</li>
+            </ul>
+          </div>
+
+          <div class="experts-soon__criteria">
+            <h3 class="experts-soon__criteria-title">Что мы гарантируем</h3>
+            <ul class="experts-soon__list">
+              <li>Не публикуем без письменного согласия</li>
+              <li>Указываем сильные стороны и нишу — не «лучший эксперт»</li>
+              <li>Только рекомендации, которые проверили на себе</li>
+            </ul>
+          </div>
+
+          <div class="experts-soon__cta">
+            <p class="experts-soon__cta-text">
+              Знаете такого человека или хотите попасть в каталог сами?
+            </p>
+            <div class="experts-soon__cta-buttons">
+              <a class="btn btn--primary" href="https://vk.com/club237295798" target="_blank" rel="noopener">
+                Написать ВКонтакте
+              </a>
+              <a class="btn btn--ghost" href="mailto:info@pulab.ru">
+                На&nbsp;почту
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!isComingSoon && hasExperts && allTags.length > 0 && (
+        <div class="filter-bar reveal">
+          <span class="filter-bar__label">Ниши:</span>
+          <div class="filter-bar__tags">
+            {allTags.map(({ tag, count }) => (
+              <a class="filter-tag" href={`#tag-${tag}`}>#{tag} <sup>{count}</sup></a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {!isComingSoon && hasExperts && (
+        <ul class="expert-grid" role="list">
+          {sortedExperts.map((e) => (
+            <li class="expert-card reveal" id={`tag-${(e.tags[0] || 'expert').toLowerCase()}`}>
+              <a class="expert-card__link" href={`/experts/${e.slug}/`}>
+                <div class="expert-card__avatar">
+                  {e.image
+                    ? <img src={e.image} alt={e.name} loading="lazy" />
+                    : <div class="expert-card__avatar-fallback">{e.name.trim().charAt(0).toUpperCase()}</div>
+                  }
+                </div>
+                <div class="expert-card__body">
+                  <h3 class="expert-card__name">{e.name}</h3>
+                  <p class="expert-card__title">{e.jobTitle || 'Эксперт'}</p>
+                  {e.description && (
+                    <p class="expert-card__desc">{e.description.slice(0, 120)}{e.description.length > 120 ? '…' : ''}</p>
+                  )}
+                  {e.tags && e.tags.length > 0 && (
+                    <div class="expert-card__tags">
+                      {e.tags.slice(0, 4).map((t) => (
+                        <span class="expert-card__tag">#{t}</span>
+                      ))}
+                    </div>
+                  )}
+                  {e.score > 0 && (
+                    <div class="expert-card__score" title="Надёжность рекомендации (0-100)">
+                      Score: <strong>{e.score}/100</strong>
+                    </div>
+                  )}
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {!isComingSoon && hasExperts && index && (
+        <p class="section__meta reveal">
+          Всего экспертов: <strong>{index.total}</strong>.
+          Обновлено: {new Date(index.generated_at).toLocaleString('ru-RU')}.
+        </p>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .section__lead {
+    max-width: 720px;
+    color: var(--muted, #6b5d63);
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  /* Заглушка «Ищем экспертов» */
+  .experts-soon {
+    margin: 2.5rem 0;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+    border: 2px dashed #fda4af;
+    border-radius: 24px;
+    text-align: center;
+  }
+  .experts-soon__icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+  .experts-soon__title {
+    margin: 0 0 0.75rem;
+    font-size: 1.75rem;
+    color: #881337;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .experts-soon__lead {
+    max-width: 560px;
+    margin: 0 auto 2rem;
+    color: #6b3a4a;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+  .experts-soon__criteria {
+    max-width: 520px;
+    margin: 1.5rem auto;
+    padding: 1.5rem 1.75rem;
+    background: #fff;
+    border: 1px solid #fecdd3;
+    border-radius: 16px;
+    text-align: left;
+  }
+  .experts-soon__criteria-title {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    color: #881337;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .experts-soon__list {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: #4a3a3f;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .experts-soon__list li {
+    margin-bottom: 0.5rem;
+  }
+  .experts-soon__list li:last-child {
+    margin-bottom: 0;
+  }
+  .experts-soon__list strong {
+    color: #881337;
+    font-weight: 600;
+  }
+  .experts-soon__cta {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #fecdd3;
+  }
+  .experts-soon__cta-text {
+    margin: 0 0 1rem;
+    color: #6b3a4a;
+    font-size: 1rem;
+  }
+  .experts-soon__cta-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .empty {
+    margin: 3rem 0;
+    padding: 2rem;
+    border: 2px dashed #f0d4d8;
+    border-radius: 12px;
+    text-align: center;
+    color: var(--muted, #6b5d63);
+  }
+  .empty code {
+    background: #fff1f2;
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+    font-size: 0.95em;
+  }
+
+  .filter-bar {
+    margin: 2rem 0 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+  .filter-bar__label {
+    color: var(--muted, #6b5d63);
+    font-weight: 600;
+  }
+  .filter-bar__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .filter-tag {
+    display: inline-block;
+    padding: 0.3em 0.8em;
+    background: #fff1f2;
+    color: #b3495d;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .filter-tag:hover {
+    background: #ffd5dc;
+  }
+  .filter-tag sup {
+    color: var(--muted, #6b5d63);
+    font-size: 0.75em;
+    margin-left: 0.2em;
+  }
+
+  .expert-grid {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .expert-card {
+    background: #fff;
+    border: 1px solid #f0d4d8;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .expert-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(179, 73, 93, 0.12);
+  }
+  .expert-card__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 1.25rem;
+  }
+  .expert-card__avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+    background: #fff1f2;
+  }
+  .expert-card__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .expert-card__avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #b3495d;
+    font-weight: 700;
+  }
+  .expert-card__name {
+    margin: 0 0 0.25rem;
+    font-size: 1.15rem;
+    color: #2b1f24;
+  }
+  .expert-card__title {
+    margin: 0 0 0.5rem;
+    color: var(--muted, #6b5d63);
+    font-size: 0.95rem;
+  }
+  .expert-card__desc {
+    color: #4a3a3f;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0.5rem 0;
+  }
+  .expert-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+  }
+  .expert-card__tag {
+    font-size: 0.75rem;
+    color: #b3495d;
+    background: #fff1f2;
+    padding: 0.2em 0.6em;
+    border-radius: 999px;
+  }
+  .expert-card__score {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--muted, #6b5d63);
+  }
+  .expert-card__score strong {
+    color: #b3495d;
+  }
+
+  .section__meta {
+    margin-top: 2rem;
+    color: var(--muted, #6b5d63);
+    font-size: 0.9rem;
+  }
+</style>

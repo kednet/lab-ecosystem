@@ -1,0 +1,87 @@
+# image_skill — профиль «Лаборатория желаний»
+# Brand decisions: lab-brand-decisions-2026-06-16
+# Палитра rose-pink (E11D48 / 881337 / FDA4AF / FFF1F2)
+
+name: lab
+display_name: "Лаборатория желаний"
+description: >
+  Саморазвитие через книги, аффирмации, детектор желаний.
+  ЦА 35-44, выгоревшие от марафонов/эзотерики, ищут практику и опору.
+
+defaults:
+  format: vk_post            # дефолтный формат (vk_post | vk_story | pinterest | wb | og)
+  style: watercolor          # стиль: watercolor | photo | flat | 3d | anime
+  mood: soft                 # настроение: soft | bold | warm | calm | mystic
+  aspect: "1:1"
+  seed: null                 # null = random, целое число = фиксированный
+
+branding:
+  watermark: "@pulab_ru"
+  watermark_handle: "pulab_ru"
+  accent_color: "#E11D48"
+  palette:
+    primary: "#E11D48"
+    primary_deep: "#881337"
+    primary_soft: "#FDA4AF"
+    bg: "#FFF1F2"
+    text: "#1F2937"
+  gradients:
+    transformation: ["#FDA4AF", "#E11D48"]
+    wishes: ["#FBCFE8", "#E11D48"]
+    practice: ["#FED7AA", "#E11D48"]
+    calm: ["#FCE7F3", "#FBCFE8"]
+    energy: ["#FFEDD5", "#FDA4AF"]
+
+# Подсказки для LLM промпта (по стилю)
+prompt_styles:
+  watercolor: "soft watercolor illustration, gentle gradients, no hard edges, dreamy"
+  photo: "realistic photograph, high detail, professional composition"
+  flat: "flat vector design, clean lines, vibrant colors"
+  "3d": "3D render, volumetric, soft shadows and highlights"
+  anime: "anime-style illustration, expressive, soft colors"
+
+# Подсказки для LLM промпта (по настроению)
+prompt_moods:
+  soft: "tender, warm, peaceful mood, gentle light"
+  bold: "bright, contrasting, dramatic, strong shapes"
+  warm: "warm tones, sunset colors, golden hour"
+  calm: "muted tones, minimalist, lots of negative space"
+  mystic: "mysterious, moonlight, stars, ethereal glow"
+
+hashtags_base: ["#лабжеланий", "#pulabru", "#желаниясбываются"]
+
+# v1.6: дефолтный live_url для постов (если не передан --live-url)
+# Используется как fallback в cmd_publish.py. Можно переопределить per-slug через --live-url.
+# Для карты желаний /wish-map/, для детектора /detector/, для книг slug-страница.
+site_url: "https://app.pulab.ru/wish-map/"
+
+# v1.7: типы контента — определяют тон и форму промпта для announce_text.py
+# fiction-reflective: художка с зерном для рефлексии (без воркбуков и «5 правил»)
+book_types:
+  "nonfiction":
+    prompt_note: ""
+    prompt_section: ""
+  "fiction-reflective":
+    prompt_note: " (ХУДОЖЕСТВЕННАЯ КНИГА — без обещаний практики, без CTA на PDF/воркбук)"
+    prompt_section: ""
+
+# Negative prompts (то, что НЕ генерировать)
+negative_prompts:
+  - "text on image"
+  - "watermark"
+  - "low quality"
+  - "blurry"
+  - "distorted proportions"
+  - "ugly"
+  - "stock photo look"
+
+source_domains:
+  - "саморазвитие"
+  - "женская практика"
+  - "книги о желаниях"
+  - "визуализация"
+  - "осознанность"
+
+output:
+  state_subdir: "lab"
+  filename_template: "{slug}-lab-{format}"

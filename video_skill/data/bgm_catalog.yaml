@@ -1,0 +1,27 @@
+# BGM-каталог для Video Creator Skill v1.0
+# Phase 2: Pixabay Music API (royalty-free, бесплатно, не требует атрибуции)
+# Phase 1: ЗАГЛУШКА — заполняется при Phase 2 (после получения PIXABAY_API_KEY)
+#
+# Формат music_mood → список URL с Pixabay Music
+# Параметры: ?duration=<sec>&mood=<tag>&category=music
+#
+# Пример для Phase 2:
+# ambient:
+#   - url: "https://cdn.pixabay.com/audio/2024/01/15/audio_xxx.mp3"
+#     duration_sec: 180
+#     mood: "calm, meditation"
+#     volume_db: -22
+#     fade_in: 3
+#     fade_out: 5
+#
+# На Phase 1 файл может быть пустым — tts_pipeline.py не вызывается.
+
+ambient: []
+tide: []
+bowls: []
+cosmic: []
+sea: []
+uplifting: []
+tense: []
+playful: []
+silence: []   # специальный — без BGM

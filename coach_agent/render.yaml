@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: wishcoach
+    runtime: python
+    plan: free
+    region: frankfurt
+    branch: main
+    rootDir: .
+    buildCommand: pip install --upgrade pip && pip install -e .
+    startCommand: uvicorn agent.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: RENDER_SERVICE_NAME
+        value: wishcoach
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: VERIFY_SSL
+        value: "false"
+
+  - type: cron
+    name: wishcoach-keepalive
+    runtime: python
+    plan: free
+    region: frankfurt
+    schedule: "*/14 * * * *"
+    buildCommand: pip install httpx
+    startCommand: python keepalive.py
+    envVars:
+      - key: RENDER_EXTERNAL_URL
+        fromService:
+          type: web
+          name: wishcoach
+          property: hostUrl
+      - key: VERIFY_SSL
+        value: "false"

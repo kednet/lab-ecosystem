@@ -1,0 +1,134 @@
+---
+// Переиспользуемая карточка эксперта (для каталогов, вставок, рекомендаций)
+export interface Props {
+  slug: string;
+  name: string;
+  jobTitle?: string;
+  description?: string;
+  image?: string;
+  tags?: string[];
+  score?: number;
+  compact?: boolean;
+}
+
+const { slug, name, jobTitle = '', description = '', image = '', tags = [], score = 0, compact = false } = Astro.props;
+const fallbackLetter = (name || '?').trim().charAt(0).toUpperCase();
+const descShort = description.length > (compact ? 80 : 120)
+  ? description.slice(0, compact ? 80 : 120) + '…'
+  : description;
+---
+<a class={`expert-card-component ${compact ? 'expert-card-component--compact' : ''}`} href={`/experts/${slug}/`}>
+  <div class="expert-card-component__avatar">
+    {image
+      ? <img src={image} alt={name} loading="lazy" />
+      : <div class="expert-card-component__avatar-fallback">{fallbackLetter}</div>
+    }
+  </div>
+  <div class="expert-card-component__body">
+    <h3 class="expert-card-component__name">{name}</h3>
+    {jobTitle && <p class="expert-card-component__title">{jobTitle}</p>}
+    {descShort && <p class="expert-card-component__desc">{descShort}</p>}
+    {tags.length > 0 && !compact && (
+      <div class="expert-card-component__tags">
+        {tags.slice(0, 3).map((t) => (
+          <span class="expert-card-component__tag">#{t}</span>
+        ))}
+      </div>
+    )}
+    {score > 0 && !compact && (
+      <div class="expert-card-component__score">Score: <strong>{score}/100</strong></div>
+    )}
+  </div>
+</a>
+
+<style>
+  .expert-card-component {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: #fff;
+    border: 1px solid #f0d4d8;
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .expert-card-component:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(179, 73, 93, 0.1);
+    border-color: #b3495d;
+  }
+  .expert-card-component__avatar {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #fff1f2;
+  }
+  .expert-card-component__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .expert-card-component__avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #b3495d;
+    font-weight: 700;
+  }
+  .expert-card-component__body {
+    flex: 1;
+    min-width: 0;
+  }
+  .expert-card-component__name {
+    margin: 0 0 0.15rem;
+    font-size: 0.95rem;
+    color: #2b1f24;
+    line-height: 1.2;
+  }
+  .expert-card-component__title {
+    margin: 0 0 0.35rem;
+    color: var(--muted, #6b5d63);
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+  .expert-card-component__desc {
+    margin: 0.25rem 0;
+    color: #4a3a3f;
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  .expert-card-component__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.4rem;
+  }
+  .expert-card-component__tag {
+    font-size: 0.7rem;
+    color: #b3495d;
+    background: #fff1f2;
+    padding: 0.15em 0.5em;
+    border-radius: 999px;
+  }
+  .expert-card-component__score {
+    margin-top: 0.4rem;
+    font-size: 0.7rem;
+    color: var(--muted, #6b5d63);
+  }
+  .expert-card-component__score strong {
+    color: #b3495d;
+  }
+  .expert-card-component--compact .expert-card-component__avatar {
+    width: 40px;
+    height: 40px;
+  }
+  .expert-card-component--compact .expert-card-component__name {
+    font-size: 0.85rem;
+  }
+</style>

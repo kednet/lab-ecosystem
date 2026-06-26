@@ -1,0 +1,8 @@
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+httpx==0.27.2
+loguru==0.7.2
+python-dotenv==1.0.1
+# WishLibrarian (импортируется из ../wish_librarian через sys.path в коде)
+# — все его зависимости уже стоят в wish_librarian/.venv или системно
+pydantic==2.9.2

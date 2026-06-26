@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: lab-site-python
+    runtime: python
+    plan: free
+    rootDir: python-service
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT --log-level info
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: WORKER_CALLBACK_URL
+        sync: false  # задаётся вручную в Render dashboard
+      - key: PYTHON_SERVICE_TOKEN
+        sync: false
+      - key: WL_OUTPUT_DIR
+        value: /tmp/wl-output
+      - key: MAX_CONCURRENT_JOBS
+        value: "2"
+      - key: POLL_INTERVAL_SEC
+        value: "2"

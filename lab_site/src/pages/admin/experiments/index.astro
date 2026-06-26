@@ -1,0 +1,393 @@
+---
+/**
+ * /admin/experiments/ — модерация историй участников.
+ *
+ * Чисто клиентский рендеринг (Astro-страница пустая, всё в JS).
+ * Токен хранится в sessionStorage (живёт до закрытия вкладки).
+ *
+ * Функции:
+ *   - список ВСЕХ экспериментов (новые, одобренные, отклонённые)
+ *   - фильтр по статусу
+ *   - inline-просмотр did/got/source
+ *   - кнопки ✅ Одобрить / ⛔ Отклонить / 🔄 Вернуть в new / 🗑 Удалить
+ *
+ * Доступ: токен в URL (?token=...) или ввод в форме (запоминается в sessionStorage).
+ * Тот же токен, что в /etc/lab-site.env → ADMIN_TOKEN.
+ */
+---
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Модерация экспериментов — Лаборатория желаний</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preload" href="/fonts/manrope-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/manrope-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-serif-display-400.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fff5f5;
+      color: #2d1418;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 80px; }
+    h1 { font-family: 'DM Serif Display', Georgia, serif; font-size: 32px; color: #4c0519; margin: 0 0 8px; }
+    .lead { color: #7a3645; margin: 0 0 24px; }
+
+    /* Форма ввода токена */
+    .token-form {
+      background: #fff;
+      border: 1.5px solid rgba(136, 19, 55, 0.18);
+      border-radius: 14px;
+      padding: 24px;
+      max-width: 480px;
+      margin: 60px auto;
+    }
+    .token-form label { display: block; font-size: 14px; font-weight: 600; color: #4c0519; margin-bottom: 8px; }
+    .token-form input {
+      width: 100%; padding: 12px 14px; font: inherit; font-size: 15px;
+      border: 1.5px solid rgba(136, 19, 55, 0.2); border-radius: 10px;
+      outline: none; margin-bottom: 12px;
+    }
+    .token-form input:focus { border-color: #881337; box-shadow: 0 0 0 4px rgba(136, 19, 55, 0.12); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 12px 20px; border-radius: 10px; font-size: 15px; font-weight: 600;
+      border: 2px solid transparent; cursor: pointer; text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s; min-height: 44px;
+    }
+    .btn--primary {
+      background: linear-gradient(135deg, #881337 0%, #be185d 100%); color: #fff;
+      box-shadow: 0 4px 14px rgba(136, 19, 55, 0.25);
+    }
+    .btn--primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(136, 19, 55, 0.35); color: #fff; }
+    .btn--ghost { background: #fff; color: #4c0519; border-color: rgba(136, 19, 55, 0.18); }
+    .btn--ghost:hover { border-color: rgba(136, 19, 55, 0.4); }
+    .btn--danger { background: #fff; color: #991b1b; border-color: rgba(220, 38, 38, 0.3); }
+    .btn--danger:hover { background: #fff1f2; border-color: #dc2626; }
+    .btn--success { background: #fff; color: #15803d; border-color: rgba(21, 128, 61, 0.3); }
+    .btn--success:hover { background: #f0fdf4; border-color: #15803d; }
+    .btn--sm { padding: 8px 12px; font-size: 13px; min-height: 36px; }
+
+    /* Шапка админки */
+    .admin-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 16px; flex-wrap: wrap; margin-bottom: 16px;
+      padding-bottom: 16px; border-bottom: 1px solid rgba(136, 19, 55, 0.15);
+    }
+    .admin-head__title { display: flex; align-items: baseline; gap: 12px; }
+    .admin-head__back { font-size: 13px; color: #7a3645; text-decoration: none; cursor: pointer; background: none; border: none; padding: 0; }
+    .admin-head__back:hover { color: #881337; }
+
+    /* Фильтры */
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .filter {
+      padding: 8px 14px; border-radius: 999px; background: #fff;
+      border: 1.5px solid rgba(136, 19, 55, 0.15); font-size: 13px;
+      text-decoration: none; color: #4c0519; font-weight: 600;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .filter.is-active { background: linear-gradient(135deg, #881337, #be185d); color: #fff; border-color: transparent; }
+    .filter__count { opacity: 0.7; margin-left: 4px; font-weight: 400; }
+
+    /* Карточка истории */
+    .item {
+      background: #fff; border: 1.5px solid rgba(136, 19, 55, 0.18);
+      border-radius: 14px; padding: 20px 22px; margin-bottom: 14px;
+      box-shadow: 0 4px 18px -14px rgba(136, 19, 55, 0.18);
+    }
+    .item.is-new { border-left: 4px solid #f59e0b; }
+    .item.is-approved { border-left: 4px solid #15803d; }
+    .item.is-rejected { border-left: 4px solid #dc2626; opacity: 0.85; }
+    .item__head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 10px; flex-wrap: wrap; margin-bottom: 12px;
+    }
+    .item__who { display: flex; flex-direction: column; gap: 2px; }
+    .item__name { font-weight: 700; font-size: 16px; color: #4c0519; }
+    .item__meta { font-size: 12px; color: #7a3645; font-family: monospace; }
+    .item__status {
+      font-size: 12px; padding: 3px 10px; border-radius: 999px; font-weight: 600;
+    }
+    .item__status.is-new { background: #fef3c7; color: #92400e; }
+    .item__status.is-approved { background: #d1fae5; color: #065f46; }
+    .item__status.is-rejected { background: #fee2e2; color: #991b1b; }
+    .item__source {
+      font-size: 13px; color: #7a3645; margin-bottom: 12px;
+      padding: 6px 12px; background: rgba(255, 241, 242, 0.6); border-radius: 8px;
+      display: inline-block;
+    }
+    .item__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    @media (max-width: 640px) { .item__cols { grid-template-columns: 1fr; } }
+    .item__col-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 14px; color: #881337; margin: 0 0 4px;
+    }
+    .item__text { margin: 0; font-size: 14px; line-height: 1.55; color: #2d1418; white-space: pre-wrap; word-break: break-word; }
+    .item__actions { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid rgba(136, 19, 55, 0.1); }
+
+    /* Сообщения */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 600;
+      box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.25); z-index: 100;
+      animation: slideIn 0.2s ease;
+    }
+    .toast--ok { background: #15803d; color: #fff; }
+    .toast--err { background: #dc2626; color: #fff; }
+    @keyframes slideIn { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+    .empty {
+      background: #fff; border: 1.5px dashed rgba(136, 19, 55, 0.25);
+      border-radius: 14px; padding: 40px 24px; text-align: center; color: #7a3645;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Форма ввода токена (показывается, если нет токена) -->
+    <div id="token-form" class="token-form" hidden>
+      <h1>🔒 Модерация экспериментов</h1>
+      <p class="lead">Введите токен администратора. Этот же токен задан в <code>/etc/lab-site.env</code> как <code>ADMIN_TOKEN</code>.</p>
+      <form id="token-form-el">
+        <label for="token-input">Admin Token</label>
+        <input type="password" id="token-input" required minlength="8" autofocus>
+        <button class="btn btn--primary" type="submit">Войти</button>
+      </form>
+    </div>
+
+    <!-- Контент админки (показывается, если токен есть) -->
+    <div id="admin-content" hidden>
+      <div class="admin-head">
+        <div class="admin-head__title">
+          <h1>Модерация</h1>
+          <span class="lead" id="counts-label">…</span>
+        </div>
+        <button class="admin-head__back" id="logout-btn">← Выйти</button>
+      </div>
+
+      <div class="filters" id="filters">
+        <button class="filter is-active" data-status="new">🆕 Новые <span class="filter__count" id="cnt-new">0</span></button>
+        <button class="filter" data-status="approved">✅ Одобренные <span class="filter__count" id="cnt-approved">0</span></button>
+        <button class="filter" data-status="rejected">⛔ Отклонённые <span class="filter__count" id="cnt-rejected">0</span></button>
+        <button class="filter" data-status="">Все <span class="filter__count" id="cnt-total">0</span></button>
+      </div>
+
+      <div id="items"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'https://api.pulab.ru';
+    const STATUS_LABELS = {
+      new: '🆕 Новые',
+      approved: '✅ Одобренные',
+      rejected: '⛔ Отклонённые',
+    };
+    const STATUSES = ['new', 'approved', 'rejected'];
+
+    function getToken() {
+      const url = new URL(location.href);
+      const fromUrl = url.searchParams.get('token');
+      if (fromUrl) {
+        sessionStorage.setItem('lab_admin_token', fromUrl);
+        return fromUrl;
+      }
+      return sessionStorage.getItem('lab_admin_token') || '';
+    }
+
+    function fmtDate(iso) {
+      try {
+        const d = new Date(iso);
+        return d.toLocaleString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      } catch { return iso; }
+    }
+
+    function escapeHtml(s) {
+      return String(s ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function toast(msg, isOk) {
+      const t = document.createElement('div');
+      t.className = 'toast ' + (isOk ? 'toast--ok' : 'toast--err');
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 2400);
+    }
+
+    async function callApi(method, id, body) {
+      const token = getToken();
+      const url = id ? `${API_BASE}/api/experiments/${id}` : `${API_BASE}/api/experiments`;
+      const resp = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Token': token,
+        },
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      const data = await resp.json().catch(() => ({}));
+      return { ok: resp.ok, data, status: resp.status };
+    }
+
+    let currentFilter = 'new';
+    let allItems = [];
+
+    function render() {
+      const itemsEl = document.getElementById('items');
+      const filtered = currentFilter ? allItems.filter((it) => it.status === currentFilter) : allItems;
+      if (filtered.length === 0) {
+        itemsEl.innerHTML = '<div class="empty"><p>В этой категории пусто.</p></div>';
+        return;
+      }
+      itemsEl.innerHTML = filtered.map((it) => `
+        <article class="item is-${it.status}" data-id="${escapeHtml(it.id)}">
+          <div class="item__head">
+            <div class="item__who">
+              <span class="item__name">${escapeHtml(it.name)}</span>
+              <span class="item__meta">#${escapeHtml(it.id)} · ${fmtDate(it.ts)} · IP ${escapeHtml(it.ip || '?')}</span>
+            </div>
+            <span class="item__status is-${it.status}">${STATUS_LABELS[it.status] || it.status}</span>
+          </div>
+          ${it.source ? `<div class="item__source">💡 ${escapeHtml(it.source)}${it.allowPublish ? ' · ✅ согласен на публикацию' : ' · ⛔ без публикации'}</div>` : ''}
+          <div class="item__cols">
+            <div>
+              <h3 class="item__col-title">🧪 Что пробовали</h3>
+              <p class="item__text">${escapeHtml(it.did)}</p>
+            </div>
+            <div>
+              <h3 class="item__col-title">📝 Что получилось</h3>
+              <p class="item__text">${escapeHtml(it.got)}</p>
+            </div>
+          </div>
+          <div class="item__actions">
+            ${it.status !== 'approved' ? '<button class="btn btn--success btn--sm" data-action="approved">✅ Одобрить</button>' : ''}
+            ${it.status !== 'rejected' ? '<button class="btn btn--danger btn--sm" data-action="rejected">⛔ Отклонить</button>' : ''}
+            ${it.status !== 'new' ? '<button class="btn btn--ghost btn--sm" data-action="new">🔄 В новые</button>' : ''}
+            <button class="btn btn--danger btn--sm" data-action="delete">🗑 Удалить</button>
+          </div>
+        </article>
+      `).join('');
+
+      itemsEl.querySelectorAll('button[data-action]').forEach((btn) => {
+        btn.addEventListener('click', () => handleAction(btn));
+      });
+    }
+
+    function updateCounts() {
+      const counts = { new: 0, approved: 0, rejected: 0, total: allItems.length };
+      allItems.forEach((it) => { counts[it.status] = (counts[it.status] ?? 0) + 1; });
+      document.getElementById('cnt-new').textContent = counts.new;
+      document.getElementById('cnt-approved').textContent = counts.approved;
+      document.getElementById('cnt-rejected').textContent = counts.rejected;
+      document.getElementById('cnt-total').textContent = counts.total;
+      document.getElementById('counts-label').textContent =
+        `Всего: ${counts.total} · ${currentFilter ? STATUS_LABELS[currentFilter] : 'Все'}: ${currentFilter ? counts[currentFilter] : counts.total}`;
+    }
+
+    async function load() {
+      const r = await callApi('GET');
+      if (!r.ok) {
+        if (r.status === 401) {
+          sessionStorage.removeItem('lab_admin_token');
+          showTokenForm();
+          return;
+        }
+        toast('Ошибка загрузки: ' + (r.data.message || r.data.error || r.status), false);
+        return;
+      }
+      allItems = r.data.items || [];
+      updateCounts();
+      render();
+    }
+
+    async function handleAction(btn) {
+      const id = btn.closest('.item')?.getAttribute('data-id');
+      const action = btn.getAttribute('data-action');
+      if (!id || !action) return;
+      btn.disabled = true;
+      try {
+        if (action === 'delete') {
+          if (!confirm('Удалить историю #' + id + '? Это необратимо.')) {
+            btn.disabled = false;
+            return;
+          }
+          const r = await callApi('DELETE', id);
+          if (r.ok) {
+            toast('Удалено', true);
+            await load();
+          } else {
+            toast('Ошибка: ' + (r.data.message || r.data.error), false);
+            btn.disabled = false;
+          }
+        } else {
+          const r = await callApi('PATCH', id, { status: action });
+          if (r.ok) {
+            toast('Статус: ' + action, true);
+            await load();
+          } else {
+            toast('Ошибка: ' + (r.data.message || r.data.error), false);
+            btn.disabled = false;
+          }
+        }
+      } catch (e) {
+        toast('Сеть: ' + e.message, false);
+        btn.disabled = false;
+      }
+    }
+
+    function showTokenForm() {
+      document.getElementById('token-form').hidden = false;
+      document.getElementById('admin-content').hidden = true;
+      setTimeout(() => document.getElementById('token-input')?.focus(), 50);
+    }
+
+    function showAdmin() {
+      document.getElementById('token-form').hidden = true;
+      document.getElementById('admin-content').hidden = false;
+      load();
+    }
+
+    // ── init ──
+    document.getElementById('token-form-el').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const t = document.getElementById('token-input').value.trim();
+      if (t.length < 8) { toast('Токен слишком короткий', false); return; }
+      sessionStorage.setItem('lab_admin_token', t);
+      showAdmin();
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      sessionStorage.removeItem('lab_admin_token');
+      showTokenForm();
+    });
+
+    document.querySelectorAll('.filter').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter').forEach((b) => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        currentFilter = btn.getAttribute('data-status') || '';
+        updateCounts();
+        render();
+      });
+    });
+
+    // Если токен уже есть — сразу показываем админку
+    if (getToken()) {
+      showAdmin();
+    } else {
+      showTokenForm();
+    }
+  </script>
+</body>
+</html>

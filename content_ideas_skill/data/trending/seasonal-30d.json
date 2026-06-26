@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "source": "seasonal",
+  "period": "30d",
+  "fetched": "2026-06-11T21:33:15.622561",
+  "meta": {
+    "horizon_days": 30,
+    "year": 2026
+  },
+  "count": 1,
+  "items": [
+    {
+      "title": "День семьи, любви и верности",
+      "date_range": [
+        "2026-07-08 00:00:00",
+        "2026-07-08 00:00:00"
+      ],
+      "month": 7,
+      "month_name": "июля",
+      "date_str": "8 июля",
+      "themes": [
+        "«семья по любви vs семья по \"надо\"»"
+      ],
+      "lj_angle": "",
+      "skip": false,
+      "skip_reasons": [],
+      "anchor": "8-июля-день-семьи-любви-и-верности",
+      "days_until": 26,
+      "in_horizon": true
+    }
+  ]
+}

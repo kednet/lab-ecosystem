@@ -1,0 +1,152 @@
+---
+import Base from '../layouts/Base.astro';
+
+const title = 'Отписаться от рассылки';
+const description = 'Отписаться от мини-практик недели «Лаборатории желаний».';
+---
+
+<Base title={title} description={description}>
+  <section class="section">
+    <div class="container container--narrow">
+      <h1 class="section__title">Отписаться от рассылки</h1>
+      <p class="section__lead">
+        Введите email, на который приходили мини-практики. Отписка — в один клик.
+      </p>
+
+      <form id="unsub-form" class="unsub" novalidate>
+        <label class="unsub__label" for="unsub-email">Email</label>
+        <input
+          class="unsub__input"
+          id="unsub-email"
+          type="email"
+          inputmode="email"
+          autocomplete="email"
+          placeholder="you@example.com"
+          required
+        />
+        <button class="btn btn--primary btn--block" type="submit" id="unsub-submit">
+          Отписаться
+        </button>
+        <p class="unsub__error" data-role="error" hidden></p>
+      </form>
+
+      <div class="unsub__success" id="unsub-success" hidden>
+        <div class="unsub__icon">✓</div>
+        <h2>Готово</h2>
+        <p>Вы отписаны от «Мини-практик недели». Письма больше не придут.</p>
+        <p class="unsub__sub">
+          Передумали? <a href="/#newsletter">Подписаться снова</a>
+        </p>
+      </div>
+
+      <p class="unsub__back">
+        <a href="/">← Вернуться на главную</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .container--narrow { max-width: 480px; }
+  .section__title { margin-bottom: 12px; }
+  .section__lead { color: var(--ink-soft, #6b3a4a); margin-bottom: 24px; }
+
+  .unsub { display: flex; flex-direction: column; gap: 12px; }
+  .unsub__label {
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-soft, #6b3a4a);
+  }
+  .unsub__input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(225, 29, 72, 0.25);
+    background: #fff5f7;
+    font-size: 16px;
+    color: #1f0a14;
+  }
+  .unsub__input:focus {
+    outline: none;
+    border-color: var(--rose, #e11d48);
+    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15);
+  }
+  .unsub__error {
+    margin: 0;
+    font-size: 14px;
+    color: var(--rose, #e11d48);
+  }
+
+  .unsub__success {
+    text-align: center;
+    padding: 32px 16px;
+    background: #fff5f7;
+    border-radius: 18px;
+    border: 1px solid rgba(225, 29, 72, 0.15);
+  }
+  .unsub__icon {
+    font-size: 48px;
+    color: var(--rose, #e11d48);
+    margin-bottom: 12px;
+  }
+  .unsub__success h2 { margin: 0 0 12px; font-size: 24px; }
+  .unsub__success p { margin: 0 0 8px; }
+  .unsub__sub { font-size: 14px; color: var(--ink-soft, #6b3a4a); }
+
+  .unsub__back {
+    text-align: center;
+    margin-top: 32px;
+    font-size: 14px;
+  }
+  .unsub__back a { color: var(--rose, #e11d48); text-decoration: underline; }
+</style>
+
+<script>
+  import { apiFetch } from '../lib/api';
+
+  const form = document.getElementById('unsub-form') as HTMLFormElement | null;
+  const successBlock = document.getElementById('unsub-success') as HTMLElement | null;
+  const errorEl = form?.querySelector<HTMLParagraphElement>('[data-role="error"]') ?? null;
+  const submitBtn = document.getElementById('unsub-submit') as HTMLButtonElement | null;
+
+  if (form && successBlock && errorEl && submitBtn) {
+    // Если есть ?email= в URL — подставим
+    const params = new URLSearchParams(window.location.search);
+    const prefill = params.get('email');
+    if (prefill) {
+      const input = form.querySelector<HTMLInputElement>('#unsub-email');
+      if (input) input.value = prefill;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = form.querySelector<HTMLInputElement>('#unsub-email');
+      const email = input?.value.trim() ?? '';
+      if (!email) {
+        errorEl.textContent = 'Введите email';
+        errorEl.hidden = false;
+        return;
+      }
+      submitBtn.disabled = true;
+      errorEl.hidden = true;
+      try {
+        await apiFetch('/api/unsubscribe', { method: 'POST', body: { email } });
+        form.hidden = true;
+        successBlock.hidden = false;
+        successBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (err) {
+        // 404 = email не был подписан — это ОК для пользователя
+        const code = (err as { code?: string })?.code;
+        if (code === 'not_found') {
+          form.hidden = true;
+          successBlock.hidden = false;
+          return;
+        }
+        errorEl.textContent = 'Не удалось отписаться. Попробуйте позже.';
+        errorEl.hidden = false;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+</script>

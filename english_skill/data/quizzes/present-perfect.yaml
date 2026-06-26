@@ -1,0 +1,90 @@
+meta:
+  name: "present-perfect"
+  display_name: "Present Perfect"
+  level: "B1-B2"
+  estimated_min: 6
+  description: "Опыт / результат сейчас / since-for. I've shipped / I have worked."
+  grammar_point: "present-perfect"
+  prerequisites: ["present-simple", "past-simple"]
+
+questions:
+  - id: 1
+    type: "multiple_choice"
+    prompt: "I ___ this bug three times this month."
+    options: ["fixed", "have fixed", "had fixed", "fix"]
+    correct: "have fixed"
+    explanation: "Опыт/результат (this month, three times) → Present Perfect."
+
+  - id: 2
+    type: "open"
+    prompt: "She ___ (work) here since 2018."
+    correct_answer: "has worked"
+    acceptable_answers: ["has worked", "has been working", "has worked here"]
+    explanation: "Since + точка (2018) → Present Perfect. since 2018 = с 2018 до сейчас."
+
+  - id: 3
+    type: "multiple_choice"
+    prompt: "We ___ just ___ a hotfix."
+    options: ["have / deployed", "did / deployed", "had / deployed", "are / deploy"]
+    correct: "have / deployed"
+    explanation: "'just' = только что. have + just + V3."
+
+  - id: 4
+    type: "open"
+    prompt: "I ___ (never / be) to Japan."
+    correct_answer: "have never been"
+    acceptable_answers: ["have never been", "have never been to", "never been"]
+    explanation: "Never + опыт → Present Perfect. 'have been' = был(а) (опыт)."
+
+  - id: 5
+    type: "multiple_choice"
+    prompt: "___ you ___ the report yet?"
+    options: ["Did / finish", "Have / finished", "Had / finished", "Are / finishing"]
+    correct: "Have / finished"
+    explanation: "'yet' = ещё нет? → Present Perfect (в вопросах)."
+
+  - id: 6
+    type: "multiple_choice"
+    prompt: "They ___ already ___ the meeting."
+    options: ["have / started", "had / started", "did / start", "are / starting"]
+    correct: "have / started"
+    explanation: "'already' = уже → Present Perfect (в утверждении)."
+
+  - id: 7
+    type: "open"
+    prompt: "He ___ (live) in Moscow for 5 years."
+    correct_answer: "has lived"
+    acceptable_answers: ["has lived", "has been living", "has been living in"]
+    explanation: "For + период (5 years) → Present Perfect. Действие продолжается."
+
+  - id: 8
+    type: "multiple_choice"
+    prompt: "I can't find my phone. ___ you ___ it?"
+    options: ["Did / see", "Have / seen", "Had / saw", "Were / seeing"]
+    correct: "Have / seen"
+    explanation: "Результат сейчас (не могу найти) → Present Perfect."
+
+  - id: 9
+    type: "open"
+    prompt: "We ___ (recently / ship) v3.0."
+    correct_answer: "have recently shipped"
+    acceptable_answers: ["have recently shipped", "recently shipped"]
+    explanation: "Recently + результат сейчас → Present Perfect."
+
+  - id: 10
+    type: "multiple_choice"
+    prompt: "I ___ this movie before."
+    options: ["saw", "have seen", "had seen", "see"]
+    correct: "have seen"
+    explanation: "'before' + опыт → Present Perfect."
+
+after_quiz:
+  recap: |
+    **Present Perfect:**
+    - Формула: have/has + V3
+    - Маркеры: ever, never, just, already, yet, since (точка), for (период), recently, so far, three times, today (с результатом)
+    - 3 случая: опыт, недавнее + результат, действие с since/for
+
+  next_tense: "present-perfect-vs-past-simple"
+  recommended_review: "references/tenses-12-table.md#present-perfect"
+  related_lesson: "Week 3-4 (curriculum.yaml)"

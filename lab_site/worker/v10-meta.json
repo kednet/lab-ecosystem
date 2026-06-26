@@ -1,0 +1,78 @@
+{
+  "result": {
+    "id": "83d11af5-9552-4fc1-93b0-fdd1d6462c18",
+    "number": 10,
+    "metadata": {
+      "created_on": "2026-06-10T15:31:20.987411Z",
+      "source": "api",
+      "author_id": "93f15b13dc5f6bcd8282d75ccf61cd7b",
+      "author_email": "kfightforfun@gmail.com",
+      "has_preview": true
+    },
+    "annotations": {
+      "workers/triggered_by": "version_upload"
+    },
+    "resources": {
+      "script": {
+        "etag": "7ae4ac5304b765c31ca025ecc52b54da4fda7f810b791a624aeb5374bc046214",
+        "handlers": [
+          "get",
+          "post",
+          "put",
+          "delete",
+          "options",
+          "patch",
+          "all",
+          "on",
+          "use",
+          "router",
+          "getPath",
+          "_basePath",
+          "routes",
+          "errorHandler",
+          "onError",
+          "notFound",
+          "fetch",
+          "request",
+          "fire",
+          "route",
+          "basePath",
+          "mount"
+        ],
+        "last_deployed_from": "api"
+      },
+      "script_runtime": {
+        "compatibility_date": "2024-12-18",
+        "compatibility_flags": [
+          "nodejs_compat"
+        ],
+        "usage_model": "standard"
+      },
+      "bindings": [
+        {
+          "name": "ENVIRONMENT",
+          "text": "production",
+          "type": "plain_text"
+        },
+        {
+          "name": "FRONTEND_ORIGIN",
+          "text": "https://app.pulab.online",
+          "type": "plain_text"
+        },
+        {
+          "name": "JWT_SECRET_DEV",
+          "text": "dev-secret-change-me-in-production-please-make-it-long-and-random",
+          "type": "plain_text"
+        },
+        {
+          "name": "LAB_KV",
+          "namespace_id": "c9d44152187e4ac18f4a44b895ea0c4b",
+          "type": "kv_namespace"
+        }
+      ]
+    }
+  },
+  "success": true,
+  "errors": [],
+  "messages": []
+}

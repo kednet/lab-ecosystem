@@ -1,0 +1,42 @@
+# image_skill — профиль «Expert & Reviews Hub» (заглушка)
+
+name: experts
+display_name: "Expert & Reviews Hub"
+description: "Экспертные обзоры книг/методик, рейтинги LiveLib/Литрес"
+
+defaults:
+  format: pinterest
+  style: flat
+  mood: bold
+  aspect: "2:3"
+  seed: null
+
+branding:
+  watermark: "@expert.reviews"
+  accent_color: "#7C3AED"
+  palette:
+    primary: "#7C3AED"
+    primary_deep: "#4C1D95"
+    primary_soft: "#DDD6FE"
+    bg: "#F5F3FF"
+    text: "#1F2937"
+
+prompt_styles:
+  flat: "flat design, book cover, infographic style"
+  photo: "realistic, book stack, review atmosphere"
+
+prompt_moods:
+  bold: "decisive, rating, expert opinion"
+  warm: "cozy, book club"
+  calm: "minimalist, library"
+
+hashtags_base: ["#expert_reviews", "#обзорыкниг", "#livlib"]
+
+negative_prompts:
+  - "text on image"
+  - "watermark"
+  - "low quality"
+
+output:
+  state_subdir: "experts"
+  filename_template: "{slug}-experts-{format}"

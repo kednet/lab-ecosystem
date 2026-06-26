@@ -1,0 +1,19 @@
+{
+  "book": "Алхимик",
+  "author": "Пауло Коэльо",
+  "computed_at": "2026-06-21T01:35:00",
+  "sources_count": 5,
+  "total_reviews_count": 58421,
+  "weighted_average": 3.90,
+  "confidence": "medium",
+  "polarization_index": "high",
+  "trust_score": 0.62,
+  "rating_by_source": [
+    {"source": "livelib", "count": 48100, "avg": 3.7, "weight": 1.2},
+    {"source": "litres", "count": 9426, "avg": 4.7, "weight": 1.5},
+    {"source": "otzovik", "count": 466, "avg": 4.6, "weight": 0.7},
+    {"source": "bookmix", "count": 144, "avg": 3.92, "weight": 1.0},
+    {"source": "irecommend", "count": 285, "avg": 4.0, "weight": 1.5}
+  ],
+  "notes": "Высокий разброс средних (3.7-4.7) → книга поляризующая. Взвешенная средняя 3.9/5 надёжна."
+}

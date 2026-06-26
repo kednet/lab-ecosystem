@@ -1,0 +1,31 @@
+{
+  "name": "lab-site-api",
+  "version": "0.6.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy:cf": "wrangler deploy",
+    "tail": "wrangler tail",
+    "typecheck": "tsc --noEmit",
+    "build:node": "esbuild src/server.ts --bundle --platform=node --target=node22 --format=esm --outfile=dist/server.js --packages=external",
+    "build:cf": "esbuild src/index-assets.ts --bundle --platform=neutral --target=es2022 --format=esm --outfile=dist/index-cf.js",
+    "build": "npm run build:node && npm run build:cf",
+    "start": "node --enable-source-maps dist/server.js"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.0.4",
+    "hono": "^4.6.14",
+    "nodemailer": "^6.10.1",
+    "undici": "^8.5.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241218.0",
+    "@types/node": "^22.10.0",
+    "@types/nodemailer": "^6.4.24",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.7.2",
+    "wrangler": "^4.98.0"
+  }
+}

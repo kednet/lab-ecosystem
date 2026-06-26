@@ -1,0 +1,61 @@
+name: koob_www
+display: Koob.ru (основной сайт)
+host_patterns:
+  - "^https?://(www\\.)?koob\\.ru/"
+  - "^https?://koob\\.ru/"
+encoding: cp1251
+strategy: hybrid
+# Поля: список альтернативных селекторов / правил.
+# Каждое правило может быть:
+#   - "css:selector"           → element.text
+#   - "@attr:src:selector"     → element['src']
+#   - "@content:meta[name=..]" → meta['content']
+#   - "@split_title:last"      → <title> split по ' - '
+#   - "@split_title:first"     → <title> split по ' - ', берём первый кусок
+#   - "@url_slug:1"            → из URL: '/zeland/level1' → 'zeland', formatted
+#   - "@jsonld:title"          → JSON-LD @graph
+#   - "@og:title"              → <meta property="og:title">
+selectors:
+  title:
+    - "css:h1"
+    - "@og:title"
+    - "@split_title:first"
+  author:
+    - "css:div.razdel > a:first-child"
+    - "@og:author"
+    - "@split_title:last"
+    - "@url_slug:1"
+  year:
+    - "css:span.book-year"
+    - "regex_in:title:\\b(19|20)\\d{2}\\b"
+  cover:
+    - "css:div.book_id div.text a img"
+    - "css:div.text img"
+    - "@og:image"
+  short_description:
+    - "css:div.text p"
+    - "css:.book-annotation"
+    - "@content:meta[name=description]"
+  key_ideas:
+    - "css:.entry-content ul li"
+    - "css:div.text p"            # fallback: первые 4-5 предложений
+  quotes:
+    - "css:blockquote"
+    - "regex_in:full:«[^»]{30,500}»"
+  chapters:
+    - "css:ol > li"
+    - "css:ul > li"
+    - "regex_in:full:Глава\\s+\\d+[.:)]?\\s+[^\\n]{2,200}"
+# Блэклист ссылок, которые выглядят как автор, но это элементы меню
+author_href_blocklist:
+  - "/author/"
+  - "/category/"
+  - "/comments/"
+  - "/search/"
+# Способ абсолютизации обложки
+cover_url_base: koob_base_url
+# Если есть блок комментариев
+comments:
+  selector: "div.comments_list div"
+  name_selector: "small b"
+  text_strip_small: true

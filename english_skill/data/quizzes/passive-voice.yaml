@@ -1,0 +1,96 @@
+meta:
+  name: "passive-voice"
+  display_name: "Passive Voice"
+  level: "B1-B2"
+  estimated_min: 6
+  description: "Фокус на действии, не исполнителе. be + V3."
+  grammar_point: "passive-voice"
+  prerequisites: ["present-simple", "past-simple", "present-perfect"]
+
+questions:
+  - id: 1
+    type: "multiple_choice"
+    prompt: "The hotfix ___ deployed at 14:00."
+    options: ["is", "was", "has", "had"]
+    correct: "was"
+    explanation: "Past Simple passive: was + V3 (deployed)."
+
+  - id: 2
+    type: "open"
+    prompt: "The code ___ (review) by 2 senior engineers. (every release)"
+    correct_answer: "is reviewed"
+    acceptable_answers: ["is reviewed"]
+    explanation: "Present Simple passive: is + V3 (reviewed)."
+
+  - id: 3
+    type: "multiple_choice"
+    prompt: "This bug ___ been fixed in v2.1."
+    options: ["is", "was", "has", "had"]
+    correct: "has"
+    explanation: "Present Perfect passive: has + been + V3."
+
+  - id: 4
+    type: "open"
+    prompt: "The data ___ (store) in PostgreSQL. (current state)"
+    correct_answer: "is stored"
+    acceptable_answers: ["is stored"]
+    explanation: "Present Simple passive для постоянного факта."
+
+  - id: 5
+    type: "multiple_choice"
+    prompt: "The service will ___ deployed tomorrow."
+    options: ["be", "is", "been", "was"]
+    correct: "be"
+    explanation: "Future passive: will + be + V3. 'will be deployed'."
+
+  - id: 6
+    type: "multiple_choice"
+    prompt: "Active: 'Maria fixed the bug.' → Passive: 'The bug ___ fixed by Maria.'"
+    options: ["is", "was", "has been", "were"]
+    correct: "was"
+    explanation: "Active Past Simple → Passive Past Simple: was + V3 (fixed)."
+
+  - id: 7
+    type: "open"
+    prompt: "Logs ___ (rotate) every 24 hours."
+    correct_answer: "are rotated"
+    acceptable_answers: ["are rotated"]
+    explanation: "Present Simple passive для регулярного действия: are + V3."
+
+  - id: 8
+    type: "multiple_choice"
+    prompt: "Active: 'They ship releases every Friday.' → Passive: 'Releases ___ shipped every Friday.'"
+    options: ["is", "are", "was", "have"]
+    correct: "are"
+    explanation: "Active Present Simple (plural They) → Passive Present Simple (plural): are + V3."
+
+  - id: 9
+    type: "open"
+    prompt: "The migration ___ (complete) by the time you arrive. (earlier than future point)"
+    correct_answer: "will have been"
+    acceptable_answers: ["will have been", "will be"]
+    explanation: "Future Perfect Passive: will + have + been + V3. Will be — допустимо упрощение."
+
+  - id: 10
+    type: "multiple_choice"
+    prompt: "When was the new feature ___ ? (release was launched yesterday)"
+    options: ["released", "release", "releasing", "releases"]
+    correct: "released"
+    explanation: "Past Simple passive question: was + subject + V3 (released)?"
+
+after_quiz:
+  recap: |
+    **Passive Voice = be + V3** (по времени be):
+
+    | Tense | Active | Passive |
+    |---|---|---|
+    | Present Simple | ships | is shipped |
+    | Past Simple | shipped | was shipped |
+    | Present Perfect | has shipped | has been shipped |
+    | Future | will ship | will be shipped |
+
+    Когда: исполнитель не важен, неизвестен, или речь о процессе.
+
+  next_tense: "reported-speech"
+  recommended_review: "references/tenses-12-table.md#passive-voice"
+  related_lesson: "Week 11 (curriculum.yaml)"

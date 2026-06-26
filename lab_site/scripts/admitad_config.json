@@ -1,0 +1,50 @@
+{
+  "_comment": "Конфиг для admitad_link_builder.py + affiliate_links/advcake.py. Шаблоны URL поддерживают {query_encoded}, {uid}, {erid}. Для Литреса теперь рабочая партнёрская ссылка через AdvCake (CPA-сеть, где зарегистрирован kfigh — ID 957, hash c280b701).",
+  "admitad_uid": "2538161",
+  "marker": {
+    "advertiser_name": "ООО «МИФ»",
+    "advertiser_inn": "7703809969",
+    "erid": "MvGzQC98w3Z1gMq1kx5N5i8h"
+  },
+  "litres": {
+    "partner": "Литрес (AdvCake)",
+    "advcake_hash": "c280b701",
+    "advertiser_name": "ООО ЛИТРЕС",
+    "advertiser_inn": "7719571260",
+    "erid": "2VfnxyNkZrY",
+    "url_template_base": "https://www.litres.ru{book_path}/?utm_source=advcake&utm_medium=cpa&utm_campaign=affiliate&utm_content=c280b701&advcake_params=&utm_term=&erid=2VfnxyNkZrY&advcake_method=1&m=1"
+  },
+  "stores": {
+    "mif": {
+      "name": "МИФ",
+      "url_template": "https://codeaven.com/g/laq08uprbvf366109b7d5799280e31/?erid={erid}",
+      "admitad_partner": "МИФ (Admitad)"
+    },
+    "litres": {
+      "name": "Литрес",
+      "url_template": "https://www.litres.ru/search/?q={query_encoded}",
+      "admitad_partner": "Литрес (AdvCake)",
+      "litres_per_book": true
+    },
+    "book24": {
+      "name": "Book24",
+      "url_template": "https://book24.ru/search?q={query_encoded}",
+      "admitad_partner": null
+    }
+  },
+  "book_overrides": {
+    "teoriya-neveroyatnosti-muzhitskaya": {
+      "comment": "Издано Бомборой (Эксмо), в МИФ отсутствует. Ссылка МИФ неуместна.",
+      "stores": ["litres", "book24"]
+    },
+    "ot-mechty-do-uspeha-trunin-r-a": {
+      "comment": "Издано Труниным самостоятельно, в МИФ отсутствует.",
+      "stores": ["litres", "book24"]
+    },
+    "alhimik-koeluo": {
+      "comment": "Партнёрская ссылка Литреса — прямой URL на книгу (AdvCake).",
+      "stores": ["litres", "book24"],
+      "litres_book_path": "/book/paulo-koelo/alhimik-122351/"
+    }
+  }
+}

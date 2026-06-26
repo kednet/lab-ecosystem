@@ -1,0 +1,92 @@
+meta:
+  name: "present-simple"
+  display_name: "Present Simple"
+  level: "B1"
+  estimated_min: 5
+  description: "Факты, регулярные действия, расписания. He works / I don't work / Do you work?"
+  grammar_point: "present-simple"
+  prerequisites: []
+
+questions:
+  - id: 1
+    type: "multiple_choice"
+    prompt: "She ___ on the auth service."
+    options: ["work", "works", "is working", "working"]
+    correct: "works"
+    explanation: "He/She/It + V + s/es. Regular action."
+
+  - id: 2
+    type: "open"
+    prompt: "The API ___ (handle) 1000 requests per second."
+    correct_answer: "handles"
+    acceptable_answers: ["handles"]
+    explanation: "The API = it, + s."
+
+  - id: 3
+    type: "multiple_choice"
+    prompt: "I ___ TypeScript at work."
+    options: ["doesn't use", "don't use", "am not use", "not use"]
+    correct: "don't use"
+    explanation: "I + don't + V (базовая форма)."
+
+  - id: 4
+    type: "open"
+    prompt: "The build ___ (run) on every commit."
+    correct_answer: "runs"
+    acceptable_answers: ["runs"]
+    explanation: "The build = it, + s."
+
+  - id: 5
+    type: "multiple_choice"
+    prompt: "___ the team use PostgreSQL?"
+    options: ["Do", "Does", "Is", "Are"]
+    correct: "Does"
+    explanation: "The team = it, вопрос: Does + it + V?"
+
+  - id: 6
+    type: "open"
+    prompt: "We ___ (not / deploy) on Fridays."
+    correct_answer: "don't deploy"
+    acceptable_answers: ["don't deploy", "do not deploy"]
+    explanation: "We + don't + V. Friday = s, но в отрицании s исчезает."
+
+  - id: 7
+    type: "multiple_choice"
+    prompt: "He ___ to the CTO."
+    options: ["report", "reports", "is reporting", "reporting"]
+    correct: "reports"
+    explanation: "He + reports. Регулярное действие."
+
+  - id: 8
+    type: "multiple_choice"
+    prompt: "Where ___ the service run?"
+    options: ["do", "does", "is", "are"]
+    correct: "does"
+    explanation: "Where + does + it + V?"
+
+  - id: 9
+    type: "open"
+    prompt: "The script ___ (write) logs to S3."
+    correct_answer: "writes"
+    acceptable_answers: ["writes"]
+    explanation: "The script = it, + s. write → writes (y → ies)."
+
+  - id: 10
+    type: "multiple_choice"
+    prompt: "They ___ always ___ late for standup."
+    options: ["is / are", "are / are", "are / being", "is / being"]
+    correct: "are / are"
+    explanation: "They + are + always + V (для глагола 'be'). are always late."
+
+after_quiz:
+  recap: |
+    **Present Simple:**
+    - I/You/We/They + V (work)
+    - He/She/It + V + s/es (works)
+    - Отрицание: don't / doesn't + V (базовая форма!)
+    - Вопрос: Do / Does + V?
+    - Наречия частоты: usually, always, often, sometimes, never
+
+  next_tense: "past-simple"
+  recommended_review: "references/tenses-12-table.md#present-simple"
+  related_lesson: "Week 1 Day 1 (curriculum.yaml)"

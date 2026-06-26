@@ -1,0 +1,482 @@
+---
+// Карточка одного эксперта + Schema.org Person JSON-LD
+import Base from '../../layouts/Base.astro';
+import { getAllExperts, getExpert, getExpertSchemaJsonLd } from '../../lib/experts';
+
+export function getStaticPaths() {
+  return getAllExperts().map((e) => ({
+    params: { slug: e.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const expert = slug ? getExpert(slug) : null;
+
+if (!expert) {
+  return Astro.redirect('/experts/');
+}
+
+const jsonLd = getExpertSchemaJsonLd(expert);
+const pageTitle = `${expert.name} — ${expert.jobTitle || 'Эксперт'}`;
+const pageDesc = expert.description || `${expert.name}: ${expert.jobTitle}. Рекомендации книг в Лаборатории желаний.`;
+---
+<Base
+  title={pageTitle}
+  description={pageDesc}
+  ogImage={expert.image || undefined}
+>
+  <article class="expert-page">
+    <!-- HERO -->
+    <header class="expert-hero">
+      <div class="container expert-hero__inner">
+        <a class="expert-hero__back" href="/experts/">← Все эксперты</a>
+        <div class="expert-hero__layout">
+          <div class="expert-hero__avatar">
+            {expert.image
+              ? <img src={expert.image} alt={expert.name} />
+              : <div class="expert-hero__avatar-fallback">{expert.name.trim().charAt(0).toUpperCase()}</div>
+            }
+          </div>
+          <div class="expert-hero__meta">
+            <p class="expert-hero__eyebrow">Эксперт</p>
+            <h1 class="expert-hero__name">{expert.name}</h1>
+            {expert.jobTitle && (
+              <p class="expert-hero__title">{expert.jobTitle}</p>
+            )}
+            {expert.worksFor && (
+              <p class="expert-hero__worksfor">
+                <a href={expert.url || '#'} target="_blank" rel="noopener">{expert.worksFor}</a>
+              </p>
+            )}
+            {expert.description && (
+              <p class="expert-hero__desc">{expert.description}</p>
+            )}
+
+            {expert.tags && expert.tags.length > 0 && (
+              <div class="expert-hero__tags">
+                {expert.tags.map((t) => (
+                  <span class="expert-hero__tag">#{t}</span>
+                ))}
+              </div>
+            )}
+
+            {expert.sameAs && expert.sameAs.length > 0 && (
+              <div class="expert-hero__social">
+                {expert.sameAs.map((url) => {
+                  const label = url.includes('vk.com') ? 'ВК'
+                    : url.includes('t.me') || url.includes('telegram') ? 'TG'
+                    : url.includes('youtube') || url.includes('youtu.be') ? 'YT'
+                    : url.includes('linkedin') ? 'LI'
+                    : '↗';
+                  return <a class="social-link" href={url} target="_blank" rel="noopener">{label}</a>;
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container expert-content">
+      <div class="expert-content__grid">
+        <!-- MAIN COLUMN -->
+        <div class="expert-content__main">
+          {expert.featured_video && (
+            <section class="expert-section expert-video">
+              <h2 class="expert-section__title">Видео</h2>
+              <div class="video-embed">
+                <iframe
+                  src={`https://www.youtube.com/embed/${expert.featured_video}?rel=0`}
+                  title={`Видео: ${expert.name}`}
+                  loading="lazy"
+                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                  referrerpolicy="strict-origin-when-cross-origin"
+                />
+              </div>
+            </section>
+          )}
+
+          {expert.knowsAbout && expert.knowsAbout.length > 0 && (
+            <section class="expert-section">
+              <h2 class="expert-section__title">Специализация</h2>
+              <ul class="expertise-list" role="list">
+                {expert.knowsAbout.map((s) => (
+                  <li>{s}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {expert.quotes && expert.quotes.length > 0 && (
+            <section class="expert-section">
+              <h2 class="expert-section__title">Цитаты</h2>
+              <div class="quotes-block">
+                {expert.quotes.map((q) => (
+                  <blockquote class="expert-quote">
+                    <p>«{q.quote}»</p>
+                    <footer>
+                      — <cite>{q.author}</cite>
+                      {q.source && <span class="expert-quote__source">, {q.source}</span>}
+                      {q.year && <span class="expert-quote__year"> · {q.year}</span>}
+                    </footer>
+                  </blockquote>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {expert.alumniOf && expert.alumniOf.length > 0 && (
+            <section class="expert-section">
+              <h2 class="expert-section__title">Образование</h2>
+              <ul class="alumni-list" role="list">
+                {expert.alumniOf.map((a) => (
+                  <li>{a}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {expert.awards && expert.awards.length > 0 && (
+            <section class="expert-section">
+              <h2 class="expert-section__title">Награды и сертификаты</h2>
+              <ul class="awards-list" role="list">
+                {expert.awards.map((a) => (
+                  <li>{a}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {expert.recommended_books && expert.recommended_books.length > 0 && (
+            <section class="expert-section">
+              <h2 class="expert-section__title">Рекомендует книги</h2>
+              <ul class="books-list" role="list">
+                {expert.recommended_books.map((b) => (
+                  <li>
+                    <a href={`/library/${b.slug}/`}>{b.title || b.slug}</a>
+                    {b.context && <span class="books-list__context"> — {b.context}</span>}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </div>
+
+        <!-- SIDEBAR -->
+        <aside class="expert-content__side">
+          {expert.media && Object.keys(expert.media).length > 0 && (
+            <div class="side-card">
+              <h3 class="side-card__title">📱 Медиа</h3>
+              <ul class="side-card__list" role="list">
+                {expert.media.youtube && (
+                  <li><a href={expert.media.youtube} target="_blank" rel="noopener">YouTube канал</a></li>
+                )}
+                {expert.media.telegram && (
+                  <li><a href={expert.media.telegram} target="_blank" rel="noopener">Telegram</a></li>
+                )}
+                {expert.media.vk && (
+                  <li><a href={expert.media.vk} target="_blank" rel="noopener">ВКонтакте</a></li>
+                )}
+              </ul>
+            </div>
+          )}
+
+          {expert.email && (
+            <div class="side-card">
+              <h3 class="side-card__title">📧 Контакты</h3>
+              <p><a href={`mailto:${expert.email}`}>{expert.email}</a></p>
+            </div>
+          )}
+
+          {expert.score > 0 && (
+            <div class="side-card side-card--score">
+              <h3 class="side-card__title">Надёжность</h3>
+              <p class="score-display"><strong>{expert.score}/100</strong></p>
+              <p class="score-help">Оценка на основе количества и качества упоминаний в проверенных источниках.</p>
+            </div>
+          )}
+        </aside>
+      </div>
+    </div>
+
+    <!-- YMYL-дисклеймер -->
+    {(expert.tags?.some((t) => /психолог|здоровь|медицин|коуч|тренер/i.test(t))) && (
+      <aside class="ymyl-disclaimer">
+        <div class="container">
+          ⚠️ <strong>Важно:</strong> материалы эксперта носят информационный характер
+          и не заменяют консультацию специалиста. Перед применением любых практик
+          по теме «психология», «здоровье» или «отношения» рекомендуем проконсультироваться
+          с профильным специалистом.
+        </div>
+      </aside>
+    )}
+  </article>
+
+  <!-- Schema.org Person JSON-LD -->
+  <script type="application/ld+json" set:html={jsonLd} />
+</Base>
+
+<style>
+  .expert-hero {
+    background: linear-gradient(180deg, #fff1f2 0%, #fff 100%);
+    padding: 2.5rem 0 3rem;
+  }
+  .expert-hero__back {
+    display: inline-block;
+    color: #b3495d;
+    text-decoration: none;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+  .expert-hero__back:hover {
+    text-decoration: underline;
+  }
+  .expert-hero__layout {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media (max-width: 640px) {
+    .expert-hero__layout {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+  .expert-hero__avatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(179, 73, 93, 0.1);
+  }
+  .expert-hero__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .expert-hero__avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: #b3495d;
+    font-weight: 700;
+  }
+  .expert-hero__eyebrow {
+    color: #b3495d;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    margin: 0 0 0.5rem;
+  }
+  .expert-hero__name {
+    margin: 0 0 0.5rem;
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+  .expert-hero__title {
+    margin: 0 0 0.5rem;
+    color: #4a3a3f;
+    font-size: 1.15rem;
+  }
+  .expert-hero__worksfor a {
+    color: #b3495d;
+    text-decoration: none;
+  }
+  .expert-hero__desc {
+    margin: 1rem 0;
+    color: #2b1f24;
+    line-height: 1.6;
+  }
+  .expert-hero__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 1rem 0;
+  }
+  .expert-hero__tag {
+    background: #fff1f2;
+    color: #b3495d;
+    padding: 0.3em 0.8em;
+    border-radius: 999px;
+    font-size: 0.85rem;
+  }
+  .expert-hero__social {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #b3495d;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .social-link:hover {
+    background: #963a4c;
+  }
+
+  .expert-content {
+    padding: 3rem 0;
+  }
+  .expert-content__grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 3rem;
+  }
+  @media (max-width: 900px) {
+    .expert-content__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .expert-section {
+    margin-bottom: 2.5rem;
+  }
+  .expert-section__title {
+    font-size: 1.4rem;
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #fff1f2;
+  }
+  .expertise-list,
+  .alumni-list,
+  .awards-list,
+  .books-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .expertise-list li,
+  .alumni-list li,
+  .awards-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f7e6e9;
+  }
+  .books-list li {
+    padding: 0.5rem 0;
+  }
+  .books-list a {
+    color: #b3495d;
+    text-decoration: none;
+  }
+  .books-list a:hover {
+    text-decoration: underline;
+  }
+  .books-list__context {
+    color: #6b5d63;
+    font-size: 0.9em;
+  }
+
+  .quotes-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .expert-quote {
+    background: #fff1f2;
+    border-left: 4px solid #b3495d;
+    padding: 1rem 1.25rem;
+    border-radius: 0 12px 12px 0;
+    margin: 0;
+  }
+  .expert-quote p {
+    margin: 0 0 0.5rem;
+    font-style: italic;
+    line-height: 1.5;
+  }
+  .expert-quote footer {
+    color: #6b5d63;
+    font-size: 0.9rem;
+  }
+  .expert-quote cite {
+    font-style: normal;
+    font-weight: 600;
+  }
+  .expert-quote__source,
+  .expert-quote__year {
+    color: #6b5d63;
+  }
+
+  .side-card {
+    background: #fff1f2;
+    padding: 1.25rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+  .side-card__title {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    color: #b3495d;
+  }
+  .side-card__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .side-card__list li {
+    padding: 0.3rem 0;
+  }
+  .side-card a {
+    color: #2b1f24;
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .side-card a:hover {
+    color: #b3495d;
+  }
+  .score-display {
+    font-size: 1.8rem;
+    color: #b3495d;
+    margin: 0.5rem 0;
+  }
+  .score-help {
+    font-size: 0.85rem;
+    color: #6b5d63;
+    margin: 0;
+  }
+
+  .ymyl-disclaimer {
+    background: #fff5e1;
+    border-top: 1px solid #f0d4a0;
+    padding: 1.25rem 0;
+    margin-top: 2rem;
+  }
+  .ymyl-disclaimer .container {
+    color: #6b5a3a;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  /* YouTube embed */
+  .expert-video {
+    margin-bottom: 2.5rem;
+  }
+  .video-embed {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 4px 16px rgba(179, 73, 93, 0.12);
+  }
+  .video-embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>

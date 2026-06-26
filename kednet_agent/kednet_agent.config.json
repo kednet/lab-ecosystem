@@ -1,0 +1,7 @@
+{
+  "chiefUrl": "wss://app.pulab.online/chief",
+  "wsPath": "/ws/",
+  "token": "a45acd3faff116e3e802372f589f93157e878e86bfe1d33bb0407e0ae9f37afa",
+  "skillsDir": "C:\\Users\\kfigh",
+  "logDir": "C:\\Users\\kfigh\\kednet_agent\\logs"
+}

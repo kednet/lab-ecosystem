@@ -1,0 +1,33 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{HEADLINE}}",
+  "description": "{{DESCRIPTION}}",
+  "image": ["{{IMAGE_URL}}"],
+  "datePublished": "{{PUBLISHED}}",
+  "dateModified": "{{MODIFIED}}",
+  "author": {
+    "@type": "Person",
+    "name": "{{AUTHOR_NAME}}",
+    "url": "{{AUTHOR_URL}}",
+    "sameAs": ["{{VK}}", "{{TELEGRAM}}", "{{PERSONAL_SITE}}"]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://lab.com/#organization",
+    "name": "Лаборатория желаний",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://lab.com/logo.png",
+      "width": 600,
+      "height": 60
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{CANONICAL_URL}}"
+  },
+  "articleSection": "{{SECTION}}",
+  "keywords": "{{KEYWORDS}}",
+  "inLanguage": "ru-RU"
+}

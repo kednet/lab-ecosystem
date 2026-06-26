@@ -1,0 +1,54 @@
+# Профиль: WishCoach (заглушка)
+# Phase 1: минимально валидный YAML, дорабатывается при первом использовании
+
+name: coach
+display_name: "WishCoach"
+description: "Премиум-ИИ-коуч для подписчиков app.pulab.online. Объясняйки по модулям детектора желаний."
+
+defaults:
+  platform: youtube
+  tone: educational
+  goal: subscribe
+  duration: 45
+  voice: ermil
+  speed: 1.00
+  music_mood: calm
+
+voice_tones:
+  - educational
+  - calm
+  - neutral
+  - confident
+
+branding:
+  watermark: "@wishcoach"
+  watermark_handle: "wishcoach"
+  cta_default: "Полный разбор от AI-коуча — в приложении"
+  cta_url: "https://app.pulab.online"
+  accent_color: "#9333EA"  # фиолетовый (нужно уточнить)
+  palette:
+    primary: "#9333EA"
+    text: "#1F0A14"
+    bg: "#FAF5FF"
+
+hashtags_base:
+  - "#wishcoach"
+  - "#aiкоуч"
+  - "#желания"
+  - "#психология"
+
+cta_profiles:
+  educational:
+    - "Модуль целиком — в приложении, ссылка в закрепе"
+    - "Хочешь полный разбор — загляни в WishCoach"
+  calm:
+    - "Без спешки. Полный модуль в приложении"
+    - "Тихо, спокойно, в WishCoach — ссылка в закрепе"
+
+source_domains:
+  - "Психология, коучинг, 5 модулей детектора"
+  - "RU-женщины 25-45, осознанный подход к желаниям"
+
+output:
+  filename_template: "{slug}-coach"
+  state_subdir: "coach"

@@ -1,0 +1,36 @@
+name: litres
+display: Литрес (litres.ru / litres.com)
+host_patterns:
+  - "^https?://(www\\.)?litres\\.(ru|com)/"
+encoding: utf-8
+strategy: hybrid
+selectors:
+  title:
+    - "css:h1[itemprop='name']"
+    - "css:h1"
+    - "@og:title"
+  author:
+    - "css:.biblio_book_author a"
+    - "css:a[href*='/author/']"
+    - "css:span[itemprop='author']"
+    - "@og:book:author"
+  year:
+    - "css:.biblio_book_info_date"
+    - "css:span[itemprop='datePublished']"
+    - "regex_in:full:\\b(19|20)\\d{2}\\b"
+  cover:
+    - "css:.biblio_book_cover img"
+    - "css:img.cover"
+    - "css:img[itemprop='image']"
+    - "@og:image"
+  short_description:
+    - "css:.biblio_book_about_book p"
+    - "css:div.biblio_book_about_book"
+    - "@content:meta[name=description]"
+  isbn:
+    - "css:span[itemprop='isbn']"
+  page_count:
+    - "css:span[itemprop='numberOfPages']"
+    - "css:.biblio_book_pages"
+  genre:
+    - "css:.biblio_book_info_genre a"

@@ -1,0 +1,70 @@
+# R2 setup — Cloudflare R2 (S3-compatible storage) для upscaled-картинок
+
+**Назначение:** хранить upscaled JPEG из `image_skill` в облаке с публичным URL, который можно прикрепить к постам ВК/TG/OK.
+
+## v1.4: Multi-provider storage
+
+Image Skill v1.4 поддерживает несколько провайдеров через `scripts/upload_storage.py`:
+
+| Провайдер | ENV | Стоимость | Доступность |
+|---|---|---|---|
+| **Cloudflare R2** | `R2_*` | $0.015/GB/мес, egress $0 | Может быть недоступен с РФ |
+| **Yandex Object Storage** | `YANDEX_STORAGE_*` | 0.01 ₽/GB/мес | Доступен с РФ, без VPN |
+
+Управление провайдером:
+```bash
+# В .env:
+STORAGE_PROVIDER=auto    # авто-выбор R2 → Yandex → file:// (default)
+STORAGE_PROVIDER=r2      # только R2
+STORAGE_PROVIDER=yandex  # только Yandex Object Storage
+
+# Или в CLI:
+python scripts/image.py publish ... --storage yandex
+```
+
+Setup Yandex: см. `data/yandex-storage.example.yaml`
+
+## ENV переменные (в `image_skill/.env`)
+
+```bash
+R2_ACCOUNT_ID=<cloudflare_account_id>
+R2_ACCESS_KEY_ID=<R2 API token access_key>
+R2_SECRET_ACCESS_KEY=<R2 API token secret_key>
+R2_BUCKET=pulab-images
+R2_PUBLIC_URL=https://img.pulab.ru
+```
+
+## Как получить
+
+1. **Cloudflare Dashboard** → R2 → Create bucket (`pulab-images`)
+2. **R2 → Manage R2 API Tokens** → Create API token
+   - Permissions: Object Read & Write
+   - Bucket: `pulab-images` (или Apply to all buckets)
+   - TTL: Forever (или на год)
+3. Скопировать `Access Key ID` + `Secret Access Key` в `.env`
+4. **R2 → pulab-images → Settings → Public Access** → Connect domain (`img.pulab.ru`)
+5. Endpoint URL для boto3: `https://<account_id>.r2.cloudflarestorage.com`
+
+## Pip зависимость
+
+```bash
+pip install boto3
+```
+
+## Что делает `scripts/upload_r2.py`
+
+- Если все 5 ENV заданы → `boto3.client('s3', endpoint_url=...)` + `upload_file()`
+- Если НЕ заданы → fallback на `file://` URL (только для dry-run, ВК не примет)
+
+## Кэширование
+
+R2 отдаёт `Cache-Control: public, max-age=31536000` (1 год). Картинка иммутабельна — никогда не меняется.
+
+## Стоимость
+
+- Storage: $0.015/GB/месяц
+- Class A (PUT) операции: $4.50/миллион
+- Class B (GET) операции: $0.36/миллион
+- **Egress (трафик): $0** ← главное преимущество R2 перед AWS S3
+
+Для 100 upscaled JPEG/месяц × 500 КБ = 50 МБ/мес = $0.0007 storage. Копейки.

@@ -1,0 +1,137 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getAllPosts, getPost, getRelatedPosts, formatDate } from '../../lib/blog';
+import { blogPostingLd, breadcrumbLd, faqLd } from '../../lib/seo';
+
+export function getStaticPaths() {
+  return getAllPosts().map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = slug ? getPost(slug) : null;
+if (!post) return Astro.redirect('/blog/');
+
+const related = getRelatedPosts(post.slug, 3);
+
+const jsonLdBlocks = [
+  blogPostingLd(post),
+  breadcrumbLd([
+    { name: 'Главная', url: '/' },
+    { name: 'Блог', url: '/blog/' },
+    { name: post.title, url: `/blog/${post.slug}/` },
+  ]),
+];
+if (post.faq && post.faq.length > 0) {
+  jsonLdBlocks.push(faqLd(post.faq));
+}
+---
+<Base
+  title={post.title}
+  description={post.excerpt}
+  ogImage={post.cover ? post.cover : `/og/blog/${post.slug}.png`}
+  ogType="article"
+  publishedTime={post.date}
+  author={post.author}
+  extraJsonLd={jsonLdBlocks}
+>
+  <article class="post-page">
+    <header class="post-hero">
+      <div class="container">
+        <a class="post-hero__back" href="/blog/">← Все статьи</a>
+        <div class="post-hero__meta">
+          <time datetime={post.date}>{formatDate(post.date)}</time>
+          <span class="post-hero__sep">·</span>
+          <span>{post.read_min} мин чтения</span>
+          <span class="post-hero__sep">·</span>
+          <span>{post.author}</span>
+        </div>
+        <h1 class="post-hero__title">{post.title}</h1>
+        {post.tags.length > 0 && (
+          <div class="post-hero__tags">
+            {post.tags.map((t) => <span class="post-hero__tag">#{t}</span>)}
+          </div>
+        )}
+      </div>
+    </header>
+
+    <section class="post-body">
+      <div class="container">
+        <div class="prose" set:html={post.html}></div>
+      </div>
+    </section>
+
+    {post.faq && post.faq.length > 0 && (
+      <section class="section section--alt post-faq">
+        <div class="container">
+          <p class="section__eyebrow">Частые вопросы</p>
+          <h2 class="section__title section__title--small">Коротко о главном</h2>
+          <div class="faq-list">
+            {post.faq.map((it) => (
+              <details class="faq-item">
+                <summary class="faq-item__q">{it.question}</summary>
+                <div class="faq-item__a"><p>{it.answer}</p></div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {related.length > 0 && (
+      <section class="section section--alt">
+        <div class="container">
+          <p class="section__eyebrow reveal">Читать дальше</p>
+          <h2 class="section__title reveal">Ещё статьи</h2>
+          <ul class="post-list" role="list">
+            {related.map((p) => (
+              <li class="post-card">
+                <a class="post-card__link" href={`/blog/${p.slug}/`} data-related-slug={p.slug}>
+                  <div class="post-card__meta">
+                    <time datetime={p.date}>{formatDate(p.date)}</time>
+                    <span class="post-card__sep">·</span>
+                    <span>{p.read_min} мин чтения</span>
+                  </div>
+                  <h2 class="post-card__title">{p.title}</h2>
+                  <p class="post-card__excerpt">{p.excerpt}</p>
+                  <span class="post-card__cta">Читать →</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
+  </article>
+</Base>
+
+<script is:inline>
+  (function initBlogTracking() {
+    // Клик по related-карточке
+    document.querySelectorAll('[data-related-slug]').forEach((el) => {
+      el.addEventListener('click', () => {
+        window.labReachGoal('blog_related_clicked', { slug: el.getAttribute('data-related-slug') });
+      });
+    });
+
+    // Открытие FAQ-аккордеона
+    document.querySelectorAll('.faq-item').forEach((el) => {
+      el.addEventListener('toggle', () => {
+        if (el.open) window.labReachGoal('blog_faq_opened');
+      });
+    });
+
+    // Дочитывание: 75% страницы прокручено → фиксируем "прочитал"
+    let readMarked = false;
+    function onScroll() {
+      if (readMarked) return;
+      const scrolled = window.scrollY + window.innerHeight;
+      const total = document.body.scrollHeight;
+      if (total > 0 && scrolled / total >= 0.75) {
+        readMarked = true;
+        window.labReachGoal('blog_read_completed');
+        window.removeEventListener('scroll', onScroll);
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+</script>

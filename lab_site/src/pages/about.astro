@@ -1,0 +1,457 @@
+---
+import Base from '../layouts/Base.astro';
+import { legal, isLegalFilled } from '../data/legal';
+---
+<Base
+  title="О проекте"
+  description="ЛАБОРАТОРИЯ ЖЕЛАНИЙ — лаборатория совместных экспериментов с желаниями. Проект делают подписчики — сайт и соцсети это ресурсы с идеями. Бери — и делай. Не получилось — продолжай. Поддержим друг друга."
+>
+  <!-- HERO -->
+  <section class="section about-hero">
+    <div class="container about-hero__inner">
+      <h1 class="section__title reveal">
+        Лаборатория совместных<br />экспериментов
+      </h1>
+      <p class="about-hero__lead reveal">
+        Проект делают подписчики&nbsp;— сайт и&nbsp;соцсети это ресурсы с&nbsp;идеями. Бери&nbsp;— и&nbsp;делай.
+        Не&nbsp;получилось&nbsp;— не&nbsp;расстраивайся, продолжай. Поддержим друг&nbsp;друга.
+      </p>
+    </div>
+  </section>
+
+  <!-- МАНИФЕСТ -->
+  <section class="section section--alt" aria-labelledby="manifest-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Наш манифест</p>
+      <h2 class="section__title reveal" id="manifest-title">
+        Коротко о&nbsp;том, во&nbsp;что мы&nbsp;верим
+      </h2>
+
+      <ul class="manifest" role="list">
+        <li class="manifest__item reveal">
+          <div class="manifest__num" aria-hidden="true">01</div>
+          <h3 class="manifest__title">«Хочу»&nbsp;— это не&nbsp;каприз</h3>
+          <p class="manifest__text">
+            У&nbsp;каждой из&nbsp;нас есть желания, которые мы&nbsp;давно не&nbsp;озвучивали&nbsp;—
+            даже себе. Мы&nbsp;создаём пространство, где&nbsp;можно вернуть&nbsp;их
+            и&nbsp;не&nbsp;чувствовать вину.
+          </p>
+        </li>
+        <li class="manifest__item reveal">
+          <div class="manifest__num" aria-hidden="true">02</div>
+          <h3 class="manifest__title">Опора на&nbsp;науку</h3>
+          <p class="manifest__text">
+            Психология, нейронаука и&nbsp;проверенные практики&nbsp;— то, что&nbsp;работает
+            в&nbsp;жизни. Без&nbsp;мифов, без&nbsp;магии, без&nbsp;«волшебных таблеток».
+          </p>
+        </li>
+        <li class="manifest__item reveal">
+          <div class="manifest__num" aria-hidden="true">03</div>
+          <h3 class="manifest__title">Без&nbsp;гуру и&nbsp;«учителей жизни»</h3>
+          <p class="manifest__text">
+            Мы&nbsp;не&nbsp;продаём волшебную таблетку и&nbsp;не&nbsp;знаем «единственно верного пути».
+            Мы&nbsp;предлагаем инструменты&nbsp;— а&nbsp;вы&nbsp;сами решаете, что с&nbsp;ними делать.
+          </p>
+        </li>
+        <li class="manifest__item reveal">
+          <div class="manifest__num" aria-hidden="true">04</div>
+          <h3 class="manifest__title">Практика важнее теории</h3>
+          <p class="manifest__text">
+            Конспект ради конспекта&nbsp;— не&nbsp;наша история. Если после книги
+            не&nbsp;понятно, что делать в&nbsp;жизни, мы&nbsp;не&nbsp;доделали работу.
+          </p>
+        </li>
+        <li class="manifest__item reveal">
+          <div class="manifest__num" aria-hidden="true">05</div>
+          <h3 class="manifest__title">Желания&nbsp;— это не&nbsp;«надо»</h3>
+          <p class="manifest__text">
+            Мы&nbsp;помогаем отличить навязанное от&nbsp;своего. Научиться слышать&nbsp;себя&nbsp;—
+            и&nbsp;не&nbsp;извиняться за&nbsp;«хочу».
+          </p>
+        </li>
+        <li class="manifest__item reveal">
+          <div class="manifest__num" aria-hidden="true">06</div>
+          <h3 class="manifest__title">Поддержим друг&nbsp;друга</h3>
+          <p class="manifest__text">
+            Живой чат, где&nbsp;можно спросить глупый вопрос, поделиться радостью или&nbsp;неудачей,
+            и&nbsp;просто выдохнуть. Без&nbsp;токсичной «успешности» и&nbsp;соревнования.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ДЛЯ КОГО -->
+  <section class="section" aria-labelledby="for-whom-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Для&nbsp;кого</p>
+      <h2 class="section__title reveal" id="for-whom-title">
+        Это&nbsp;для&nbsp;вас, если
+      </h2>
+
+      <ul class="for-whom" role="list">
+        <li class="for-whom__item reveal">
+          <span class="for-whom__icon" aria-hidden="true">🌱</span>
+          <p>Хочется перестать коллекционировать книги и&nbsp;начать внедрять</p>
+        </li>
+        <li class="for-whom__item reveal">
+          <span class="for-whom__icon" aria-hidden="true">💭</span>
+          <p>Интересует психология, отношения, деньги, осознанность&nbsp;— наука и&nbsp;практика</p>
+        </li>
+        <li class="for-whom__item reveal">
+          <span class="for-whom__icon" aria-hidden="true">🗣️</span>
+          <p>Хочется тёплого общения с&nbsp;теми, кто&nbsp;на&nbsp;одной волне</p>
+        </li>
+        <li class="for-whom__item reveal">
+          <span class="for-whom__icon" aria-hidden="true">💗</span>
+          <p>Устали от&nbsp;«надо» и&nbsp;хочется вернуть своё&nbsp;«хочу»</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ЧТО ВНУТРИ -->
+  <section class="section section--alt" aria-labelledby="inside-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Что внутри</p>
+      <h2 class="section__title reveal" id="inside-title">
+        Инструменты для&nbsp;ваших&nbsp;«хочу»
+      </h2>
+
+      <ul class="inside-grid" role="list">
+        <li class="inside-card reveal">
+          <div class="inside-card__icon" aria-hidden="true">📚</div>
+          <h3 class="inside-card__title">Библиотека конспектов</h3>
+          <p class="inside-card__desc">
+            Книги, которые реально меняют жизнь. Короткие конспекты, воркбуки, практические советы.
+          </p>
+        </li>
+        <li class="inside-card reveal">
+          <div class="inside-card__icon" aria-hidden="true">🗺️</div>
+          <h3 class="inside-card__title">Карта желаний A3</h3>
+          <p class="inside-card__desc">
+            Онлайн-конструктор: 6&nbsp;сфер жизни, готовые примеры и&nbsp;свои слова.
+            Скачали&nbsp;— распечатали&nbsp;— вклеили фото.
+          </p>
+        </li>
+        <li class="inside-card reveal">
+          <div class="inside-card__icon" aria-hidden="true">🎧</div>
+          <h3 class="inside-card__title">Аудио-практики</h3>
+          <p class="inside-card__desc">
+            Короткие медитации, аффермации и&nbsp;техники на&nbsp;каждый день.
+            От&nbsp;1&nbsp;минуты до&nbsp;полноценной практики.
+          </p>
+        </li>
+        <li class="inside-card reveal">
+          <div class="inside-card__icon" aria-hidden="true">🧪</div>
+          <h3 class="inside-card__title">Эксперименты читателей</h3>
+          <p class="inside-card__desc">
+            Истории участников: что попробовали из&nbsp;книг и&nbsp;что получилось&nbsp;— без&nbsp;прикрас.
+            Можно завести свой эксперимент: на&nbsp;сайте, в&nbsp;ВК&nbsp;Mini App или в&nbsp;Telegram-боте.
+          </p>
+          <p class="inside-card__desc">
+            <a href="/experiments/">Читать истории →</a>
+          </p>
+        </li>
+        <li class="inside-card reveal">
+          <div class="inside-card__icon" aria-hidden="true">💬</div>
+          <h3 class="inside-card__title">Закрытый чат сообщества</h3>
+          <p class="inside-card__desc">
+            Тёплое общение в&nbsp;Telegram. Вопросы, разборы, поддержка, встречи. Без&nbsp;токсичности.
+          </p>
+        </li>
+        <li class="inside-card reveal">
+          <div class="inside-card__icon" aria-hidden="true">🔍</div>
+          <h3 class="inside-card__title">Эксперты (в&nbsp;разработке)</h3>
+          <p class="inside-card__desc">
+            Рекомендации от&nbsp;психологов, тренеров и&nbsp;авторов. Только&nbsp;те, кого мы&nbsp;проверили лично.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- КОНТАКТЫ -->
+  <section class="section" aria-labelledby="contacts-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Контакты</p>
+      <h2 class="section__title reveal" id="contacts-title">Мы&nbsp;рядом</h2>
+
+      <div class="contacts reveal">
+        <a class="contact-card" href="https://t.me/wishlab_channel" target="_blank" rel="noopener">
+          <div class="contact-card__icon" aria-hidden="true">📨</div>
+          <div>
+            <h3 class="contact-card__title">Telegram-канал</h3>
+            <p class="contact-card__desc">Открытый. Подборки, мысли, анонсы</p>
+          </div>
+        </a>
+        <a class="contact-card" href="https://vk.com/club237295798" target="_blank" rel="noopener">
+          <div class="contact-card__icon" aria-hidden="true">💬</div>
+          <div>
+            <h3 class="contact-card__title">Сообщество ВКонтакте</h3>
+            <p class="contact-card__desc">Посты, обсуждения, встречи</p>
+          </div>
+        </a>
+        <a class="contact-card" href="mailto:info@pulab.ru">
+          <div class="contact-card__icon" aria-hidden="true">✉️</div>
+          <div>
+            <h3 class="contact-card__title">Почта</h3>
+            <p class="contact-card__desc">info@pulab.ru</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- РЕКВИЗИТЫ -->
+  <section class="section section--alt" aria-labelledby="legal-title">
+    <div class="container">
+      <p class="section__eyebrow reveal">Реквизиты</p>
+      <h2 class="section__title reveal" id="legal-title">Юридическая информация</h2>
+
+      <div class="legal prose reveal">
+        {!isLegalFilled() && (
+          <p class="about-warn">
+            ⚠️ <strong>Внимание.</strong> Реквизиты в <code>src/data/legal.ts</code> ещё не заполнены реальными значениями —
+            перед запуском приёма оплаты замените на действительные.
+          </p>
+        )}
+        <p>
+          Исполнитель применяет специальный налоговый режим
+          <strong>«Налог на профессиональный доход» (НПД, 6 %)</strong>
+          и не использует контрольно-кассовую технику. После оплаты чек
+          направляется на e-mail покупателя через приложение «Мой налог».
+        </p>
+        <table class="legal-table">
+          <tbody>
+            <tr><th>Статус</th><td>Самозанятый (плательщик НПД)</td></tr>
+            <tr><th>ФИО</th><td>{legal.fullName}</td></tr>
+            <tr><th>ИНН</th><td>{legal.inn}</td></tr>
+            <tr><th>Режим налогообложения</th><td>{legal.taxSystem}</td></tr>
+            <tr><th>Email для претензий</th><td><a href={`mailto:${legal.complaintsEmail}`}>{legal.complaintsEmail}</a></td></tr>
+            {legal.phone && <tr><th>Телефон</th><td><a href={`tel:${legal.phone.replace(/\D/g, '')}`}>{legal.phone}</a></td></tr>}
+          </tbody>
+        </table>
+        <p class="about-legal-links">
+          <a href="/offer/">Публичная оферта</a> ·
+          <a href="/privacy/">Политика конфиденциальности</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* HERO */
+  .about-hero__inner { text-align: center; max-width: 720px; margin: 0 auto; }
+  .about-hero__lead {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 16px auto 0;
+    max-width: 56ch;
+  }
+
+  /* МАНИФЕСТ */
+  .manifest {
+    list-style: none;
+    padding: 0;
+    margin: 40px 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  @media (min-width: 720px) { .manifest { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .manifest { grid-template-columns: repeat(3, 1fr); } }
+
+  .manifest__item {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 32px 28px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .manifest__item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(225, 29, 72, 0.1);
+  }
+  .manifest__num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--rose);
+    margin-bottom: 16px;
+  }
+  .manifest__title {
+    margin: 0 0 12px;
+    font-family: var(--font-display);
+    font-size: 20px;
+    line-height: 1.3;
+    color: var(--rose-deep);
+  }
+  .manifest__text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ДЛЯ КОГО */
+  .for-whom {
+    list-style: none;
+    padding: 0;
+    margin: 40px 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 720px) { .for-whom { grid-template-columns: repeat(2, 1fr); } }
+
+  .for-whom__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 20px 24px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .for-whom__item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(225, 29, 72, 0.08);
+  }
+  .for-whom__icon {
+    font-size: 28px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .for-whom__item p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  /* ЧТО ВНУТРИ */
+  .inside-grid {
+    list-style: none;
+    padding: 0;
+    margin: 40px 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media (min-width: 720px) { .inside-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .inside-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .inside-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .inside-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(225, 29, 72, 0.1);
+  }
+  .inside-card__icon {
+    font-size: 36px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .inside-card__title {
+    margin: 0 0 8px;
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 1.3;
+    color: var(--rose-deep);
+  }
+  .inside-card__desc {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .inside-card__desc a {
+    color: var(--rose, #e11d48);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .inside-card__desc a:hover { text-decoration: underline; }
+
+  /* КОНТАКТЫ */
+  .contacts {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media (min-width: 720px) { .contacts { grid-template-columns: repeat(3, 1fr); } }
+
+  .contact-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .contact-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(225, 29, 72, 0.1);
+    border-color: var(--rose-soft);
+  }
+  .contact-card__icon { font-size: 32px; line-height: 1; flex-shrink: 0; }
+  .contact-card__title { margin: 0 0 4px; font-size: 16px; color: var(--rose-deep); }
+  .contact-card__desc { margin: 0; font-size: 13px; color: var(--muted); }
+
+  /* LEGAL */
+  .legal { max-width: 760px; margin: 0 auto; font-size: 15px; line-height: 1.6; color: var(--ink); }
+  .legal p { margin: 0 0 12px; }
+
+  .about-warn {
+    background: #fff3cd;
+    border-left: 4px solid #d39e00;
+    color: #5d4408;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin: 16px 0 24px;
+  }
+  .about-warn code {
+    background: rgba(0, 0, 0, 0.06);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  .legal-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 14px;
+  }
+  .legal-table th,
+  .legal-table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #f0d4d4;
+    vertical-align: top;
+  }
+  .legal-table th {
+    width: 220px;
+    color: #6b3a4a;
+    font-weight: 600;
+    background: #fff5f7;
+  }
+  .legal-table td { color: #1f0a14; }
+  .about-legal-links { margin-top: 16px; font-size: 14px; }
+  .about-legal-links a { color: #e11d48; text-decoration: none; font-weight: 500; }
+  .about-legal-links a:hover { text-decoration: underline; }
+</style>

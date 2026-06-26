@@ -1,0 +1,20 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "author": {
+    "@type": "Person",
+    "name": "{{REVIEWER_NAME}}"
+  },
+  "datePublished": "{{DATE}}",
+  "reviewBody": "{{REVIEW_TEXT}}",
+  "reviewRating": {
+    "@type": "Rating",
+    "ratingValue": "{{RATING}}",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "itemReviewed": {
+    "@type": "Book",
+    "name": "{{BOOK_TITLE}}"
+  }
+}

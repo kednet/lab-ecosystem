@@ -1,0 +1,47 @@
+# /etc/letsencrypt renewal pre-hook (опционально)
+# Чтобы certbot мог reload nginx после успешного обновления:
+#
+#   sudo systemctl reload nginx
+
+[Unit]
+Description=lab-api — Node.js Hono backend for app.pulab.online
+Documentation=https://github.com/your/lab-site
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=deploy
+Group=deploy
+WorkingDirectory=/home/deploy/app/worker
+EnvironmentFile=/home/deploy/app/worker/.env
+ExecStart=/usr/bin/node --enable-source-maps dist/server.js
+Restart=always
+RestartSec=5
+StartLimitInterval=60
+StartLimitBurst=5
+
+# Sandboxing
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/lab-site /var/log/lab-site
+
+# Ресурсы (мягкие лимиты — при превышении warning, не kill)
+MemoryHigh=1500M
+MemoryMax=1800M
+CPUQuota=80%
+
+# Security headers
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+# Логи в journald
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=lab-api
+
+[Install]
+WantedBy=multi-user.target

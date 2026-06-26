@@ -1,0 +1,51 @@
+name: generic
+display: Generic (Schema.org / Open Graph fallback)
+host_patterns:
+  - "^https?://.*"               # матчит ЛЮБОЙ URL
+encoding: auto
+strategy: og_meta
+# Используется как последнее средство, если специальной карты нет.
+# Опирается на:
+#   - <meta property="og:*">
+#   - <meta name="*">
+#   - JSON-LD @graph
+#   - itemtype="schema.org/Book"
+selectors:
+  title:
+    - "@og:title"
+    - "css:h1"
+    - "css:title"
+    - "@split_title:first"
+  author:
+    - "@og:book:author"
+    - "@og:author"
+    - "@jsonld:author"
+    - "css:span[itemprop='author']"
+    - "css:a[itemprop='author']"
+    - "@split_title:last"
+  year:
+    - "@content:meta[itemprop='datePublished']"
+    - "@content:meta[name='date']"
+    - "regex_in:full:\\b(19|20)\\d{2}\\b"
+  cover:
+    - "@og:image"
+    - "css:img[itemprop='image']"
+  short_description:
+    - "@og:description"
+    - "@content:meta[name=description]"
+    - "css:[itemprop='description']"
+  isbn:
+    - "@jsonld:isbn"
+    - "css:span[itemprop='isbn']"
+  page_count:
+    - "@jsonld:numberOfPages"
+    - "css:span[itemprop='numberOfPages']"
+  genre:
+    - "css:span[itemprop='genre']"
+  key_ideas:
+    - "css:[itemprop='abstract']"
+    - "css:article ul li"
+    - "css:.book-about ul li"
+  quotes:
+    - "css:blockquote"
+    - "regex_in:full:«[^»]{30,500}»"

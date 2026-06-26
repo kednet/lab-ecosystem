@@ -1,0 +1,894 @@
+---
+import Base from '../layouts/Base.astro';
+import { breadcrumbLd, quizLd } from '../lib/seo';
+
+/**
+ * Мини-детектор «навязанное или истинное желание» — лид-магнит.
+ *
+ * Источник: coach_agent/agent/core/detector.py (EXPRESS_INDICES, VERDICT_LABELS).
+ * Адаптация для веба:
+ *   - не текстовые ответы (не нужен LLM), а выбор из 4 вариантов с весами;
+ *   - 5 вопросов по EXPRESS_INDICES [1, 9, 14, 19, 2];
+ *   - мгновенный результат в браузере;
+ *   - 6 вердиктов из coach_agent/VERDICT_LABELS;
+ *   - без auth, без backend, без email (только опционально в конце).
+ *
+ * Метрики: detector_started / detector_completed / detector_result_shared / detector_cta_clicked.
+ * URL результата шарится через ?r=<verdict> для отслеживания источника.
+ */
+
+const ogDescription = '5 вопросов — 2 минуты. Узнай, насколько твоё желание про «надо» и про «хочу». Без email, без регистрации, мгновенный результат.';
+
+const detectorJsonLd = JSON.stringify({
+  ...quizLd({
+    name: 'Мини-детектор «Навязанное или твоё?»',
+    description: ogDescription,
+    about: 'Различение навязанных и истинных желаний, постановка целей, самоопределение',
+    url: 'https://app.pulab.ru/detector/',
+    questionCount: 5,
+  }),
+});
+
+// Список страниц для хлебных крошек + JSON-LD
+const breadcrumb = breadcrumbLd([
+  { name: 'Главная', url: '/' },
+  { name: 'Детектор', url: '/detector/' },
+]);
+---
+<Base
+  title="Детектор желаний"
+  description={ogDescription}
+  ogImage="/og-default.png"
+  extraJsonLd={[detectorJsonLd, breadcrumb]}
+  vkAppId={54640127}
+>
+  <section class="section detector" id="detector-intro">
+    <div class="container" style="max-width: 640px;">
+      <p class="section__eyebrow reveal">Бесплатный тест · 2 минуты</p>
+      <h1 class="section__title reveal" style="font-size: 36px; line-height: 1.15;">
+        Твоё желание&nbsp;— про <em>«надо»</em> или про <em>«хочу»</em>?
+      </h1>
+      <p class="footer__about reveal" style="margin: 16px auto 24px; max-width: 56ch; font-size: 16px;">
+        5 вопросов. Без email, без регистрации, без воды.
+        Поймёшь, насколько твоё желание идёт изнутри&nbsp;— и&nbsp;сколько в&nbsp;нём социального шума.
+      </p>
+
+      <ul class="detector-features reveal">
+        <li>⏱ 2 минуты</li>
+        <li>🔒 анонимно</li>
+        <li>🎯 мгновенный результат</li>
+      </ul>
+
+      <div class="reveal" style="margin-top: 32px; text-align: center;">
+        <button class="btn btn--primary btn--block" id="detector-start" type="button" data-role="start">
+          Начать тест
+        </button>
+        <p class="detector-microcopy">
+          Результат — не&nbsp;диагноз, а&nbsp;повод задуматься. Автор: метод «5 почему» + телесный интеллект.
+        </p>
+
+        <div class="detector-tg reveal" style="margin-top: 20px;">
+          <a class="btn btn--tg btn--block"
+             href="https://t.me/WLDetectorbot?start=site"
+             target="_blank" rel="noopener noreferrer"
+             data-role="cta-tg-intro">
+            <svg class="btn__tg-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path fill="currentColor" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295l.213-3.053 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.937z"/>
+            </svg>
+            Пройти в&nbsp;Telegram-боте
+          </a>
+          <p class="detector-microcopy">
+            Удобно с&nbsp;телефона&nbsp;— сохраняет прогресс, не&nbsp;нужно держать вкладку открытой.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- КВИЗ (скрыт до старта) -->
+  <section class="section detector detector--quiz" id="detector-quiz" hidden>
+    <div class="container" style="max-width: 640px;">
+      <div class="detector-progress" aria-hidden="true">
+        <div class="detector-progress__bar">
+          <div class="detector-progress__fill" data-role="progress-fill" style="width: 0%"></div>
+        </div>
+        <p class="detector-progress__label">
+          Вопрос <span data-role="current">1</span> из&nbsp;5
+        </p>
+      </div>
+
+      <form id="detector-form" novalidate>
+        <div class="detector-step" data-role="step" hidden>
+          <h2 class="detector-step__title" data-role="question"></h2>
+          <p class="detector-step__hint" data-role="hint"></p>
+          <div class="detector-options" data-role="options"></div>
+          <div class="detector-step__nav">
+            <button type="button" class="btn btn--ghost" data-role="back" hidden>← Назад</button>
+            <button type="button" class="btn btn--primary" data-role="next" disabled>Дальше →</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- РЕЗУЛЬТАТ (скрыт до конца) -->
+  <section class="section detector detector--result" id="detector-result" hidden>
+    <div class="container" style="max-width: 640px;">
+      <p class="section__eyebrow reveal">Твой результат</p>
+
+      <div class="detector-score reveal" data-role="score-block">
+        <p class="detector-score__label">Доля навязанного в&nbsp;желании</p>
+        <div class="detector-score__circle">
+          <span class="detector-score__value" data-role="score-value">0</span><span class="detector-score__pct">%</span>
+        </div>
+        <p class="detector-score__verdict" data-role="verdict"></p>
+      </div>
+
+      <div class="detector-insight reveal" data-role="insight"></div>
+
+      <h3 class="detector-advice-title reveal">Что с&nbsp;этим делать</h3>
+      <ol class="detector-advice reveal" data-role="advice"></ol>
+
+      <div class="detector-cta reveal">
+        <p class="detector-cta__lead">
+          Хочешь полный разбор на&nbsp;20&nbsp;вопросов + персонального AI-коуча?
+        </p>
+        <a class="btn btn--primary btn--block" href="/pricing/" data-role="cta-coach">
+          Открыть WishCoach
+        </a>
+        <p class="detector-microcopy">или</p>
+        <a class="btn btn--tg btn--block"
+           href="https://t.me/WLDetectorbot?start=site_result"
+           target="_blank" rel="noopener noreferrer"
+           data-role="cta-tg-result">
+          <svg class="btn__tg-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295l.213-3.053 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.937z"/>
+          </svg>
+          Сохранить результат в&nbsp;Telegram
+        </a>
+        <p class="detector-microcopy">или</p>
+        <a class="btn btn--ghost btn--block" href="/library/" data-role="cta-library">
+          Сначала почитать конспекты книг
+        </a>
+      </div>
+
+      <div class="detector-share reveal">
+        <p class="detector-share__lead">Поделись результатом&nbsp;— многие узнают себя</p>
+        <div class="detector-share__buttons">
+          <button class="btn btn--ghost" type="button" data-role="share-vk">ВКонтакте</button>
+          <button class="btn btn--ghost" type="button" data-role="share-tg">Telegram</button>
+          <button class="btn btn--ghost" type="button" data-role="share-copy">Скопировать текст</button>
+        </div>
+        <p class="detector-share__status" data-role="share-status" aria-live="polite"></p>
+      </div>
+
+      <div class="detector-restart reveal">
+        <button class="detector-restart__btn" type="button" data-role="restart">
+          Пройти ещё раз с&nbsp;другим желанием
+        </button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { reachGoal, GOALS } from '../lib/metrika';
+
+  // === 5 вопросов (EXPRESS из coach_agent) ===
+  // idx — индекс в оригинальном списке (1..20)
+  // module — модуль 1-5
+  // hint — короткая подсказка
+  // options — 4 варианта ответа с весом 0..1 (1 = чисто «истинное»)
+  type Option = { label: string; value: number; hint?: string };
+  type Question = { idx: number; module: number; text: string; hint: string; options: Option[] };
+
+  const QUESTIONS: Question[] = [
+    {
+      idx: 1,
+      module: 1,
+      text: 'Почему ты этого хочешь?',
+      hint: 'Глубинная мотивация — откуда идёт импульс',
+      options: [
+        { label: '«Надо», иначе я отстану от других / буду выглядеть хуже', value: 0.10, hint: 'социальное давление' },
+        { label: 'Скорее страх остаться там, где сейчас', value: 0.30, hint: 'мотивация от обратного' },
+        { label: 'Хочу, но не до конца понимаю зачем', value: 0.55, hint: 'зонт интереса' },
+        { label: 'Тянет, давно чувствую, зовёт', value: 0.90, hint: 'истинный импульс' },
+      ],
+    },
+    {
+      idx: 9,
+      module: 3,
+      text: 'Представь, что желание уже сбылось. Что чувствует тело?',
+      hint: 'Телесный интеллект — реакция важнее мыслей',
+      options: [
+        { label: 'Сжатие, ком в груди, холод', value: 0.15 },
+        { label: 'Напряжение, как перед экзаменом', value: 0.40 },
+        { label: 'Тепло в груди, спокойное дыхание', value: 0.75 },
+        { label: 'Расслабление, разливается тепло, улыбка', value: 0.95 },
+      ],
+    },
+    {
+      idx: 14,
+      module: 4,
+      text: 'Если бы никто никогда не узнал — ты бы всё равно этого хотела?',
+      hint: 'Социальный контекст — желание для себя или для показа',
+      options: [
+        { label: 'Нет, без публики смысла нет', value: 0.10 },
+        { label: 'Скорее нет — мне важна реакция', value: 0.30 },
+        { label: 'Скорее да, но реакция приятна', value: 0.70 },
+        { label: 'Однозначно да — это моё', value: 0.95 },
+      ],
+    },
+    {
+      idx: 19,
+      module: 5,
+      text: 'Готова сделать один маленький шаг к этому прямо сегодня?',
+      hint: 'Временная перспектива — действие отличает желание от мечты',
+      options: [
+        { label: 'Нет, потом, на следующей неделе', value: 0.15 },
+        { label: 'Скорее нет, сейчас не время', value: 0.35 },
+        { label: 'Могу, но не уверена какое', value: 0.60 },
+        { label: 'Да, уже знаю какой — сделаю', value: 0.90 },
+      ],
+    },
+    {
+      idx: 2,
+      module: 1,
+      text: 'Что это тебе даст в жизни — если по-честному?',
+      hint: 'Смысл — ради чего ты готова вкладываться',
+      options: [
+        { label: 'Статус, одобрение, «чтоб не хуже других»', value: 0.10 },
+        { label: 'Спокойствие, что не отстану', value: 0.35 },
+        { label: 'Больше свободы и энергии', value: 0.75 },
+        { label: 'Стану собой настоящей', value: 0.95 },
+      ],
+    },
+  ];
+
+  // === 6 вердиктов (из coach_agent/VERDICT_LABELS) ===
+  // Границы: 0..0.2 imposed, 0.2..0.35 mostly_imposed, 0.35..0.5 mixed_low,
+  //         0.5..0.65 mixed_high, 0.65..0.8 mostly_true, 0.8..1 true
+  type Verdict = { key: string; label: string; description: string; advice: string[] };
+  const VERDICTS: Verdict[] = [
+    {
+      key: 'imposed',
+      label: 'В основном про страх и внешнее давление',
+      description: 'Это желание почти целиком про «надо» — чужое, социальное, привычное. Ты можешь годами к нему идти и не почувствовать радости. Это не плохо — это сигнал остановиться и честно спросить себя: «А я-то чего хочу?»',
+      advice: [
+        'Запиши на бумаге: «Я хочу этого, потому что…» — продолжи 5 раз. Скорее всего к 3-4 разу ответы станут неубедительными.',
+        'Спроси себя: «Если бы никто не узнал, я бы всё равно?» — это изоляционный тест от чужого влияния.',
+        'Отложи это желание на месяц. Если через месяц не отпустит — вернёшься к нему уже из другого состояния.',
+      ],
+    },
+    {
+      key: 'mostly_imposed',
+      label: 'Больше навязанного, но есть зерно истинного',
+      description: 'Вокруг истинного желания наросла социальная «скорлупа» — ожидания близких, сравнение, привычные сценарии. Под скорлупой есть что-то живое, но оно пока тихо.',
+      advice: [
+        'Отдели «своё» от «чужого»: что из этого я хочу на самом деле, а что — потому что «так правильно»?',
+        'Спроси подругу, которая тебя хорошо знает: «Что ты думаешь, мне это правда нужно?» — внешний взгляд помогает.',
+        'Попробуй 1 неделю «как будто у меня этого нет» — наблюдай, что отпускает, а что тянет обратно.',
+      ],
+    },
+    {
+      key: 'mixed_low',
+      label: 'Есть настоящее, но больше шума',
+      description: 'Где-то внутри это желание откликается — но сверху лежит толстый слой сомнений, чужих голосов и «а вдруг». Это нормальное состояние для 80% женщин 35-45.',
+      advice: [
+        'Отфильтруй шум: выпиши 3 голоса, которые говорят «тебе это не надо» — и проверь, чьи они (мама? подруга? бывший?).',
+        'Один маленький шаг сегодня. Не «достичь», а «прикоснуться» — записаться, спросить, прочитать одну статью.',
+        'Дай себе 30 дней «попробовать и посмотреть» — без обязательств, без оценки результата.',
+      ],
+    },
+    {
+      key: 'mixed_high',
+      label: 'Больше истинного, но есть социальный шум',
+      description: 'Это желание идёт изнутри, но у тебя есть сомнения из-за чужих реакций, страха оценки или непривычных ощущений. Это хорошая позиция — энергия есть, нужно только отфильтровать шум.',
+      advice: [
+        'Окружи себя теми, кто поддерживает. Минимум 1 разговор с человеком, который «за тебя» в этом.',
+        'Запиши 3 конкретных микро-шага на 7 дней. Не «похудеть», а «пройти 3000 шагов в день».',
+        'Веди дневник ощущений 1 неделю: что меняется, когда ты в контакте с желанием? Что спадает, когда ты от него отвлекаешься?',
+      ],
+    },
+    {
+      key: 'mostly_true',
+      label: 'В основном идёт изнутри',
+      description: 'Это твоё. Энергия есть, смысл есть, тело откликается. Осталось — действовать. Социальный шум минимальный, главный враг сейчас — привычка откладывать.',
+      advice: [
+        'Поставь одну цель на 30 дней — конкретную, измеримую, с датой. Не «хочу», а «к 15 июля я…»',
+        'Найди 1 союзника — человека, который тоже идёт в эту сторону. Вместе проще в 3 раза.',
+        'Отмечай прогресс. Даже микро-шаги. Дневник «+1» каждый вечер — мощнейшая привычка.',
+      ],
+    },
+    {
+      key: 'true',
+      label: 'Идёт изнутри, даёт энергию и ясность',
+      description: 'Это редкое состояние — ты точно знаешь, чего хочешь, и это идёт из глубины. Такие желания сбываются в 3-5 раз чаще остальных. Главное — не растерять эту ясность в бытовых заботах.',
+      advice: [
+        'Защити это состояние. Не обсуждай желание с теми, кто скептичен. Не давай никому его «поправить».',
+        'Действуй сейчас, пока энергия высокая. Поставь дедлайн — иначе «идеальное время» не наступит никогда.',
+        'Помогай другим находить такие же ясные желания — это усиливает и твоё. Заведи дневник «3 истинных желания в день».',
+      ],
+    },
+  ];
+
+  // === Утилиты ===
+
+  function scoreToVerdict(score: number): Verdict {
+    if (score < 0.20) return VERDICTS[0];
+    if (score < 0.35) return VERDICTS[1];
+    if (score < 0.50) return VERDICTS[2];
+    if (score < 0.65) return VERDICTS[3];
+    if (score < 0.80) return VERDICTS[4];
+    return VERDICTS[5];
+  }
+
+  // Процент навязанного: (1 - score) * 100. Score 0.95 → 5%, score 0.10 → 90%.
+  function scoreToImposedPercent(score: number): number {
+    return Math.round((1 - score) * 100);
+  }
+
+  function clamp(n: number, min: number, max: number): number {
+    return Math.max(min, Math.min(max, n));
+  }
+
+  // === DOM-узлы ===
+  const $ = <T extends HTMLElement = HTMLElement>(sel: string) =>
+    document.querySelector(sel) as T;
+
+  const intro = $('#detector-intro');
+  const quiz = $('#detector-quiz');
+  const result = $('#detector-result');
+  const startBtn = $<HTMLButtonElement>('#detector-start');
+  const form = $<HTMLFormElement>('#detector-form');
+  const stepEl = $('[data-role="step"]');
+  const questionEl = $('[data-role="question"]');
+  const hintEl = $('[data-role="hint"]');
+  const optionsEl = $<HTMLElement>('[data-role="options"]');
+  const backBtn = $<HTMLButtonElement>('[data-role="back"]');
+  const nextBtn = $<HTMLButtonElement>('[data-role="next"]');
+  const progressFill = $<HTMLElement>('[data-role="progress-fill"]');
+  const currentEl = $('[data-role="current"]');
+  const scoreValueEl = $('[data-role="score-value"]');
+  const verdictEl = $('[data-role="verdict"]');
+  const insightEl = $('[data-role="insight"]');
+  const adviceEl = $<HTMLElement>('[data-role="advice"]');
+  const ctaCoach = $<HTMLAnchorElement>('[data-role="cta-coach"]');
+  const ctaLibrary = $<HTMLAnchorElement>('[data-role="cta-library"]');
+  const shareVk = $<HTMLButtonElement>('[data-role="share-vk"]');
+  const shareTg = $<HTMLButtonElement>('[data-role="share-tg"]');
+  const shareCopy = $<HTMLButtonElement>('[data-role="share-copy"]');
+  const shareStatus = $('[data-role="share-status"]');
+  const restartBtn = $<HTMLButtonElement>('[data-role="restart"]');
+
+  // === Состояние ===
+  let currentStep = 0;
+  let answers: number[] = [];
+
+  // === Рендеринг шага ===
+  function renderStep(idx: number) {
+    const q = QUESTIONS[idx];
+    currentStep = idx;
+    currentEl.textContent = String(idx + 1);
+    progressFill.style.width = `${(idx / QUESTIONS.length) * 100}%`;
+    questionEl.textContent = q.text;
+    hintEl.textContent = q.hint;
+    optionsEl.innerHTML = '';
+
+    q.options.forEach((opt, i) => {
+      const id = `q${idx}-opt${i}`;
+      const wrap = document.createElement('label');
+      wrap.className = 'detector-option';
+      wrap.setAttribute('for', id);
+      wrap.innerHTML = `
+        <input type="radio" name="q${idx}" id="${id}" value="${opt.value}" data-idx="${i}" />
+        <span class="detector-option__label">${opt.label}</span>
+        ${opt.hint ? `<span class="detector-option__hint">${opt.hint}</span>` : ''}
+      `;
+      optionsEl.appendChild(wrap);
+    });
+
+    // Очистить выбор и заблокировать «Дальше»
+    nextBtn.disabled = true;
+    nextBtn.textContent = idx === QUESTIONS.length - 1 ? 'Получить результат ✨' : 'Дальше →';
+    backBtn.hidden = idx === 0;
+
+    stepEl.hidden = false;
+  }
+
+  // Делегированный обработчик — вешается один раз на optionsEl,
+  // работает на любом шаге, не зависит от {once: true}.
+  optionsEl.addEventListener('change', (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    if (target && target.matches('input[type="radio"]')) {
+      nextBtn.disabled = false;
+      optionsEl.querySelectorAll('.detector-option').forEach((el) => el.classList.remove('is-selected'));
+      target.closest('.detector-option')?.classList.add('is-selected');
+    }
+  });
+
+  function recordCurrentAndAdvance() {
+    const checked = optionsEl.querySelector<HTMLInputElement>('input[type="radio"]:checked');
+    if (!checked) return;
+    answers[currentStep] = Number(checked.value);
+    if (currentStep < QUESTIONS.length - 1) {
+      renderStep(currentStep + 1);
+    } else {
+      showResult();
+    }
+  }
+
+  function goBack() {
+    if (currentStep > 0) renderStep(currentStep - 1);
+  }
+
+  // === Результат ===
+  function showResult() {
+    const valid = answers.filter((a) => Number.isFinite(a));
+    const sum = valid.reduce((s, v) => s + v, 0);
+    const score = valid.length ? sum / valid.length : 0.5;
+    const verdict = scoreToVerdict(score);
+    const imposedPct = scoreToImposedPercent(score);
+
+    // Анимация счётчика
+    const target = imposedPct;
+    const duration = 900;
+    const startTime = performance.now();
+    function tick(now: number) {
+      const t = clamp((now - startTime) / duration, 0, 1);
+      // ease-out
+      const eased = 1 - Math.pow(1 - t, 3);
+      const value = Math.round(target * eased);
+      scoreValueEl.textContent = String(value);
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    verdictEl.textContent = verdict.label;
+    insightEl.textContent = verdict.description;
+    adviceEl.innerHTML = verdict.advice
+      .map((a) => `<li>${a}</li>`)
+      .join('');
+
+    // Метрика
+    reachGoal(GOALS.detectorCompleted, { verdict: verdict.key, score: Math.round(score * 100) });
+
+    // URL c параметром для шаринга (?r=verdict)
+    const newUrl = `${window.location.pathname}?r=${verdict.key}`;
+    window.history.replaceState({}, '', newUrl);
+
+    // Показать результат
+    quiz.hidden = true;
+    result.hidden = false;
+    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // === Шаринг ===
+  function buildShareText(): string {
+    const valid = answers.filter((a) => Number.isFinite(a));
+    const score = valid.length ? valid.reduce((s, v) => s + v, 0) / valid.length : 0.5;
+    const imposedPct = scoreToImposedPercent(score);
+    const verdict = scoreToVerdict(score);
+    return `Мой тест «Навязанное или твоё?» — ${imposedPct}% навязанного.\n\n${verdict.label}.\n\nПройти: https://app.pulab.ru/detector/`;
+  }
+
+  function shareToVk() {
+    const text = encodeURIComponent(buildShareText());
+    const url = encodeURIComponent('https://app.pulab.ru/detector/');
+    window.open(`https://vk.com/share.php?url=${url}&title=${encodeURIComponent('Детектор желаний — Лаборатория')}&comment=${text}`, '_blank', 'noopener,noreferrer,width=600,height=500');
+    reachGoal(GOALS.detectorResultShared, { channel: 'vk' });
+    showShareStatus('Открыли ВКонтакте — выбери стену для публикации');
+  }
+
+  function shareToTg() {
+    const text = encodeURIComponent(buildShareText());
+    const url = encodeURIComponent('https://app.pulab.ru/detector/');
+    window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank', 'noopener,noreferrer');
+    reachGoal(GOALS.detectorResultShared, { channel: 'telegram' });
+    showShareStatus('Открыли Telegram — выбери чат или канал');
+  }
+
+  async function shareCopyText() {
+    const text = buildShareText();
+    try {
+      await navigator.clipboard.writeText(text);
+      showShareStatus('✓ Текст скопирован. Вставь в сторис или чат.');
+    } catch {
+      // fallback: textarea
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showShareStatus('✓ Текст скопирован.');
+      } catch {
+        showShareStatus('Не получилось скопировать — выдели вручную.');
+      }
+      document.body.removeChild(ta);
+    }
+    reachGoal(GOALS.detectorResultShared, { channel: 'copy' });
+  }
+
+  function showShareStatus(msg: string) {
+    shareStatus.textContent = msg;
+    setTimeout(() => {
+      if (shareStatus.textContent === msg) shareStatus.textContent = '';
+    }, 4000);
+  }
+
+  // === Сброс ===
+  function restart() {
+    answers = [];
+    currentStep = 0;
+    result.hidden = true;
+    quiz.hidden = true;
+    intro.hidden = false;
+    window.history.replaceState({}, '', window.location.pathname);
+    intro.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // === Старт ===
+  function start() {
+    intro.hidden = true;
+    quiz.hidden = false;
+    renderStep(0);
+    reachGoal(GOALS.detectorStarted);
+    quiz.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // === События ===
+  startBtn.addEventListener('click', start);
+  nextBtn.addEventListener('click', recordCurrentAndAdvance);
+  backBtn.addEventListener('click', goBack);
+  shareVk.addEventListener('click', shareToVk);
+  shareTg.addEventListener('click', shareToTg);
+  shareCopy.addEventListener('click', shareCopyText);
+  restartBtn.addEventListener('click', restart);
+  ctaCoach.addEventListener('click', () => reachGoal(GOALS.detectorCtaClicked, { target: 'coach' }));
+  ctaLibrary.addEventListener('click', () => reachGoal(GOALS.detectorCtaClicked, { target: 'library' }));
+
+  // TG-кнопки (метрика)
+  document.querySelectorAll<HTMLAnchorElement>('[data-role^="cta-tg-"]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-role') || 'cta-tg';
+      reachGoal(GOALS.detectorCtaClicked, { target });
+    });
+  });
+
+  // Enter на радио = «Дальше»
+  form.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!nextBtn.disabled) recordCurrentAndAdvance();
+    }
+  });
+
+  // === Если пришли по шаринг-ссылке (?r=verdict) — сразу к началу квиза ===
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('r')) {
+    // Просто откроем интро (без автозапуска), но с подсказкой «вам пришёл результат друга»
+    // Можно потом добавить сравнение, пока просто переход на интро
+  }
+</script>
+
+<style>
+  .detector-features {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    justify-content: center;
+    font-size: 14px;
+    color: #6b2030;
+  }
+  .detector-features li {
+    background: rgba(255, 255, 255, 0.6);
+    padding: 6px 14px;
+    border-radius: 999px;
+  }
+  .detector-microcopy {
+    margin: 12px 0 0;
+    font-size: 12px;
+    color: #7a3645;
+    line-height: 1.5;
+  }
+
+  /* Прогресс */
+  .detector-progress {
+    margin-bottom: 24px;
+  }
+  .detector-progress__bar {
+    height: 6px;
+    background: rgba(136, 19, 55, 0.12);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .detector-progress__fill {
+    height: 100%;
+    background: linear-gradient(90deg, #881337 0%, #be185d 100%);
+    transition: width 0.4s ease;
+    border-radius: 999px;
+  }
+  .detector-progress__label {
+    margin: 8px 0 0;
+    font-size: 13px;
+    color: #7a3645;
+    text-align: center;
+  }
+
+  /* Вопрос */
+  .detector-step__title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 24px;
+    line-height: 1.3;
+    color: #4c0519;
+    margin: 0 0 8px;
+  }
+  .detector-step__hint {
+    font-size: 14px;
+    color: #7a3645;
+    margin: 0 0 24px;
+  }
+
+  /* Варианты */
+  .detector-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .detector-option {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 20px;
+    background: #ffffff;
+    border: 2px solid rgba(136, 19, 55, 0.15);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  .detector-option:hover {
+    border-color: rgba(136, 19, 55, 0.4);
+    transform: translateY(-1px);
+  }
+  .detector-option:has(input:checked) {
+    border-color: #881337;
+    background: #fff1f2;
+  }
+  .detector-option.is-selected {
+    border-color: #881337;
+    background: #fff1f2;
+  }
+  .detector-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .detector-option__label {
+    font-size: 16px;
+    color: #1f2937;
+    line-height: 1.4;
+  }
+  .detector-option__hint {
+    font-size: 12px;
+    color: #7a3645;
+    margin-top: 2px;
+  }
+
+  .detector-step__nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .detector-step__nav .btn {
+    flex: 1;
+  }
+  .detector-step__nav .btn:only-child {
+    flex: 1 1 100%;
+  }
+
+  /* Результат — круг */
+  .detector-score {
+    text-align: center;
+    margin: 16px 0 32px;
+  }
+  .detector-score__label {
+    font-size: 14px;
+    color: #7a3645;
+    margin: 0 0 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .detector-score__circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      #881337 0%,
+      #be185d var(--score, 50%),
+      rgba(136, 19, 55, 0.08) var(--score, 50%),
+      rgba(136, 19, 55, 0.08) 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    position: relative;
+  }
+  .detector-score__circle::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    background: #fff5f5;
+    border-radius: 50%;
+  }
+  .detector-score__value {
+    position: relative;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 56px;
+    color: #4c0519;
+    line-height: 1;
+  }
+  .detector-score__pct {
+    position: relative;
+    font-size: 24px;
+    color: #4c0519;
+    margin-left: 2px;
+  }
+  .detector-score__verdict {
+    margin: 20px 0 0;
+    font-size: 18px;
+    color: #4c0519;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  /* Инсайт */
+  .detector-insight {
+    background: #fff5f5;
+    border: 1px solid rgba(136, 19, 55, 0.15);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin: 0 0 32px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #2d1418;
+  }
+
+  /* Советы */
+  .detector-advice-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 22px;
+    color: #4c0519;
+    margin: 0 0 16px;
+  }
+  .detector-advice {
+    margin: 0 0 32px;
+    padding-left: 24px;
+  }
+  .detector-advice li {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #2d1418;
+    margin-bottom: 12px;
+  }
+
+  /* CTA */
+  .detector-cta {
+    background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+    border: 1px solid rgba(136, 19, 55, 0.2);
+    border-radius: 20px;
+    padding: 24px;
+    margin: 0 0 24px;
+    text-align: center;
+  }
+  .detector-cta__lead {
+    font-size: 16px;
+    line-height: 1.4;
+    color: #4c0519;
+    margin: 0 0 16px;
+    font-weight: 500;
+  }
+
+  /* Шаринг */
+  .detector-share {
+    background: #ffffff;
+    border: 1px solid rgba(136, 19, 55, 0.15);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin: 0 0 24px;
+    text-align: center;
+  }
+  .detector-share__lead {
+    font-size: 15px;
+    color: #4c0519;
+    margin: 0 0 12px;
+  }
+  .detector-share__buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .detector-share__buttons .btn {
+    flex: 1 1 100px;
+    min-width: 100px;
+  }
+  .detector-share__status {
+    margin: 12px 0 0;
+    font-size: 13px;
+    color: #15803d;
+    min-height: 18px;
+  }
+
+  /* Рестарт */
+  .detector-restart {
+    text-align: center;
+    margin: 16px 0 0;
+  }
+  .detector-restart__btn {
+    background: none;
+    border: none;
+    color: #7a3645;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+  .detector-restart__btn:hover {
+    color: #4c0519;
+  }
+
+  /* Mobile fine-tuning */
+  @media (max-width: 480px) {
+    .detector-score__circle {
+      width: 150px;
+      height: 150px;
+    }
+    .detector-score__value {
+      font-size: 48px;
+    }
+    .detector-step__title {
+      font-size: 20px;
+    }
+  }
+
+  /* Telegram-кнопка */
+  .btn--tg {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #229ED9 0%, #0088cc 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 14px rgba(34, 158, 217, 0.25);
+    text-decoration: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .btn--tg:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(34, 158, 217, 0.35);
+    color: #ffffff;
+  }
+  .btn--tg:focus-visible {
+    outline: 2px solid #229ED9;
+    outline-offset: 3px;
+  }
+  .btn__tg-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  .detector-tg {
+    border-top: 1px dashed rgba(136, 19, 55, 0.15);
+    padding-top: 20px;
+  }
+</style>

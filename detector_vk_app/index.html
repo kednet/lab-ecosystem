@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff1f2">
+  <title>Детектор желаний — ЛАБОРАТОРИЯ ЖЕЛАНИЙ</title>
+  <meta name="description" content="5 вопросов — 2 минуты. Узнай, насколько твоё желание про «надо» и про «хочу». Без email, без регистрации, мгновенный результат.">
+
+  <!-- VK Mini App идентификация -->
+  <meta property="vk:app_id" content="54640127">
+
+  <!-- VK Bridge (официальный CDN). В обычном браузере window.vkBridge останется undefined — мы это обрабатываем ниже. -->
+  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+  <script>
+    // === Инициализация VK Bridge и получение user_id ===
+    // Внутри ВК-клиента window.vkBridge доступен сразу; в обычном браузере — нет.
+    window.LAB_VK_USER_ID = null;
+    if (window.vkBridge) {
+      vkBridge.send('VKWebAppInit').catch(function () {});
+      vkBridge.send('VKWebAppGetUserInfo').then(function (u) {
+        window.LAB_VK_USER_ID = u && u.id ? u.id : null;
+      }).catch(function () {});
+    }
+  </script>
+
+  <!-- Шрифты: локальные woff2 (fonts.googleapis.com заблокирован в РФ) -->
+  <link rel="preload" href="/fonts/manrope-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-serif-display-400.woff2" as="font" type="font/woff2" crossorigin>
+
+  <style>
+    /* === БАЗА (минимальный набор для standalone-страницы) === */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(180deg, #fff5f5 0%, #ffe4e6 100%);
+      color: #2d1418;
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    button { font-family: inherit; cursor: pointer; }
+    a { color: #881337; }
+    img { max-width: 100%; display: block; }
+
+    /* Контейнер — под VK Mini App viewport (~320-500px) */
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* === Кнопки === */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 2px solid transparent;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      min-height: 48px;
+      line-height: 1.2;
+    }
+    .btn--block { display: flex; width: 100%; }
+    .btn--primary {
+      background: linear-gradient(135deg, #881337 0%, #be185d 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(136, 19, 55, 0.25);
+    }
+    .btn--primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(136, 19, 55, 0.35); color: #ffffff; }
+    .btn--primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn--ghost {
+      background: #ffffff;
+      color: #4c0519;
+      border-color: rgba(136, 19, 55, 0.15);
+    }
+    .btn--ghost:hover { border-color: rgba(136, 19, 55, 0.4); transform: translateY(-1px); }
+
+    /* === ИНТРО === */
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7a3645;
+      margin: 0 0 12px;
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 999px;
+    }
+    .title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 32px;
+      line-height: 1.15;
+      color: #4c0519;
+      margin: 0 0 16px;
+    }
+    .title em { font-style: italic; }
+    .lead {
+      font-size: 16px;
+      color: #2d1418;
+      margin: 0 0 24px;
+      line-height: 1.55;
+    }
+    .features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      font-size: 14px;
+      color: #6b2030;
+    }
+    .features li {
+      background: rgba(255, 255, 255, 0.65);
+      padding: 6px 14px;
+      border-radius: 999px;
+    }
+    .microcopy {
+      margin: 14px 0 0;
+      font-size: 12px;
+      color: #7a3645;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    /* === ПРОГРЕСС === */
+    .progress { margin-bottom: 24px; }
+    .progress__bar {
+      height: 6px;
+      background: rgba(136, 19, 55, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress__fill {
+      height: 100%;
+      background: linear-gradient(90deg, #881337 0%, #be185d 100%);
+      transition: width 0.4s ease;
+      border-radius: 999px;
+      width: 0%;
+    }
+    .progress__label {
+      margin: 8px 0 0;
+      font-size: 13px;
+      color: #7a3645;
+      text-align: center;
+    }
+
+    /* === ВОПРОС === */
+    .step__title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 22px;
+      line-height: 1.3;
+      color: #4c0519;
+      margin: 0 0 8px;
+    }
+    .step__hint {
+      font-size: 14px;
+      color: #7a3645;
+      margin: 0 0 24px;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .option {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 14px 18px;
+      background: #ffffff;
+      border: 2px solid rgba(136, 19, 55, 0.15);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      position: relative;
+    }
+    .option:hover { border-color: rgba(136, 19, 55, 0.4); transform: translateY(-1px); }
+    .option.is-selected { border-color: #881337; background: #fff1f2; }
+    .option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .option__label {
+      font-size: 15px;
+      color: #1f2937;
+      line-height: 1.4;
+    }
+    .option__hint {
+      font-size: 12px;
+      color: #7a3645;
+    }
+    .step__nav {
+      display: flex;
+      gap: 10px;
+    }
+    .step__nav .btn { flex: 1; }
+
+    /* === РЕЗУЛЬТАТ === */
+    .score { text-align: center; margin: 16px 0 32px; }
+    .score__label {
+      font-size: 12px;
+      color: #7a3645;
+      margin: 0 0 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .score__circle {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        #881337 0%,
+        #be185d var(--score, 50%),
+        rgba(136, 19, 55, 0.08) var(--score, 50%),
+        rgba(136, 19, 55, 0.08) 100%
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      position: relative;
+    }
+    .score__circle::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      background: #fff5f5;
+      border-radius: 50%;
+    }
+    .score__value {
+      position: relative;
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 52px;
+      color: #4c0519;
+      line-height: 1;
+    }
+    .score__pct {
+      position: relative;
+      font-size: 22px;
+      color: #4c0519;
+      margin-left: 2px;
+    }
+    .score__verdict {
+      margin: 20px 0 0;
+      font-size: 17px;
+      color: #4c0519;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .insight {
+      background: #fff5f5;
+      border: 1px solid rgba(136, 19, 55, 0.15);
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin: 0 0 28px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #2d1418;
+    }
+
+    .advice-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 20px;
+      color: #4c0519;
+      margin: 0 0 16px;
+    }
+    .advice {
+      margin: 0 0 28px;
+      padding-left: 24px;
+    }
+    .advice li {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #2d1418;
+      margin-bottom: 12px;
+    }
+
+    .share {
+      background: #ffffff;
+      border: 1px solid rgba(136, 19, 55, 0.15);
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin: 0 0 20px;
+      text-align: center;
+    }
+    .share__lead {
+      font-size: 14px;
+      color: #4c0519;
+      margin: 0 0 12px;
+    }
+    .share__buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .share__buttons .btn { flex: 1 1 100px; min-width: 100px; padding: 10px 14px; font-size: 14px; }
+    .share__status {
+      margin: 10px 0 0;
+      font-size: 13px;
+      color: #15803d;
+      min-height: 18px;
+    }
+
+    .restart { text-align: center; margin: 12px 0 0; }
+    .restart__btn {
+      background: none;
+      border: none;
+      color: #7a3645;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+    .restart__btn:hover { color: #4c0519; }
+
+    /* Подвал (минимальный) */
+    .foot {
+      text-align: center;
+      margin: 32px 0 0;
+      font-size: 12px;
+      color: #7a3645;
+      line-height: 1.5;
+    }
+    .foot a { color: #7a3645; }
+
+    /* Mobile fine-tuning (для самых узких экранов) */
+    @media (max-width: 360px) {
+      .title { font-size: 28px; }
+      .score__circle { width: 150px; height: 150px; }
+      .score__value { font-size: 44px; }
+      .step__title { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== ИНТРО ===== -->
+  <section id="detector-intro">
+    <div class="container">
+      <span class="eyebrow">Бесплатный тест · 2 минуты</span>
+      <h1 class="title">
+        Твоё желание&nbsp;— про <em>«надо»</em> или про <em>«хочу»</em>?
+      </h1>
+      <p class="lead">
+        5 вопросов. Без email, без регистрации, без воды.
+        Поймёшь, насколько твоё желание идёт изнутри&nbsp;— и&nbsp;сколько в&nbsp;нём социального шума.
+      </p>
+
+      <ul class="features">
+        <li>⏱ 2 минуты</li>
+        <li>🔒 анонимно</li>
+        <li>🎯 мгновенный результат</li>
+      </ul>
+
+      <button class="btn btn--primary btn--block" id="detector-start" type="button" data-role="start">
+        Начать тест
+      </button>
+      <p class="microcopy">
+        Результат — не&nbsp;диагноз, а&nbsp;повод задуматься. Автор: метод «5 почему» + телесный интеллект.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== КВИЗ (скрыт до старта) ===== -->
+  <section id="detector-quiz" hidden>
+    <div class="container">
+      <div class="progress">
+        <div class="progress__bar">
+          <div class="progress__fill" data-role="progress-fill"></div>
+        </div>
+        <p class="progress__label">
+          Вопрос <span data-role="current">1</span> из&nbsp;5
+        </p>
+      </div>
+
+      <form id="detector-form" novalidate>
+        <div class="step" data-role="step" hidden>
+          <h2 class="step__title" data-role="question"></h2>
+          <p class="step__hint" data-role="hint"></p>
+          <div class="options" data-role="options"></div>
+          <div class="step__nav">
+            <button type="button" class="btn btn--ghost" data-role="back" hidden>← Назад</button>
+            <button type="button" class="btn btn--primary" data-role="next" disabled>Дальше →</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== РЕЗУЛЬТАТ (скрыт до конца) ===== -->
+  <section id="detector-result" hidden>
+    <div class="container">
+      <span class="eyebrow">Твой результат</span>
+
+      <div class="score" data-role="score-block">
+        <p class="score__label">Доля навязанного в&nbsp;желании</p>
+        <div class="score__circle">
+          <span class="score__value" data-role="score-value">0</span><span class="score__pct">%</span>
+        </div>
+        <p class="score__verdict" data-role="verdict"></p>
+      </div>
+
+      <div class="insight" data-role="insight"></div>
+
+      <h3 class="advice-title">Что с&nbsp;этим делать</h3>
+      <ol class="advice" data-role="advice"></ol>
+
+      <div class="share">
+        <p class="share__lead">Поделись результатом&nbsp;— многие узнают себя</p>
+        <div class="share__buttons">
+          <button class="btn btn--ghost" type="button" data-role="share-vk">ВКонтакте</button>
+          <button class="btn btn--ghost" type="button" data-role="share-copy">Скопировать текст</button>
+        </div>
+        <p class="share__status" data-role="share-status" aria-live="polite"></p>
+      </div>
+
+      <div class="restart">
+        <button class="restart__btn" type="button" data-role="restart">
+          Пройти ещё раз с&nbsp;другим желанием
+        </button>
+      </div>
+
+      <p class="foot">
+        <a href="https://app.pulab.ru/library/" target="_blank" rel="noopener noreferrer">Конспекты книг</a>
+        &nbsp;·&nbsp;
+        <a href="https://app.pulab.ru/" target="_blank" rel="noopener noreferrer">ЛАБОРАТОРИЯ ЖЕЛАНИЙ</a>
+      </p>
+    </div>
+  </section>
+
+  <script>
+    /* === 5 вопросов (EXPRESS из coach_agent) === */
+    var QUESTIONS = [
+      {
+        idx: 1, module: 1,
+        text: 'Почему ты этого хочешь?',
+        hint: 'Глубинная мотивация — откуда идёт импульс',
+        options: [
+          { label: '«Надо», иначе я отстану от других / буду выглядеть хуже', value: 0.10, hint: 'социальное давление' },
+          { label: 'Скорее страх остаться там, где сейчас', value: 0.30, hint: 'мотивация от обратного' },
+          { label: 'Хочу, но не до конца понимаю зачем', value: 0.55, hint: 'зонт интереса' },
+          { label: 'Тянет, давно чувствую, зовёт', value: 0.90, hint: 'истинный импульс' }
+        ]
+      },
+      {
+        idx: 9, module: 3,
+        text: 'Представь, что желание уже сбылось. Что чувствует тело?',
+        hint: 'Телесный интеллект — реакция важнее мыслей',
+        options: [
+          { label: 'Сжатие, ком в груди, холод', value: 0.15 },
+          { label: 'Напряжение, как перед экзаменом', value: 0.40 },
+          { label: 'Тепло в груди, спокойное дыхание', value: 0.75 },
+          { label: 'Расслабление, разливается тепло, улыбка', value: 0.95 }
+        ]
+      },
+      {
+        idx: 14, module: 4,
+        text: 'Если бы никто никогда не узнал — ты бы всё равно этого хотела?',
+        hint: 'Социальный контекст — желание для себя или для показа',
+        options: [
+          { label: 'Нет, без публики смысла нет', value: 0.10 },
+          { label: 'Скорее нет — мне важна реакция', value: 0.30 },
+          { label: 'Скорее да, но реакция приятна', value: 0.70 },
+          { label: 'Однозначно да — это моё', value: 0.95 }
+        ]
+      },
+      {
+        idx: 19, module: 5,
+        text: 'Готова сделать один маленький шаг к этому прямо сегодня?',
+        hint: 'Временная перспектива — действие отличает желание от мечты',
+        options: [
+          { label: 'Нет, потом, на следующей неделе', value: 0.15 },
+          { label: 'Скорее нет, сейчас не время', value: 0.35 },
+          { label: 'Могу, но не уверена какое', value: 0.60 },
+          { label: 'Да, уже знаю какой — сделаю', value: 0.90 }
+        ]
+      },
+      {
+        idx: 2, module: 1,
+        text: 'Что это тебе даст в жизни — если по-честному?',
+        hint: 'Смысл — ради чего ты готова вкладываться',
+        options: [
+          { label: 'Статус, одобрение, «чтоб не хуже других»', value: 0.10 },
+          { label: 'Спокойствие, что не отстану', value: 0.35 },
+          { label: 'Больше свободы и энергии', value: 0.75 },
+          { label: 'Стану собой настоящей', value: 0.95 }
+        ]
+      }
+    ];
+
+    /* === 6 вердиктов (из coach_agent/VERDICT_LABELS) === */
+    var VERDICTS = [
+      {
+        key: 'imposed',
+        label: 'В основном про страх и внешнее давление',
+        description: 'Это желание почти целиком про «надо» — чужое, социальное, привычное. Ты можешь годами к нему идти и не почувствовать радости. Это не плохо — это сигнал остановиться и честно спросить себя: «А я-то чего хочу?»',
+        advice: [
+          'Запиши на бумаге: «Я хочу этого, потому что…» — продолжи 5 раз. Скорее всего к 3-4 разу ответы станут неубедительными.',
+          'Спроси себя: «Если бы никто не узнал, я бы всё равно?» — это изоляционный тест от чужого влияния.',
+          'Отложи это желание на месяц. Если через месяц не отпустит — вернёшься к нему уже из другого состояния.'
+        ]
+      },
+      {
+        key: 'mostly_imposed',
+        label: 'Больше навязанного, но есть зерно истинного',
+        description: 'Вокруг истинного желания наросла социальная «скорлупа» — ожидания близких, сравнение, привычные сценарии. Под скорлупой есть что-то живое, но оно пока тихо.',
+        advice: [
+          'Отдели «своё» от «чужого»: что из этого я хочу на самом деле, а что — потому что «так правильно»?',
+          'Спроси подругу, которая тебя хорошо знает: «Что ты думаешь, мне это правда нужно?» — внешний взгляд помогает.',
+          'Попробуй 1 неделю «как будто у меня этого нет» — наблюдай, что отпускает, а что тянет обратно.'
+        ]
+      },
+      {
+        key: 'mixed_low',
+        label: 'Есть настоящее, но больше шума',
+        description: 'Где-то внутри это желание откликается — но сверху лежит толстый слой сомнений, чужих голосов и «а вдруг». Это нормальное состояние для 80% женщин 35-45.',
+        advice: [
+          'Отфильтруй шум: выпиши 3 голоса, которые говорят «тебе это не надо» — и проверь, чьи они (мама? подруга? бывший?).',
+          'Один маленький шаг сегодня. Не «достичь», а «прикоснуться» — записаться, спросить, прочитать одну статью.',
+          'Дай себе 30 дней «попробовать и посмотреть» — без обязательств, без оценки результата.'
+        ]
+      },
+      {
+        key: 'mixed_high',
+        label: 'Больше истинного, но есть социальный шум',
+        description: 'Это желание идёт изнутри, но у тебя есть сомнения из-за чужих реакций, страха оценки или непривычных ощущений. Это хорошая позиция — энергия есть, нужно только отфильтровать шум.',
+        advice: [
+          'Окружи себя теми, кто поддерживает. Минимум 1 разговор с человеком, который «за тебя» в этом.',
+          'Запиши 3 конкретных микро-шага на 7 дней. Не «похудеть», а «пройти 3000 шагов в день».',
+          'Веди дневник ощущений 1 неделю: что меняется, когда ты в контакте с желанием? Что спадает, когда ты от него отвлекаешься?'
+        ]
+      },
+      {
+        key: 'mostly_true',
+        label: 'В основном идёт изнутри',
+        description: 'Это твоё. Энергия есть, смысл есть, тело откликается. Осталось — действовать. Социальный шум минимальный, главный враг сейчас — привычка откладывать.',
+        advice: [
+          'Поставь одну цель на 30 дней — конкретную, измеримую, с датой. Не «хочу», а «к 15 июля я…»',
+          'Найди 1 союзника — человека, который тоже идёт в эту сторону. Вместе проще в 3 раза.',
+          'Отмечай прогресс. Даже микро-шаги. Дневник «+1» каждый вечер — мощнейшая привычка.'
+        ]
+      },
+      {
+        key: 'true',
+        label: 'Идёт изнутри, даёт энергию и ясность',
+        description: 'Это редкое состояние — ты точно знаешь, чего хочешь, и это идёт из глубины. Такие желания сбываются в 3-5 раз чаще остальных. Главное — не растерять эту ясность в бытовых заботах.',
+        advice: [
+          'Защити это состояние. Не обсуждай желание с теми, кто скептичен. Не давай никому его «поправить».',
+          'Действуй сейчас, пока энергия высокая. Поставь дедлайн — иначе «идеальное время» не наступит никогда.',
+          'Помогай другим находить такие же ясные желания — это усиливает и твоё. Заведи дневник «3 истинных желания в день».'
+        ]
+      }
+    ];
+
+    function scoreToVerdict(score) {
+      if (score < 0.20) return VERDICTS[0];
+      if (score < 0.35) return VERDICTS[1];
+      if (score < 0.50) return VERDICTS[2];
+      if (score < 0.65) return VERDICTS[3];
+      if (score < 0.80) return VERDICTS[4];
+      return VERDICTS[5];
+    }
+    function scoreToImposedPercent(score) {
+      return Math.round((1 - score) * 100);
+    }
+
+    /* === DOM === */
+    var intro = document.getElementById('detector-intro');
+    var quiz = document.getElementById('detector-quiz');
+    var result = document.getElementById('detector-result');
+    var startBtn = document.getElementById('detector-start');
+    var form = document.getElementById('detector-form');
+    var stepEl = document.querySelector('[data-role="step"]');
+    var questionEl = document.querySelector('[data-role="question"]');
+    var hintEl = document.querySelector('[data-role="hint"]');
+    var optionsEl = document.querySelector('[data-role="options"]');
+    var backBtn = document.querySelector('[data-role="back"]');
+    var nextBtn = document.querySelector('[data-role="next"]');
+    var progressFill = document.querySelector('[data-role="progress-fill"]');
+    var currentEl = document.querySelector('[data-role="current"]');
+    var scoreValueEl = document.querySelector('[data-role="score-value"]');
+    var verdictEl = document.querySelector('[data-role="verdict"]');
+    var insightEl = document.querySelector('[data-role="insight"]');
+    var adviceEl = document.querySelector('[data-role="advice"]');
+    var scoreBlock = document.querySelector('[data-role="score-block"]');
+    var shareVk = document.querySelector('[data-role="share-vk"]');
+    var shareCopy = document.querySelector('[data-role="share-copy"]');
+    var shareStatus = document.querySelector('[data-role="share-status"]');
+    var restartBtn = document.querySelector('[data-role="restart"]');
+
+    /* === Аналитика (двойка: VKWebAppTrackEvent + ничего вне ВК) === */
+    function trackEvent(eventName, params) {
+      if (window.vkBridge) {
+        try {
+          vkBridge.send('VKWebAppTrackEvent', { event_name: eventName, params: params || {} });
+        } catch (e) {}
+      }
+      // В обычном браузере — noop (мини-апп живёт в ВК, метрика lab-site не нужна)
+    }
+
+    /* === Состояние === */
+    var currentStep = 0;
+    var answers = [];
+    var lastImposedPct = 0;
+
+    function renderStep(idx) {
+      var q = QUESTIONS[idx];
+      currentStep = idx;
+      currentEl.textContent = String(idx + 1);
+      progressFill.style.width = ((idx / QUESTIONS.length) * 100) + '%';
+      questionEl.textContent = q.text;
+      hintEl.textContent = q.hint;
+      optionsEl.innerHTML = '';
+
+      q.options.forEach(function (opt, i) {
+        var id = 'q' + idx + '-opt' + i;
+        var wrap = document.createElement('label');
+        wrap.className = 'option';
+        wrap.setAttribute('for', id);
+        var hintHtml = opt.hint ? '<span class="option__hint">' + opt.hint + '</span>' : '';
+        wrap.innerHTML =
+          '<input type="radio" name="q' + idx + '" id="' + id + '" value="' + opt.value + '" data-idx="' + i + '" />' +
+          '<span class="option__label">' + opt.label + '</span>' +
+          hintHtml;
+        optionsEl.appendChild(wrap);
+      });
+
+      nextBtn.disabled = true;
+      nextBtn.textContent = (idx === QUESTIONS.length - 1) ? 'Получить результат ✨' : 'Дальше →';
+      backBtn.hidden = (idx === 0);
+
+      stepEl.hidden = false;
+    }
+
+    optionsEl.addEventListener('change', function (e) {
+      var target = e.target;
+      if (target && target.matches && target.matches('input[type="radio"]')) {
+        nextBtn.disabled = false;
+        var siblings = optionsEl.querySelectorAll('.option');
+        for (var i = 0; i < siblings.length; i++) siblings[i].classList.remove('is-selected');
+        var closest = target.closest('.option');
+        if (closest) closest.classList.add('is-selected');
+
+        // Тактильная обратная связь внутри ВК
+        if (window.vkBridge) {
+          try { vkBridge.send('VKWebAppTapticImpactOccurred', { style: 'light' }); } catch (e) {}
+        }
+      }
+    });
+
+    function recordCurrentAndAdvance() {
+      var checked = optionsEl.querySelector('input[type="radio"]:checked');
+      if (!checked) return;
+      answers[currentStep] = Number(checked.value);
+      if (currentStep < QUESTIONS.length - 1) {
+        renderStep(currentStep + 1);
+      } else {
+        showResult();
+      }
+    }
+
+    function goBack() {
+      if (currentStep > 0) renderStep(currentStep - 1);
+    }
+
+    function showResult() {
+      var valid = answers.filter(function (a) { return isFinite(a); });
+      var sum = valid.reduce(function (s, v) { return s + v; }, 0);
+      var score = valid.length ? sum / valid.length : 0.5;
+      var verdict = scoreToVerdict(score);
+      var imposedPct = scoreToImposedPercent(score);
+      lastImposedPct = imposedPct;
+
+      // Обновить conic-gradient круга
+      scoreBlock.style.setProperty('--score', imposedPct + '%');
+
+      // Анимация счётчика
+      var target = imposedPct;
+      var duration = 900;
+      var startTime = performance.now();
+      function tick(now) {
+        var t = Math.max(0, Math.min(1, (now - startTime) / duration));
+        var eased = 1 - Math.pow(1 - t, 3);  // ease-out cubic
+        var value = Math.round(target * eased);
+        scoreValueEl.textContent = String(value);
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+
+      verdictEl.textContent = verdict.label;
+      insightEl.textContent = verdict.description;
+      adviceEl.innerHTML = verdict.advice.map(function (a) { return '<li>' + a + '</li>'; }).join('');
+
+      trackEvent('detectorCompleted', { verdict: verdict.key, score: Math.round(score * 100), imposed_pct: imposedPct });
+
+      // URL c параметром для шаринга (?r=verdict)
+      var newUrl = window.location.pathname + '?r=' + verdict.key;
+      window.history.replaceState({}, '', newUrl);
+
+      quiz.hidden = true;
+      result.hidden = false;
+      result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function buildShareText() {
+      return 'Мой тест «Навязанное или твоё?» — ' + lastImposedPct + '% навязанного.\n\nПройти: https://vk.com/app54640127';
+    }
+
+    function shareToVk() {
+      var text = encodeURIComponent(buildShareText());
+      var url = encodeURIComponent('https://vk.com/app54640127');
+      var shareUrl = 'https://vk.com/share.php?url=' + url + '&title=' + encodeURIComponent('Детектор желаний — Лаборатория') + '&comment=' + text;
+
+      if (window.vkBridge) {
+        // Нативный шеринг ВК
+        vkBridge.send('VKWebAppOpenShareSheet', {
+          url: 'https://vk.com/app54640127',
+          text: buildShareText()
+        }).catch(function () {
+          // fallback на web-share URL
+          window.open(shareUrl, '_blank', 'noopener,noreferrer');
+        });
+      } else {
+        window.open(shareUrl, '_blank', 'noopener,noreferrer');
+      }
+      trackEvent('detectorResultShared', { channel: 'vk' });
+      showShareStatus('Открыли ВКонтакте — выбери стену для публикации');
+    }
+
+    function shareCopyText() {
+      var text = buildShareText();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          showShareStatus('✓ Текст скопирован. Вставь в сторис или чат.');
+        }).catch(function () {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+      trackEvent('detectorResultShared', { channel: 'copy' });
+    }
+    function fallbackCopy(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showShareStatus('✓ Текст скопирован.');
+      } catch (e) {
+        showShareStatus('Не получилось скопировать — выдели вручную.');
+      }
+      document.body.removeChild(ta);
+    }
+
+    function showShareStatus(msg) {
+      shareStatus.textContent = msg;
+      setTimeout(function () {
+        if (shareStatus.textContent === msg) shareStatus.textContent = '';
+      }, 4000);
+    }
+
+    function restart() {
+      answers = [];
+      currentStep = 0;
+      result.hidden = true;
+      quiz.hidden = true;
+      intro.hidden = false;
+      window.history.replaceState({}, '', window.location.pathname);
+      intro.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function start() {
+      intro.hidden = true;
+      quiz.hidden = false;
+      renderStep(0);
+      trackEvent('detectorStarted', {});
+      quiz.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* === События === */
+    startBtn.addEventListener('click', start);
+    nextBtn.addEventListener('click', recordCurrentAndAdvance);
+    backBtn.addEventListener('click', goBack);
+    shareVk.addEventListener('click', shareToVk);
+    shareCopy.addEventListener('click', shareCopyText);
+    restartBtn.addEventListener('click', restart);
+
+    // Enter на радио = «Дальше»
+    form.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (!nextBtn.disabled) recordCurrentAndAdvance();
+      }
+    });
+  </script>
+</body>
+</html>

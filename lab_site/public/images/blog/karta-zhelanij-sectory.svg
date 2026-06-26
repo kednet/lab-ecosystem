@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="6 сфер жизни для карты желаний: здоровье, отношения, деньги, дело, отдых, рост">
+  <title>6 сфер жизни для карты желаний</title>
+  <desc>Колесо баланса из шести секторов с эмодзи и названиями сфер. Используйте как разметку листа A2/A3.</desc>
+
+  <defs>
+    <style>
+      .sector-label {
+        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        font-weight: 700;
+        fill: #ffffff;
+        text-anchor: middle;
+      }
+      .sector-emoji {
+        font-size: 36px;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+      .sector-name {
+        font-size: 18px;
+        dominant-baseline: middle;
+      }
+      .center-text {
+        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+      .center-title {
+        font-size: 16px;
+        font-weight: 700;
+        fill: #be123c;
+        letter-spacing: 0.05em;
+      }
+      .center-sub {
+        font-size: 11px;
+        fill: #6b7280;
+      }
+    </style>
+  </defs>
+
+  <!-- Колесо: 6 секторов по 60° -->
+  <g transform="translate(280 250)">
+    <!-- Сектор 1: Здоровье (0°..60°, верх-справа) -->
+    <path d="M 0 0 L 200 0 A 200 200 0 0 1 100 173.205 Z" fill="#10b981" />
+    <text x="125" y="55" class="sector-emoji">💚</text>
+    <text x="125" y="95" class="sector-label sector-name">Здоровье</text>
+
+    <!-- Сектор 2: Отношения (60°..120°) -->
+    <path d="M 0 0 L 100 173.205 A 200 200 0 0 1 -100 173.205 Z" fill="#ec4899" />
+    <text x="0" y="155" class="sector-emoji">💗</text>
+    <text x="0" y="195" class="sector-label sector-name">Отношения</text>
+
+    <!-- Сектор 3: Деньги (120°..180°) -->
+    <path d="M 0 0 L -100 173.205 A 200 200 0 0 1 -200 0 Z" fill="#f59e0b" />
+    <text x="-125" y="115" class="sector-emoji">💛</text>
+    <text x="-125" y="155" class="sector-label sector-name">Деньги</text>
+
+    <!-- Сектор 4: Дело (180°..240°) -->
+    <path d="M 0 0 L -200 0 A 200 200 0 0 1 -100 -173.205 Z" fill="#3b82f6" />
+    <text x="-125" y="-65" class="sector-emoji">💙</text>
+    <text x="-125" y="-25" class="sector-label sector-name">Дело</text>
+
+    <!-- Сектор 5: Рост (240°..300°) -->
+    <path d="M 0 0 L -100 -173.205 A 200 200 0 0 1 100 -173.205 Z" fill="#8b5cf6" />
+    <text x="0" y="-145" class="sector-emoji">💜</text>
+    <text x="0" y="-105" class="sector-label sector-name">Рост</text>
+
+    <!-- Сектор 6: Отдых (300°..360°) -->
+    <path d="M 0 0 L 100 -173.205 A 200 200 0 0 1 200 0 Z" fill="#06b6d4" />
+    <text x="125" y="-65" class="sector-emoji">💎</text>
+    <text x="125" y="-25" class="sector-label sector-name">Отдых</text>
+
+    <!-- Центральный круг -->
+    <circle cx="0" cy="0" r="55" fill="#ffffff" stroke="#f3f4f6" stroke-width="2" />
+    <text x="0" y="-5" class="center-text center-title">ТВОЯ КАРТА</text>
+    <text x="0" y="15" class="center-text center-sub">6 сфер · 5–7 желаний</text>
+  </g>
+
+  <!-- Подсказка справа -->
+  <g transform="translate(540 80)">
+    <text x="0" y="0" style="font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #111827;">Как пользоваться</text>
+    <text x="0" y="28" style="font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; font-size: 13px; fill: #374151;">1. Распечатайте на А2 или А3</text>
+    <text x="0" y="50" style="font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; font-size: 13px; fill: #374151;">2. Подпишите каждый сектор</text>
+    <text x="0" y="72" style="font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; font-size: 13px; fill: #374151;">3. Вклейте 2–5 фото в сектор</text>
+    <text x="0" y="94" style="font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; font-size: 13px; fill: #374151;">4. Подпишите каждое фото</text>
+    <text x="0" y="116" style="font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; font-size: 13px; fill: #374151;">5. Рядом — 1 шаг на 7 дней</text>
+    <text x="0" y="146" style="font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; font-size: 13px; font-weight: 700; fill: #be123c;">Через 3 месяца — пересобрать</text>
+  </g>
+</svg>

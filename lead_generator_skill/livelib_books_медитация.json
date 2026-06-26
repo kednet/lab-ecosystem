@@ -1,0 +1,49 @@
+{
+  "source": "livelib.ru",
+  "query": "медитация",
+  "min_rating": null,
+  "collected_at": "2026-06-13T13:43:46.819765+00:00",
+  "count": 5,
+  "books": [
+    {
+      "title": "Поймать большую рыбу",
+      "book_id": "1002211383",
+      "url": "https://www.livelib.ru/book/1002211383-pojmat-bolshuyu-rybu-devid-linch",
+      "author": "Дэвид Линч",
+      "author_id": "231059",
+      "author_url": "https://www.livelib.ru/author/231059"
+    },
+    {
+      "title": "Медитация и осознанность. 10 минут в день, которые приведут ваши мысли в порядок",
+      "book_id": "1011956756",
+      "url": "https://www.livelib.ru/book/1011956756-meditatsiya-i-osoznannost-10-minut-v-den-kotorye-privedut-vashi-mysli-v-poryadok-endi-paddikomb",
+      "author": "Энди Паддикомб",
+      "author_id": "503524",
+      "author_url": "https://www.livelib.ru/author/503524"
+    },
+    {
+      "title": "Куда бы ты ни шел - ты уже там",
+      "book_id": "1000184927",
+      "url": "https://www.livelib.ru/book/1000184927-kuda-by-ty-ni-shel-ty-uzhe-tam-dzhon-kabatzinn",
+      "author": "Джон Кабат-Зинн",
+      "author_id": "12483",
+      "author_url": "https://www.livelib.ru/author/12483"
+    },
+    {
+      "title": "Чудо осознанности: практическое руководство по медитации",
+      "book_id": "1001545280",
+      "url": "https://www.livelib.ru/book/1001545280-chudo-osoznannosti-prakticheskoe-rukovodstvo-po-meditatsii-tik-nat-han",
+      "author": "Тик Нат Хан",
+      "author_id": "151803",
+      "author_url": "https://www.livelib.ru/author/151803"
+    },
+    {
+      "title": "На одном дыхании. Самоучитель по медитации",
+      "book_id": "1002311632",
+      "url": "https://www.livelib.ru/book/1002311632-na-odnom-dyhanii-samouchitel-po-meditatsii-tit-nat-han",
+      "author": "Тит Нат Хан",
+      "author_id": "151803",
+      "author_url": "https://www.livelib.ru/author/151803"
+    }
+  ]
+}

@@ -1,0 +1,389 @@
+---
+import Base from '../../layouts/Base.astro';
+import TrackCard from '../../components/TrackCard.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import { getPublicTracks, getLockedTracks } from '../../lib/audio';
+import { itemListLd, breadcrumbLd } from '../../lib/seo';
+
+const publicTracks = getPublicTracks();
+const lockedTracks = getLockedTracks();
+const totalTracks = publicTracks.length + lockedTracks.length;
+
+// ВАЖНО: это STATIC-сайт (output: 'static' в astro.config.mjs), Astro рендерит
+// HTML один раз при build. Серверная проверка подписки через `Astro.cookies.get`
+// тут НЕ сработает — она бы работала только в SSR-режиме с adapter'ом.
+//
+// Поэтому рендерим все карточки как `locked=false` (с плеером и реальным src).
+// Гейтинг делаем на клиенте в <script>: если юзер не премиум — прячем плеер и
+// показываем лок-UI. Так премиум получает мгновенный плеер без «моргания»,
+// а не-премиум — честный CTA на /pricing/. (см. [[feedback-two-auth-systems]])
+
+const pageUrl = 'https://app.pulab.ru/audio/';
+const pageTitle = 'Практики, аффермации и медитации — Лаборатория желаний';
+const pageDescription =
+  'Практики, аффермации и медитации для исполнения желаний. Без гуру и обещаний: техники осознанности, утренние настройки, вечерние медитации. Часть треков открыта, остальные — по подписке.';
+---
+<Base
+  title={pageTitle}
+  description={pageDescription}
+  extraJsonLd={[
+    itemListLd(
+      'Аудио-медитации и аффермации',
+      [...publicTracks, ...lockedTracks].slice(0, 10).map((t) => ({
+        name: t.title,
+        url: '/audio/',
+        description: t.description,
+      })),
+    ),
+    breadcrumbLd([
+      { name: 'Главная', url: '/' },
+      { name: 'Аудио', url: '/audio/' },
+    ]),
+  ]}
+>
+  <section class="section">
+    <div class="container" style="text-align: center;">
+      <p class="section__eyebrow">Аудио-коллекция</p>
+      <h1 class="section__title" style="margin-left: auto; margin-right: auto;">
+        Практики, аффермации и&nbsp;медитации
+      </h1>
+      <p class="footer__about" style="text-align: center; max-width: 60ch; margin: 0 auto 16px;">
+        Медитации онлайн — короткие, без гуру и обещаний. Пять-десять минут,
+        чтобы вернуться в себя: утром — аффермации, вечером — медитации для сна.
+      </p>
+      <ShareButtons url={pageUrl} title={pageTitle} description={pageDescription} />
+    </div>
+  </section>
+
+  {publicTracks.length > 0 && (
+    <section class="section section--alt">
+      <div class="container">
+        <h2 class="section__title section__title--small" style="text-align: center;">
+          Открытые треки
+        </h2>
+        <p class="footer__about" style="text-align: center; max-width: 60ch; margin: 0 auto 32px;">
+          Слушайте без регистрации. Если файл ещё не подъехал — карточка
+          сохранится, плеер «ожivёт» после загрузки MP3.
+        </p>
+        <ul class="track-grid" role="list">
+          {publicTracks.map((track, i) => <TrackCard track={track} locked={false} index={i} />)}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {lockedTracks.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <h2 class="section__title section__title--small" style="text-align: center;">
+          <span data-locked-title>Только для&nbsp;подписчиков</span>
+          <span data-premium-title hidden>Ваши треки</span>
+        </h2>
+        <p class="footer__about" style="text-align: center; max-width: 60ch; margin: 0 auto 32px;">
+          <span data-locked-desc>Полная коллекция — часть подписки. Замочек откроется, когда оформишь доступ. Уже подписан — войди и слушай.</span>
+          <span data-premium-desc hidden>Полная коллекция — часть вашей подписки. Слушайте в своём темпе.</span>
+        </p>
+        <ul class="track-grid" role="list" data-locked-grid>
+          {lockedTracks.map((track, i) => <TrackCard track={track} locked={false} index={i + publicTracks.length} />)}
+        </ul>
+        <p style="text-align: center; margin-top: 40px;" data-locked-cta>
+          <a href="/pricing/" class="btn btn--primary btn--large">Оформить подписку</a>
+        </p>
+      </div>
+    </section>
+  )}
+
+  {totalTracks === 0 && (
+    <section class="section">
+      <div class="container" style="text-align: center;">
+        <p class="footer__about">Треки скоро появятся. Загляни позже.</p>
+      </div>
+    </section>
+  )}
+</Base>
+
+<script is:inline>
+  /**
+   * Глобальный registry: только один <audio> играет одновременно.
+   *
+   * Скрипт ровно ОДИН на страницу (раньше был is:inline внутри TrackCard.astro
+   * и инициализировался N раз — 10×10=100 обработчиков, race-condition
+   * "play() interrupted by pause()"). Теперь инициализируется один раз тут.
+   */
+  (function initAudioPlayers() {
+    const players = document.querySelectorAll('[data-player]');
+    if (!players.length) return;
+
+    const allAudios = new Set();
+    let currentAudio = null;
+
+    function fmtTime(s) {
+      if (!isFinite(s) || s < 0) return '0:00';
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return `${m}:${String(sec).padStart(2, '0')}`;
+    }
+
+    function setPlaying(player, playing) {
+      const btn = player.querySelector('[data-play]');
+      const iconPlay = btn && btn.querySelector('[data-icon-play]');
+      const iconPause = btn && btn.querySelector('[data-icon-pause]');
+      if (iconPlay) iconPlay.style.display = playing ? 'none' : '';
+      if (iconPause) iconPause.style.display = playing ? '' : 'none';
+      if (btn) btn.setAttribute('aria-pressed', String(playing));
+    }
+
+    function pauseAllExcept(audio) {
+      allAudios.forEach((a) => {
+        if (a !== audio && !a.paused) {
+          a.pause();
+        }
+      });
+    }
+
+    players.forEach((player) => {
+      const audio = player.querySelector('[data-audio]');
+      const btn = player.querySelector('[data-play]');
+      const bar = player.querySelector('[data-progress-bar]');
+      const wrap = player.querySelector('[data-progress]');
+      const time = player.querySelector('[data-time]');
+      if (!audio || !btn) return;
+      allAudios.add(audio);
+
+      audio.addEventListener('loadedmetadata', () => {
+        if (time) time.textContent = fmtTime(audio.duration);
+      });
+
+      audio.addEventListener('timeupdate', () => {
+        if (!audio.duration) return;
+        const pct = (audio.currentTime / audio.duration) * 100;
+        if (bar) bar.style.width = pct + '%';
+        if (wrap) wrap.setAttribute('aria-valuenow', String(Math.round(pct)));
+        if (time) time.textContent = fmtTime(audio.currentTime);
+      });
+
+      audio.addEventListener('ended', () => {
+        if (bar) bar.style.width = '0%';
+        if (time) time.textContent = fmtTime(audio.duration || 0);
+        setPlaying(player, false);
+        currentAudio = null;
+        window.labReachGoal('audio_complete');
+      });
+
+      audio.addEventListener('play', () => {
+        pauseAllExcept(audio);
+        currentAudio = audio;
+        setPlaying(player, true);
+        window.labReachGoal('audio_play');
+      });
+      audio.addEventListener('pause', () => {
+        setPlaying(player, false);
+        window.labReachGoal('audio_pause');
+      });
+
+      btn.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play().catch((err) => {
+            // автоплей-политика или 404 на файл — молча в консоль
+            console.warn('[audio] play failed:', err && err.message ? err.message : err);
+          });
+        } else {
+          audio.pause();
+        }
+      });
+
+      // Клик по прогресс-бару — перемотка
+      if (wrap) {
+        wrap.addEventListener('click', (e) => {
+          if (!audio.duration) return;
+          const rect = wrap.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const ratio = Math.max(0, Math.min(1, x / rect.width));
+          audio.currentTime = ratio * audio.duration;
+        });
+      }
+
+      // Клик по кнопке «Скачать»
+      const dl = player.querySelector('.track-card__download');
+      if (dl) {
+        dl.addEventListener('click', () => window.labReachGoal('audio_download'));
+      }
+    });
+  })();
+</script>
+
+<script is:inline>
+  // Гейтинг locked-карточек на клиенте.
+  //
+  // Почему тут, а не на сервере: lab-site в static-режиме
+  // (output: 'static' в astro.config.mjs), Astro не запускает SSR-рантайм
+  // и `Astro.cookies.get` не работает. HTML рендерится один раз при build.
+  //
+  // Поэтому в HTML все locked-карточки имеют плеер (`data-locked="false"`),
+  // и этот скрипт при загрузке страницы:
+  //   1) localStorage.lab_user (мгновенно, +try/catch на случай Edge Strict)
+  //   2) document.cookie — если есть member_session=...@... → идём к API
+  //   3) /api/members/me (по cookie) — последний источник правды
+  //   4) синхронизируем localStorage с ответом API
+  //   - если премиум → переключаем заголовки на «Ваши треки»
+  //   - если нет    → превращаем плеер в лок-UI (прячем player, вставляем CTA)
+  // (см. [[feedback-two-auth-systems]])
+  (function initLockedGate() {
+    const grid = document.querySelector('[data-locked-grid]');
+    if (!grid) return;
+
+    let resolved = null;
+    function isActiveUser(u) {
+      if (!u || typeof u !== 'object') return false;
+      // Поддерживаем разные названия поля (исторически менялось)
+      const st = u.subscriptionStatus || u.subscription_status || u.status;
+      if (st === 'active' || st === 'premium' || st === 'subscribed') return true;
+      // Фоллбэк: есть plan и validUntil в будущем
+      if (u.plan && u.subscriptionExpiresAt) {
+        const exp = Date.parse(u.subscriptionExpiresAt);
+        if (!isNaN(exp) && exp > Date.now()) return true;
+      }
+      return false;
+    }
+    function readLocal() {
+      try {
+        const raw = localStorage.getItem('lab_user');
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (_) {
+        return null; // Edge Tracking Prevention в Strict бросает SecurityError
+      }
+    }
+    function cookieEmail() {
+      try {
+        const m = document.cookie.match(/(?:^|;\s*)member_session=([^;]+)/);
+        if (!m) return null;
+        const v = decodeURIComponent(m[1] || '').trim();
+        return v.includes('@') ? v : null;
+      } catch (_) {
+        return null;
+      }
+    }
+    function writeLocal(u) {
+      try { localStorage.setItem('lab_user', JSON.stringify(u)); } catch (_) {}
+    }
+    function checkPremium() {
+      if (resolved !== null) return Promise.resolve(resolved);
+      // 1) localStorage
+      const u = readLocal();
+      if (isActiveUser(u)) {
+        resolved = true;
+        return Promise.resolve(true);
+      }
+      // 2) document.cookie — если есть member_session, не сдаёмся без API
+      const email = cookieEmail();
+      // 3) /api/members/me (по cookie member_session, пробрасывается через nginx)
+      return fetch('/api/members/me', { credentials: 'same-origin' })
+        .then((r) => r.json())
+        .then((j) => {
+          const auth = !!(j && j.authenticated && j.subscription && j.subscription.active);
+          // Синхронизируем localStorage с сервером, чтобы в следующий раз gate
+          // сработал мгновенно и без сетевого запроса
+          if (auth && j.email) {
+            writeLocal({
+              email: j.email,
+              userId: j.email,
+              plan: j.subscription.plan,
+              subscriptionStatus: 'active',
+              subscriptionExpiresAt: j.subscription.validUntilIso,
+            });
+          }
+          resolved = auth;
+          return resolved;
+        })
+        .catch(() => {
+          // API упал. Если cookie есть — доверяем UI (юзер залогинен)
+          resolved = !!email;
+          return resolved;
+        });
+    }
+
+    function applyPremium() {
+      // Переключаем заголовок/описание/CTA на премиум-вариант
+      const lockedTitle = document.querySelector('[data-locked-title]');
+      const premiumTitle = document.querySelector('[data-premium-title]');
+      const lockedDesc = document.querySelector('[data-locked-desc]');
+      const premiumDesc = document.querySelector('[data-premium-desc]');
+      const lockedCta = document.querySelector('[data-locked-cta]');
+      if (lockedTitle) lockedTitle.hidden = true;
+      if (premiumTitle) premiumTitle.hidden = false;
+      if (lockedDesc) lockedDesc.hidden = true;
+      if (premiumDesc) premiumDesc.hidden = false;
+      if (lockedCta) lockedCta.hidden = true;
+      // Плееры уже в HTML — ничего делать не надо
+    }
+
+    function applyLocked(card) {
+      // Превращаем плеер в лок-UI: прячем player, вставляем CTA
+      const player = card.querySelector('[data-player]');
+      if (player) player.style.display = 'none';
+      // Снимаем src с audio, чтобы случайно не подгрузился
+      const audio = card.querySelector('[data-audio]');
+      if (audio) {
+        audio.removeAttribute('src');
+        audio.load();
+      }
+      // Убираем lock-badge если был (HTML без locked=true их не имеет, но на всякий)
+      const lockBadge = card.querySelector('.track-card__lock-badge');
+      if (lockBadge) lockBadge.remove();
+      // Ставим CTA на место плеера
+      const body = card.querySelector('.track-card__body');
+      if (body && !body.querySelector('.track-card__locked-cta')) {
+        const cta = document.createElement('a');
+        cta.className = 'track-card__locked-cta';
+        cta.href = '/pricing/';
+        cta.textContent = '🔓 Открыть по подписке';
+        cta.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.labReachGoal('audio_locked_clicked');
+          window.location.assign('/pricing/');
+        });
+        body.appendChild(cta);
+      }
+      // Курсор-указатель на всю карточку
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;
+        e.preventDefault();
+        window.labReachGoal('audio_locked_clicked');
+        window.location.assign('/pricing/');
+      });
+    }
+
+    function applyAllLocked() {
+      grid.querySelectorAll('.track-card').forEach(applyLocked);
+    }
+
+    // Запускаем сразу. Синхронный localStorage-чек отработает за 0 мс — без моргания.
+    // Сетевой запрос /me — ок, плеер успеет появиться раньше, чем ответит API,
+    // но если придёт «не премиум», мы спрячем player. Задержка ~200мс — приемлемо.
+    checkPremium().then((isPremium) => {
+      if (isPremium) {
+        applyPremium();
+      } else {
+        applyAllLocked();
+      }
+    });
+  })();
+</script>
+
+<style>
+  .track-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  @media (max-width: 640px) {
+    .track-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

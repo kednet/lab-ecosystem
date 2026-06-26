@@ -1,0 +1,78 @@
+# Маппинг тон → голос Yandex SpeechKit для Video Creator Skill
+#
+# Источник: audio_skill/data/voices.yaml (актуальные голоса Yandex SpeechKit)
+# Формат идентичен, расширен полем `gender` для быстрой фильтрации
+#
+# В Phase 1: используется в cmd_script.py для подстановки в промпт
+# В Phase 2: используется в tts_pipeline.py для синтеза голоса
+#
+# Голоса Yandex SpeechKit (актуальный список на 2026-06):
+# - alena   (female, бесплатный)   — soulful, медитация
+# - jane    (female, premium 0.60₽/1k) — deep_relax, sleep
+# - filipp  (male, premium)        — inspiring, мотивация
+# - ermil   (male, бесплатный)     — educational, лекции
+# - marina  (female, бесплатный)   — playful, energy
+# - madirus (male, бесплатный)     — bold, драйв
+# - zahar   (male, бесплатный)     — neutral, документальный
+# - lea, nigora — НЕ использовать (обрезают длинный текст)
+# - anton, mikhail — premium (0.60₽/1k), для медитаций
+
+soulful:
+  yandex_id: alena
+  speed: 0.90
+  gender: female
+  description: "Мягкая, тёплая подача. Для историй, медитаций, душевных текстов."
+
+bold:
+  yandex_id: madirus
+  speed: 1.05
+  gender: male
+  description: "Уверенный, энергичный мужской голос. Для провокаций, драйва, мотивации."
+
+inspiring:
+  yandex_id: filipp
+  speed: 1.00
+  gender: male
+  description: "Вдохновляющий мужской голос. Для промо, историй успеха, мотивации."
+
+educational:
+  yandex_id: ermil
+  speed: 1.00
+  gender: male
+  description: "Спокойный, размеренный мужской голос. Для объяснялок, лекций, уроков."
+
+playful:
+  yandex_id: marina
+  speed: 1.10
+  gender: female
+  description: "Лёгкий, весёлый женский голос. Для игрового контента, историй, развлечений."
+
+neutral:
+  yandex_id: zahar
+  speed: 1.00
+  gender: male
+  description: "Нейтральный, документальный. Для подкастов, обзоров, новостей."
+
+calm:
+  yandex_id: alena
+  speed: 0.85
+  gender: female
+  description: "Очень медленный, спокойный. Для sleep/медитаций (или jane — premium)."
+
+confident:
+  yandex_id: filipp
+  speed: 0.98
+  gender: male
+  description: "Уверенный, но мягче чем bold. Для экспертных мнений, интервью."
+
+warm:
+  yandex_id: alena
+  speed: 0.95
+  gender: female
+  description: "Тёплый, ламповый. Для late-night контента, душевных историй."
+
+energetic:
+  yandex_id: madirus
+  speed: 1.10
+  gender: male
+  description: "Быстрый, энергичный. Для промо, динамичных роликов."

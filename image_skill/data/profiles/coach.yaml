@@ -1,0 +1,44 @@
+# image_skill — профиль «WishCoach» (заглушка)
+
+name: coach
+display_name: "WishCoach"
+description: "Премиум-ИИ-коуч для подписчиков app.pulab.online. ЦА — те, кто хочет разобраться в себе"
+
+defaults:
+  format: pinterest
+  style: watercolor
+  mood: warm
+  aspect: "2:3"
+  seed: null
+
+branding:
+  watermark: "@wishcoach"
+  accent_color: "#F59E0B"
+  palette:
+    primary: "#F59E0B"
+    primary_deep: "#B45309"
+    primary_soft: "#FDE68A"
+    bg: "#FFFBEB"
+    text: "#1F2937"
+
+prompt_styles:
+  watercolor: "warm watercolor, golden tones, soft"
+  photo: "realistic, warm lighting, introspection"
+  flat: "flat design, golden accents"
+
+prompt_moods:
+  warm: "warm, supportive, encouraging"
+  soft: "gentle guidance, mentor"
+  bold: "decisive, confident transformation"
+  calm: "peaceful, meditative"
+
+hashtags_base: ["#wishcoach", "#коучинг", "#премиум"]
+
+negative_prompts:
+  - "text on image"
+  - "watermark"
+  - "low quality"
+
+output:
+  state_subdir: "coach"
+  filename_template: "{slug}-coach-{format}"

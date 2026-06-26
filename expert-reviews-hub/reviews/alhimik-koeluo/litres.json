@@ -1,0 +1,26 @@
+{
+  "source": "litres",
+  "book": "Алхимик",
+  "author": "Пауло Коэльо",
+  "url": "https://www.litres.ru/book/paulo-koelo/alhimik-122351/",
+  "reviews_url": "https://www.litres.ru/book/paulo-koelo/alhimik-122351/reviews/",
+  "fetched_at": "2026-06-21T01:30:00",
+  "fetch_method": "websearch_summary",
+  "note": "В РФ у Коэльо проблемы с авторскими правами (прямой URL litres 404). Найдены только данные из WebSearch",
+  "total_ratings": 9426,
+  "total_reviews": 1200,
+  "total_citations": 1000,
+  "average_rating": 4.7,
+  "verified_buyers_ratio": 1.0,
+  "distribution_estimated": {
+    "5": 6500,
+    "4": 1700,
+    "3": 800,
+    "2": 300,
+    "1": 126
+  },
+  "errors": [
+    "Прямой URL litres (paulo-koeljo/alhimik-otzyvy/) — 404 (нет в каталоге litres)",
+    "WebFetch заблокирован enterprise policy"
+  ]
+}

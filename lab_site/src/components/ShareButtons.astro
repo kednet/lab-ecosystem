@@ -1,0 +1,103 @@
+---
+/**
+ * Кнопки «Поделиться» (VK + Telegram).
+ *
+ * Используется на странице /audio/. Открывает share-диалог VK / Telegram
+ * в новой вкладке с заранее заполненным URL + заголовком.
+ *
+ * Эмодзи вместо SVG-иконок — паттерн сайта (на главной, в карточках фич).
+ */
+interface Props {
+  /** Абсолютный URL для расшаривания (лучше с https://app.pulab.ru/...) */
+  url: string;
+  /** Заголовок — попадёт в текст поста */
+  title: string;
+  /** Описание (опционально, для VK) */
+  description?: string;
+}
+
+const { url, title, description = '' } = Astro.props;
+
+const vkUrl = new URL('https://vk.com/share.php');
+vkUrl.searchParams.set('url', url);
+vkUrl.searchParams.set('title', title);
+if (description) vkUrl.searchParams.set('description', description);
+
+const tgUrl = new URL('https://t.me/share/url');
+tgUrl.searchParams.set('url', url);
+tgUrl.searchParams.set('text', title);
+---
+<div class="share-buttons">
+  <span class="share-buttons__label">Поделиться:</span>
+  <a
+    class="share-buttons__btn share-buttons__btn--vk"
+    href={vkUrl.toString()}
+    target="_blank"
+    rel="noopener"
+    aria-label="Поделиться ВКонтакте"
+    data-share="vk"
+  >
+    <span aria-hidden="true">📤</span> ВКонтакте
+  </a>
+  <a
+    class="share-buttons__btn share-buttons__btn--tg"
+    href={tgUrl.toString()}
+    target="_blank"
+    rel="noopener"
+    aria-label="Поделиться в Telegram"
+    data-share="telegram"
+  >
+    <span aria-hidden="true">✈️</span> Telegram
+  </a>
+</div>
+
+<script is:inline>
+  (function initShareTracking() {
+    document.querySelectorAll('[data-share]').forEach((el) => {
+      el.addEventListener('click', () => {
+        const channel = el.getAttribute('data-share');
+        if (channel === 'vk') window.labReachGoal('share_vk');
+        else if (channel === 'telegram') window.labReachGoal('share_telegram');
+      });
+    });
+  })();
+</script>
+
+<style>
+  .share-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 24px 0 0;
+  }
+  .share-buttons__label {
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .share-buttons__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: border-color 0.15s, color 0.15s, transform 0.15s;
+  }
+  .share-buttons__btn:hover {
+    border-color: var(--rose);
+    color: var(--rose-deep);
+    transform: translateY(-1px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .share-buttons__btn:hover {
+      transform: none;
+    }
+  }
+</style>
