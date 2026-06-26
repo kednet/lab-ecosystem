@@ -55,7 +55,6 @@
 | **Excel Skill** | [`excel_skill/`](./excel_skill) | 8 скриптов: inspect/vlookup/sum/dedupe/fill/csv/json/count |
 | **Lottie Skill** | [`lottie_skill/`](./lottie_skill) | Анимации для VK/TG |
 | **Chief Agent** | [`chief-agent/`](./chief-agent) | Оркестратор нескольких скилов |
-| **Whitewill AI Engine** | [`whitewill_ai_engine/`](./whitewill_ai_engine) | Консьерж-API + Streamlit-демо для консульства недвижимости |
 
 ### 📂 Прочее / Misc
 
